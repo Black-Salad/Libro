@@ -3,6 +3,13 @@ import React from "react";
 const Writenote = () => {
   return (
     <div>
+      <nav aria-label="breadcrumb" class="main-breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="#">독서록 쓰기</a>
+          </li>
+        </ol>
+      </nav>
       <form>
         {/* <div className="row">
           <div className="col-lg-8"> */}

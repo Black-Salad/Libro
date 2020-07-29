@@ -4,6 +4,14 @@ import Books from "../components/common/Books";
 const Bookshelf = () => {
   return (
     <div>
+      <nav aria-label="breadcrumb" class="main-breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="#">내 책꽂이</a>
+          </li>
+        </ol>
+      </nav>
+
       <div>
         <span>읽고 있는 책</span>
         <a className="ml-auto" href="#">

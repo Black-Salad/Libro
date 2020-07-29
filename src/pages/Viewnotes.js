@@ -5,20 +5,13 @@ import { Link } from "react-router-dom";
 const Viewnotes = () => {
   return (
     <div>
-      {/* <nav aria-label="breadcrumb" className="main-breadcrumb">
-        <ol className="breadcrumb">
-          <li className="breadcrumb-item">
-            <a href="index.html">Home</a>
-          </li>
-          <li className="breadcrumb-item">
-            <a href="javascript:void(0)">Blog</a>
-          </li>
-          <li className="breadcrumb-item active" aria-current="page">
-            All Posts
+      <nav aria-label="breadcrumb" class="main-breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="#">내 독서록</a>
           </li>
         </ol>
-      </nav> */}
-      {/* <!-- /Breadcrumb --> */}
+      </nav>
 
       <div className="card mb-3">
         <div className="card-body p-2" style={{ height: "47px" }}>
