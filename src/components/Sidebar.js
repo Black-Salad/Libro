@@ -3,6 +3,10 @@ import * as Icon from "react-feather";
 import { Link } from "react-router-dom";
 
 const Sidebar = () => {
+  const toggleSidebar = () => {
+    document.querySelector("body").className = "";
+  };
+
   return (
     <div className="sidebar">
       {/* <!-- 사이드바 헤더 --> */}
@@ -13,15 +17,12 @@ const Sidebar = () => {
             Libro
           </span>
         </Link>
-        <span className="nav-link nav-icon rounded-circle ml-auto">
+        <span
+          className="nav-link nav-icon rounded-circle ml-auto"
+          onClick={toggleSidebar}
+        >
           <Icon.X />
         </span>
-
-        <a
-          href="#"
-          className="nav-link nav-icon rounded-circle ml-auto"
-          data-toggle="sidebar"
-        ></a>
       </div>
       {/* <!-- 사이드바 바디 --> */}
       <div className="sidebar-body">
