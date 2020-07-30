@@ -1,6 +1,16 @@
 import React from "react";
+import Bookprofile from "../components/common/Bookprofile";
 
 const Writenote = () => {
+  //---------------------------- Bookprofile open ----------------------------
+  const open = () => {
+    var bprofile = document.querySelector("#searchModal");
+    bprofile.style.display = "block";
+    document.querySelector("body").classList.add("modal-open");
+    document.querySelector("#modal-back").innerHTML =
+      '<div class="modal-backdrop fade show"></div>';
+  };
+
   return (
     <div>
       <nav ariaLabel="breadcrumb" className="main-breadcrumb">
@@ -55,11 +65,13 @@ const Writenote = () => {
             type="button"
             className="btn btn-primary"
             style={{ margin: "10px auto" }}
+            onClick={open}
           >
             저장
           </button>
         </div>
       </div>
+      <Bookprofile />
     </div>
   );
 };
