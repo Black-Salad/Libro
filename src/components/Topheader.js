@@ -3,12 +3,15 @@ import * as Icon from "react-feather";
 import { Link } from "react-router-dom";
 
 const Topheader = () => {
+  const toggleSidebar = () => {
+    document.querySelector("body").className = "sidebar-expand";
+  };
   return (
     <div className="main-header">
       <a
         className="nav-link nav-link-faded rounded-circle nav-icon"
         href="#"
-        data-toggle="sidebar"
+        onClick={toggleSidebar}
       >
         <Icon.Menu />
       </a>
