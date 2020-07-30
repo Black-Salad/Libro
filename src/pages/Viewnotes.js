@@ -1,17 +1,12 @@
 import React from "react";
 import { Plus, Search, ChevronLeft } from "react-feather";
 import { Link } from "react-router-dom";
+import BreadCrumbs from "../components/common/BreadCrumbs";
 
 const Viewnotes = () => {
   return (
     <div>
-      <nav ariaLabel="breadcrumb" className="main-breadcrumb">
-        <ol className="breadcrumb border breadcrumb-style1">
-          <li className="breadcrumb-item active" ariaCurrent="page">
-            <a href="#">내 독서록</a>
-          </li>
-        </ol>
-      </nav>
+      <BreadCrumbs breads={["내 독서록"]} />
 
       <div className="card mb-3">
         <div className="card-body p-2" style={{ height: "47px" }}>

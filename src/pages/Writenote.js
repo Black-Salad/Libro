@@ -1,5 +1,6 @@
 import React from "react";
 import Bookprofile from "../components/common/Bookprofile";
+import BreadCrumbs from "../components/common/BreadCrumbs";
 
 const Writenote = () => {
   //---------------------------- Bookprofile open ----------------------------
@@ -13,24 +14,15 @@ const Writenote = () => {
 
   return (
     <div>
-      <nav ariaLabel="breadcrumb" className="main-breadcrumb">
-        <ol className="breadcrumb border breadcrumb-style1">
-          <li className="breadcrumb-item active" ariaCurrent="page">
-            <a href="#">독서록 쓰기</a>
-          </li>
-        </ol>
-      </nav>
+      <BreadCrumbs breads={["독서록 쓰기"]} />
+
       <div className="card">
         <div className="card-body">
           <form>
             <div className="form-group">
               <label>책 선택</label>
               <div className="dropdown">
-                <button
-                  className="btn btn-light dropdown-toggle"
-                  type="button"
-                  dataToggle="dropdown"
-                >
+                <button className="btn btn-light dropdown-toggle" type="button">
                   독서록을 쓸 책 선택
                 </button>
                 <div className="dropdown-menu">

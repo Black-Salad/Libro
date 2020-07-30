@@ -2,10 +2,11 @@ import React from "react";
 import Books from "../components/common/Books";
 import { Plus } from "react-feather";
 import Bookprofile from "../components/common/Bookprofile";
+import BreadCrumbs from "../components/common/BreadCrumbs";
 
 const Bookshelf = () => {
   //---------------------------- Bookprofile open ----------------------------
-  const open = () => {
+  const onOpen = () => {
     var bprofile = document.querySelector("#searchModal");
     bprofile.style.display = "block";
     document.querySelector("body").classList.add("modal-open");
@@ -14,6 +15,8 @@ const Bookshelf = () => {
   };
   return (
     <div>
+      <BreadCrumbs breads={["내 책꽂이"]} />
+
       {/* Books 컴포넌트에 어느 항목인지 알려주는(읽고 있는 책/읽은 책/관심 책)kind를 props로 줍니다. */}
       <div>
         <div style={{ marginBottom: "10px" }}>

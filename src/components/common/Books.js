@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Books = (props) => {
   const [myBooks, setMyBooks] = useState([
@@ -39,12 +39,14 @@ const Books = (props) => {
       b_img: "/img/book_thumbnail/글쓰기특강.jpg",
     },
   ]);
-  // const [displayBooks, setDisplayBooks] = useState([]);
+  const [displayBooks, setDisplayBooks] = useState([]);
 
-  let filteredList = myBooks.filter((book) => book.b_state === props.kind);
-  //setDisplayBooks(filteredList);
+  useEffect(() => {
+    let filteredList = myBooks.filter((book) => book.b_state === props.kind);
+    setDisplayBooks(filteredList);
+  }, []);
 
-  const bookList = filteredList.map((book, index) => (
+  const bookList = displayBooks.map((book, index) => (
     <li key={index} className="list-group-item" style={{ textAlign: "center" }}>
       <img src={book.b_img} />
       <br />

@@ -1,13 +1,15 @@
 import React from "react";
 
-const BreadCrumbs = () => {
+const BreadCrumbs = (props) => {
   return (
     <div>
-      <nav ariaLabel="breadcrumb" className="main-breadcrumb">
+      <nav className="main-breadcrumb">
         <ol className="breadcrumb border breadcrumb-style1">
-          <li className="breadcrumb-item active" ariaCurrent="page">
-            <a href="#">내 책꽂이</a>
-          </li>
+          {props.breads.map((bread, index) => (
+            <li key={index} className="breadcrumb-item active">
+              <a href="#">{bread}</a>
+            </li>
+          ))}
         </ol>
       </nav>
     </div>

@@ -12,10 +12,7 @@ const Layout = (props) => {
       <div className="main">
         {/* 상단 헤더 바 */}
         <Topheader />
-        <div className="main-body">
-          <BreadCrumbs />
-          {children}
-        </div>
+        <div className="main-body">{children}</div>
       </div>
     </div>
   );

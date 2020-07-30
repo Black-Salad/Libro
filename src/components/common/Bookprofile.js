@@ -9,18 +9,18 @@ const Bookprofile = (props) => {
   };
   return (
     <>
-      <div class="modal" id="searchModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h6 class="modal-title" id="scrollableModalLabel">
+      <div className="modal" id="searchModal" tabIndex="-1" role="dialog">
+        <div className="modal-dialog modal-dialog-scrollable" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h6 className="modal-title" id="scrollableModalLabel">
                 {/* 여기에 책제목을 넣거나 빈란으로 */}
                 {props.BookTitle}
               </h6>
               {/* 팝업창 close */}
               <button
                 type="button"
-                class="close"
+                className="close"
                 data-dismiss="modal"
                 aria-label="Close"
                 onClick={close}
@@ -28,9 +28,9 @@ const Bookprofile = (props) => {
                 <span aria-hidden="true">×</span>
               </button>
             </div>
-            <div class="inner-main-body">
-              <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6 mb-4">
+            <div className="inner-main-body">
+              <div className="row">
+                <div className="col-lg-6 col-md-6 col-sm-6 mb-4">
                   <img
                     src=""
                     style={{
@@ -40,7 +40,7 @@ const Bookprofile = (props) => {
                     }}
                   />
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 mb-4">
+                <div className="col-lg-6 col-md-6 col-sm-6 mb-4">
                   <h5 style={{ fontWeight: 600 }}>
                     {/* 책제목 / 저자  */}
                     {props.BookTitle} /{props.BookWriter}
@@ -48,13 +48,13 @@ const Bookprofile = (props) => {
                   {/* 책소개  */}
                   {props.BookIntroduction}
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 mb-2">
+                <div className="col-lg-12 col-md-12 col-sm-12 mb-2">
                   <div style={{ textAlign: "center" }}>
-                    <button type="button" class="btn btn-primary has-icon">
+                    <button type="button" className="btn btn-primary has-icon">
                       책꽂이로 담기
                     </button>
                     &nbsp;&nbsp;
-                    <button type="button" class="btn btn-danger has-icon">
+                    <button type="button" className="btn btn-danger has-icon">
                       책꽂이에서 빼기
                     </button>
                   </div>
