@@ -19,6 +19,7 @@ const Sidebar = () => {
         </Link>
         <span
           className="nav-link nav-icon rounded-circle ml-auto"
+          data-toggle="sidebar"
           onClick={toggleSidebar}
         >
           <Icon.X />
