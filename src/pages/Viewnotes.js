@@ -1,11 +1,8 @@
 import React from "react";
 import { Plus, Search, ChevronLeft } from "react-feather";
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
 import ViewnotesCom from "../components/common/Viewnotes";
-=======
 import BreadCrumbs from "../components/common/BreadCrumbs";
->>>>>>> 9568dbbe16e0baedd3167fb8a891874b6ca5bad6
 
 const Viewnotes = () => {
   return (
