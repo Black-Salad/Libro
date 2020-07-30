@@ -1,9 +1,10 @@
 import React, { useState, useRef } from "react";
 import Bookprofile from "../components/common/Bookprofile";
+import BreadCrumbs from "../components/common/BreadCrumbs";
 
 const Writenote = () => {
   //---------------------------- Bookprofile open ----------------------------
-  const open = () => {
+  const onOpen = () => {
     var bprofile = document.querySelector("#searchModal");
     bprofile.style.display = "block";
     document.querySelector("body").classList.add("modal-open");
@@ -63,18 +64,14 @@ const Writenote = () => {
 
   return (
     <div>
-      <nav ariaLabel="breadcrumb" className="main-breadcrumb">
-        <ol className="breadcrumb border breadcrumb-style1">
-          <li className="breadcrumb-item active" ariaCurrent="page">
-            <a href="#">독서록 쓰기</a>
-          </li>
-        </ol>
-      </nav>
+      <BreadCrumbs breads={["독서록 쓰기"]} />
+
       <div className="card">
         <div className="card-body">
           <form>
             <div className="form-group">
               <label>책 선택</label>
+<<<<<<< HEAD
               <br />
               <select
                 class="custom-select custom-select-sm w-auto mr-1"
@@ -88,6 +85,24 @@ const Writenote = () => {
                 <option value="4">부의 대이동</option>
                 <option value="5">더 해빙 The Having</option>
               </select>
+=======
+              <div className="dropdown">
+                <button className="btn btn-light dropdown-toggle" type="button">
+                  독서록을 쓸 책 선택
+                </button>
+                <div className="dropdown-menu">
+                  <a className="dropdown-item" href="#">
+                    Action
+                  </a>
+                  <a className="dropdown-item" href="#">
+                    Another action
+                  </a>
+                  <a className="dropdown-item" href="#">
+                    Something else here
+                  </a>
+                </div>
+              </div>
+>>>>>>> 9568dbbe16e0baedd3167fb8a891874b6ca5bad6
             </div>
             <div className="form-group">
               <label htmlFor="blogTitle">제목</label>
@@ -115,7 +130,11 @@ const Writenote = () => {
             type="button"
             className="btn btn-primary"
             style={{ margin: "10px auto" }}
+<<<<<<< HEAD
             onClick={noteSave}
+=======
+            onClick={onOpen}
+>>>>>>> 9568dbbe16e0baedd3167fb8a891874b6ca5bad6
           >
             저장
           </button>
