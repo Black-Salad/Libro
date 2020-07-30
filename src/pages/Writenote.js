@@ -3,7 +3,7 @@ import Bookprofile from "../components/common/Bookprofile";
 
 const Writenote = () => {
   //---------------------------- Bookprofile open ----------------------------
-  const open = () => {
+  const onOpen = () => {
     var bprofile = document.querySelector("#searchModal");
     bprofile.style.display = "block";
     document.querySelector("body").classList.add("modal-open");
@@ -65,7 +65,7 @@ const Writenote = () => {
             type="button"
             className="btn btn-primary"
             style={{ margin: "10px auto" }}
-            onClick={open}
+            onClick={onOpen}
           >
             저장
           </button>

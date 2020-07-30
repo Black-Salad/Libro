@@ -6,12 +6,11 @@ const searchBook = (query, sort) => {
   const url = `${KAKAO_API_URL}/v3/search/book`;
 
   axios
-    .post(url, {
+    .get(url, {
       headers: {
-        "Content-Type": "application/json; charset=utf-8",
-        Host: "dapi.kakao.com",
+        // "Content-Type": "application/json; charset=utf-8",
+        // Host: "dapi.kakao.com",
         Authorization: `KakaoAK ${KAKAO_API_KEY}`,
-        Origin: "*",
       },
       params: {
         query: `${query}`,
