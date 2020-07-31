@@ -63,7 +63,7 @@ const Writenote = () => {
   //---------------------------- 독서록 쓰기 저장 끝 ----------------------------
 
   return (
-    <div>
+    <>
       <BreadCrumbs breads={["독서록 쓰기"]} />
 
       <div className="card">
@@ -73,11 +73,12 @@ const Writenote = () => {
               <label>책 선택</label>
               <br />
               <select
-                class="custom-select custom-select-sm w-auto mr-1"
+                className="custom-select custom-select-sm w-auto mr-1"
                 name="noteBook"
                 onChange={(e) => noteOnChange(e)}
                 value={note.noteBook}
               >
+                {/* 책꽂이 for문 */}
                 <option value="0">독서록을 쓸 책 선택</option>
                 <option value="1">존리의 부자되기 습관</option>
                 <option value="3">김미경의 리부트</option>
@@ -117,8 +118,9 @@ const Writenote = () => {
           </button>
         </div>
       </div>
+
       <Bookprofile />
-    </div>
+    </>
   );
 };
 
