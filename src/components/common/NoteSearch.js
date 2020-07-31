@@ -10,7 +10,7 @@ const NoteSearch = (props) => {
   return (
     <>
       <div className="card mb-3">
-        <div className="card-body p-2" style={{ height: "47px" }}>
+        <div className="card-body p-2" style={{ height: "50px" }}>
           <div
             className="d-flex align-items-center collapse transition-none blog-toolbar"
             id="searchform"
@@ -26,7 +26,7 @@ const NoteSearch = (props) => {
             <input
               type="text"
               className="form-control form-control-sm bg-gray-200 border-gray-200"
-              placeholder="Search..."
+              placeholder="독서록 검색"
             />
           </div>
           <div

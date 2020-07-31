@@ -1,8 +1,60 @@
-import React from "react";
-import { Plus, Search, ChevronLeft } from "react-feather";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const ViewnoteDetail = (props) => {
+  const [notes, setNotes] = useState([
+    {
+      idx: 1,
+      noteUser: "test01",
+      noteBook: "여행의 이유",
+      noteTitle: "여행의 이유를 읽고나서",
+      noteContents: "예~~~~~~~~~~~~~~~`여행~~~~~~~~`",
+      noteDate: "2020-03-20",
+    },
+    {
+      idx: 2,
+      noteUser: "test01",
+      noteBook: "점심메뉴",
+      noteTitle: "점심은 뭘 먹어야 잘 먹었다 소문이 날까",
+      noteContents: "잘모르겠따",
+      noteDate: "2020-07-20",
+    },
+    {
+      idx: 3,
+      noteUser: "test01",
+      noteBook: "점심메뉴",
+      noteTitle: "점심은 뭘 먹어야 잘 먹었다 소문이 날까",
+      noteContents: "잘모르겠따",
+      noteDate: "2020-07-20",
+    },
+    {
+      idx: 4,
+      noteUser: "test01",
+      noteBook: "점심메뉴",
+      noteTitle: "점심은 뭘 먹어야 잘 먹었다 소문이 날까",
+      noteContents: "잘모르겠따",
+      noteDate: "2020-07-20",
+    },
+  ]);
+
+  //select useState
+  const [selectNote, setSelectNote] = useState({});
+
+  //값 가져와서 selectNote에 값 설정
+  useEffect(() => {
+    notes.map((item) => {
+      if (item.idx == props.idx)
+        setSelectNote({
+          idx: item.idx,
+          noteUser: item.noteUser,
+          noteBook: item.noteBook,
+          noteTitle: item.noteTitle,
+          noteContents: item.noteContents,
+          noteDate: item.noteDate,
+        });
+    });
+  });
+
   return (
     <div>
       {/* note contents */}
@@ -12,7 +64,9 @@ const ViewnoteDetail = (props) => {
             <div className="col-sm-2">
               <h6 className="mb-0">제목</h6>
             </div>
-            <div className="col-sm-10 text-secondary">존리의 부자되기 습관</div>
+            <div className="col-sm-10 text-secondary">
+              {selectNote.noteTitle}
+            </div>
           </div>
           <hr />
           <div className="row">
@@ -20,10 +74,7 @@ const ViewnoteDetail = (props) => {
               <h6 className="mb-0">내용</h6>
             </div>
             <div className="col-sm-10 text-secondary">
-              2020년 상반기 경제경영 베스트 1위! 10만부 기념 리커버 에디션!
-              동학개미운동을 이끄는 존봉준 존리가 제안하는 하루 만원으로
-              시작하는 부자되기 습관! 부자가 되기 위해 버려야할 3가지 잘못된
-              습관 누구나 부자가 될 수 있다. 다만 천천히 될 뿐이다
+              {selectNote.noteContents}
             </div>
           </div>
           <hr />

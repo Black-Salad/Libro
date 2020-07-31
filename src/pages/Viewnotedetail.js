@@ -1,16 +1,14 @@
 import React from "react";
-import { Plus, Search, ChevronLeft } from "react-feather";
-import { Link } from "react-router-dom";
 import BreadCrumbs from "../components/common/BreadCrumbs";
 import ViewnoteDetailCom from "../components/common/ViewnoteDetail";
 
-const ViewnoteDetail = () => {
+const ViewnoteDetail = ({ match }) => {
   return (
     <>
       <BreadCrumbs breads={["내 독서록"]} />
 
       {/* note contents */}
-      <ViewnoteDetailCom />
+      <ViewnoteDetailCom idx={match.params.idx} />
     </>
   );
 };

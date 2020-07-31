@@ -25,7 +25,7 @@ function App() {
       <Route path="/myprofile" component={Myprofile} />
       <Route path="/setting" component={Setting} />
       <Route path="/register" component={Register} />
-      <Route path="/viewnotedetail" component={ViewnoteDetail} />
+      <Route path="/viewnotedetail/:idx" component={ViewnoteDetail} />
     </Layout>
   );
 }
