@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 const NoteForm = (props) => {
   const onDelete = () => {
@@ -59,6 +59,30 @@ const NoteForm = (props) => {
   };
 
   //---------------------------- 독서록 수정 ------------------------------------
+  //select useState
+  const [selectNote, setSelectNote] = useState({});
+
+  //값 가져와서 selectNote에 값 설정
+  useEffect(() => {
+    if (props.idx != null) {
+      notes.map((item) => {
+        if (item.idx == props.idx)
+          setSelectNote({
+            idx: item.idx,
+            noteUser: item.noteUser,
+            noteBook: item.noteBook,
+            noteTitle: item.noteTitle,
+            noteContents: item.noteContents,
+            noteDate: item.noteDate,
+          });
+      });
+    }
+  });
+
+  const noteModifyOnChange = (e) => {
+    setSelectNote({ ...selectNote, [e.target.name]: [e.target.value] });
+  };
+
   const noteModify = () => {};
 
   return (
@@ -69,59 +93,102 @@ const NoteForm = (props) => {
             <div className="form-group">
               <label>책 선택</label>
               <br />
-              <select
-                className="custom-select custom-select-sm w-auto mr-1"
-                name="noteBook"
-                onChange={(e) => noteOnChange(e)}
-                value={note.noteBook}
-              >
-                {/* 책꽂이 for문 */}
-                <option value="0">독서록을 쓸 책 선택</option>
-                <option value="1">존리의 부자되기 습관</option>
-                <option value="3">김미경의 리부트</option>
-                <option value="4">부의 대이동</option>
-                <option value="5">더 해빙 The Having</option>
-              </select>
+
+              {props.idx == null ? (
+                <select
+                  className="custom-select custom-select-sm w-auto mr-1"
+                  name="noteBook"
+                  onChange={(e) => noteOnChange(e)}
+                  value={note.noteBook}
+                >
+                  {/* 책꽂이 for문 */}
+                  <option value="0">독서록을 쓸 책 선택</option>
+                  <option value="1">존리의 부자되기 습관</option>
+                  <option value="3">김미경의 리부트</option>
+                  <option value="4">부의 대이동</option>
+                  <option value="5">더 해빙 The Having</option>
+                </select>
+              ) : (
+                <select
+                  className="custom-select custom-select-sm w-auto mr-1"
+                  name="noteBook"
+                  onChange={(e) => noteModifyOnChange(e)}
+                  value={selectNote.noteBook}
+                >
+                  {/* 책꽂이 for문 */}
+                  <option value="0">독서록을 쓸 책 선택</option>
+                  <option value="1">존리의 부자되기 습관</option>
+                  <option value="3">김미경의 리부트</option>
+                  <option value="4">부의 대이동</option>
+                  <option value="5">더 해빙 The Having</option>
+                </select>
+              )}
             </div>
+
             <div className="form-group">
               <label htmlFor="blogTitle">제목</label>
-              <input
-                type="text"
-                className="form-control"
-                name="noteTitle"
-                value={note.noteTitle}
-                ref={refTitle}
-                onChange={(e) => noteOnChange(e)}
-              />
+              {props.idx == null ? (
+                <input
+                  type="text"
+                  className="form-control"
+                  name="noteTitle"
+                  value={note.noteTitle}
+                  ref={refTitle}
+                  onChange={(e) => noteOnChange(e)}
+                />
+              ) : (
+                <input
+                  type="text"
+                  className="form-control"
+                  name="noteTitle"
+                  value={selectNote.noteTitle}
+                  // ref={refTitle}
+                  onChange={(e) => noteModifyOnChange(e)}
+                />
+              )}
             </div>
+
             <div className="form-group">
               <label>내용</label>
-              <textarea
-                className="form-control"
-                name="noteContents"
-                value={note.noteContents}
-                ref={refContents}
-                onChange={(e) => noteOnChange(e)}
-              ></textarea>
+              {props.idx == null ? (
+                <textarea
+                  className="form-control"
+                  name="noteContents"
+                  value={note.noteContents}
+                  ref={refContents}
+                  onChange={(e) => noteOnChange(e)}
+                ></textarea>
+              ) : (
+                <textarea
+                  className="form-control"
+                  name="noteContents"
+                  value={selectNote.noteContents}
+                  // ref={refContents}
+                  onChange={(e) => noteModifyOnChange(e)}
+                ></textarea>
+              )}
             </div>
           </form>
-          <button
-            type="button"
-            className="btn btn-primary"
-            style={{ margin: "10px auto" }}
-            onClick={noteSave}
-          >
-            저장
-          </button>
 
-          <button
-            type="button"
-            className="btn btn-primary"
-            style={{ margin: "10px auto" }}
-            onClick={noteModify}
-          >
-            수정완료
-          </button>
+          {props.status == "write" ? (
+            <button
+              type="button"
+              className="btn btn-primary"
+              style={{ margin: "10px auto" }}
+              onClick={noteSave}
+            >
+              저장
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="btn btn-primary"
+              style={{ margin: "10px auto" }}
+              onClick={noteModify}
+            >
+              수정완료
+            </button>
+          )}
         </div>
       </div>
     </>

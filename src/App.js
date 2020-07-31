@@ -12,6 +12,7 @@ import Setting from "./pages/Setting";
 import Myprofile from "./pages/Myprofile";
 import Register from "./pages/account/Register";
 import ViewnoteDetail from "./pages/ViewnoteDetail";
+import Modifynote from "./pages/Modifynote";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Route path="/login" component={Login} />
       <Route path="/viewnotes" component={Viewnotes} />
       <Route path="/writenote" component={Writenote} />
+      <Route path="/modifynote/:idx" component={Modifynote} />
       <Route path="/search" component={Searchbooks} />
       <Route path="/navigate" component={Navigate} />
       <Route path="/myprofile" component={Myprofile} />

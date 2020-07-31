@@ -41,19 +41,19 @@ const ViewnoteDetail = (props) => {
   const [selectNote, setSelectNote] = useState({});
 
   //값 가져와서 selectNote에 값 설정
-  useEffect(() => {
-    notes.map((item) => {
-      if (item.idx == props.idx)
-        setSelectNote({
-          idx: item.idx,
-          noteUser: item.noteUser,
-          noteBook: item.noteBook,
-          noteTitle: item.noteTitle,
-          noteContents: item.noteContents,
-          noteDate: item.noteDate,
-        });
-    });
+  // useEffect(() => {
+  notes.map((item) => {
+    if (item.idx == props.idx)
+      setSelectNote({
+        idx: item.idx,
+        noteUser: item.noteUser,
+        noteBook: item.noteBook,
+        noteTitle: item.noteTitle,
+        noteContents: item.noteContents,
+        noteDate: item.noteDate,
+      });
   });
+  // });
 
   return (
     <div>
@@ -81,7 +81,7 @@ const ViewnoteDetail = (props) => {
           <div className="row">
             <div className="col-sm-3">
               <div className="list-with-gap">
-                <Link to="/Viewnotes">
+                <Link to="/viewnotes">
                   <button
                     className="btn btn-outline-primary btn-sm has-icon"
                     type="button"
@@ -89,7 +89,7 @@ const ViewnoteDetail = (props) => {
                     목록
                   </button>
                 </Link>
-                <Link to="/writenote">
+                <Link to={`/modifynote/${selectNote.idx}`}>
                   <button
                     className="btn btn-outline-success btn-sm has-icon"
                     type="button"
