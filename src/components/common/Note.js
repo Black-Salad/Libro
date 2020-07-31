@@ -1,6 +1,6 @@
 import React from "react";
 
-const Viewnotes = (props) => {
+const Note = (props) => {
   return (
     <>
       <div className="row gutters-sm">
@@ -24,4 +24,4 @@ const Viewnotes = (props) => {
   );
 };
 
-export default Viewnotes;
+export default Note;

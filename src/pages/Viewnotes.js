@@ -1,7 +1,7 @@
 import React from "react";
 import { Plus, Search, ChevronLeft } from "react-feather";
 import { Link } from "react-router-dom";
-import ViewnotesCom from "../components/common/Viewnotes";
+import Note from "../components/common/Note";
 import BreadCrumbs from "../components/common/BreadCrumbs";
 
 const Viewnotes = () => {
@@ -50,7 +50,7 @@ const Viewnotes = () => {
       </div>
 
       {/* 독서록리스트 */}
-      <ViewnotesCom />
+      <Note />
 
       {/* 페이징처리 */}
       <ul className="pagination justify-content-center mb-0">
