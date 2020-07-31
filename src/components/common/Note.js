@@ -1,6 +1,7 @@
 import React from "react";
 
 const Note = (props) => {
+  //noteDetail 이동
   const detail = () => {
     window.location.href = "./viewnotedetail/" + props.item.idx;
   };
