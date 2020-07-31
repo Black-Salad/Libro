@@ -11,6 +11,7 @@ import Navigate from "./pages/Navigate";
 import Setting from "./pages/Setting";
 import Myprofile from "./pages/Myprofile";
 import Register from "./pages/account/Register";
+import ViewnoteDetail from "./pages/ViewnoteDetail";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
       <Route path="/myprofile" component={Myprofile} />
       <Route path="/setting" component={Setting} />
       <Route path="/register" component={Register} />
+      <Route path="/viewnotedetail" component={ViewnoteDetail} />
     </Layout>
   );
 }
