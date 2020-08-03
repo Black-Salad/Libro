@@ -1,11 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Note = (props) => {
-  //noteDetail 이동
-  const detail = () => {
-    window.location.href = "./viewnotedetail/" + props.item.idx;
-  };
-
   const onDelete = () => {
     if (window.confirm("해당 독서록을 삭제하시겠습니까?")) {
       // 추후 주석제거
@@ -20,8 +16,10 @@ const Note = (props) => {
         <div className="card h-100">
           <img src="/img/blog/1.jpg" className="card-img-top" alt="..." />
           <div className="card-body">
-            <h6 className="card-title" onClick={detail}>
-              {props.item.noteTitle}
+            <h6 className="card-title">
+              <Link to={`./viewnotedetail/${props.item.idx}`}>
+                {props.item.noteTitle}
+              </Link>
             </h6>
             <div className="card-subtitle text-muted font-size-sm mb-2">
               {props.item.noteBook}
