@@ -20,7 +20,7 @@ const Sidebar = () => {
         <span
           className="nav-link nav-icon rounded-circle ml-auto"
           data-toggle="sidebar"
-          onClick={toggleSidebar}
+          // onClick={toggleSidebar}
         >
           <Icon.X />
         </span>
@@ -31,7 +31,7 @@ const Sidebar = () => {
           <li className="nav-label">My Room</li>
           <li className="nav-item">
             <Link to="/">
-              <span className="nav-link has-icon">
+              <span className="nav-link has-icon" onClick={toggleSidebar}>
                 {/* 클릭 시 class에 active 추가 */}
                 <Icon.Book />내 책꽂이
               </span>
@@ -39,14 +39,14 @@ const Sidebar = () => {
           </li>
           <li className="nav-item">
             <Link to="viewnotes">
-              <span className="nav-link has-icon">
+              <span className="nav-link has-icon" onClick={toggleSidebar}>
                 <Icon.BookOpen />내 독서록
               </span>
             </Link>
           </li>
           <li className="nav-item">
             <Link to="writenote">
-              <span className="nav-link has-icon">
+              <span className="nav-link has-icon" onClick={toggleSidebar}>
                 <Icon.Edit />
                 독서록 쓰기
               </span>
@@ -55,14 +55,14 @@ const Sidebar = () => {
           <li className="nav-label">Navigate</li>
           <li className="nav-item">
             <Link to="search">
-              <span className="nav-link has-icon">
+              <span className="nav-link has-icon" onClick={toggleSidebar}>
                 <Icon.Search />책 검색
               </span>
             </Link>
           </li>
           <li className="nav-item">
             <Link to="navigate">
-              <span className="nav-link has-icon">
+              <span className="nav-link has-icon" onClick={toggleSidebar}>
                 <Icon.Compass />
                 둘러보기
               </span>
@@ -71,14 +71,14 @@ const Sidebar = () => {
           <li className="nav-label">Setting</li>
           <li className="nav-item">
             <Link to="myprofile">
-              <span className="nav-link has-icon">
+              <span className="nav-link has-icon" onClick={toggleSidebar}>
                 <Icon.User />내 프로필
               </span>
             </Link>
           </li>
           <li className="nav-item">
             <Link to="setting">
-              <span className="nav-link has-icon">
+              <span className="nav-link has-icon" onClick={toggleSidebar}>
                 <Icon.Settings />
                 설정
               </span>
