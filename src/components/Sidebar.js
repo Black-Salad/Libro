@@ -38,14 +38,14 @@ const Sidebar = () => {
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="viewnotes">
+            <Link to="/viewnotes">
               <span className="nav-link has-icon" onClick={toggleSidebar}>
                 <Icon.BookOpen />내 독서록
               </span>
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="writenote">
+            <Link to="/writenote">
               <span className="nav-link has-icon" onClick={toggleSidebar}>
                 <Icon.Edit />
                 독서록 쓰기
@@ -54,14 +54,14 @@ const Sidebar = () => {
           </li>
           <li className="nav-label">Navigate</li>
           <li className="nav-item">
-            <Link to="search">
+            <Link to="/search">
               <span className="nav-link has-icon" onClick={toggleSidebar}>
                 <Icon.Search />책 검색
               </span>
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="navigate">
+            <Link to="/navigate">
               <span className="nav-link has-icon" onClick={toggleSidebar}>
                 <Icon.Compass />
                 둘러보기
@@ -70,14 +70,14 @@ const Sidebar = () => {
           </li>
           <li className="nav-label">Setting</li>
           <li className="nav-item">
-            <Link to="myprofile">
+            <Link to="/myprofile">
               <span className="nav-link has-icon" onClick={toggleSidebar}>
                 <Icon.User />내 프로필
               </span>
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="setting">
+            <Link to="/setting">
               <span className="nav-link has-icon" onClick={toggleSidebar}>
                 <Icon.Settings />
                 설정
