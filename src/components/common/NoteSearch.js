@@ -8,7 +8,7 @@ const NoteSearch = (props) => {
   //   document.querySelector("#notewrite").classList.toggle("show");
   // };
 
-  //searchs useState
+  //search useState
   const [searchNotes, setsearchNotes] = useState([]);
 
   const onKeyPressSearch = (e) => {
