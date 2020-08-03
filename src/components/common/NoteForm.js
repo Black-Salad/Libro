@@ -132,7 +132,9 @@ const NoteForm = (props) => {
       )
     );
     alert("수정완료");
-    window.location.href = "/viewnotedetail/" + props.noteIDX;
+    // console.log(history);
+    // console.log(props.history);
+    window.location.href = `/viewnotedetail/${props.noteIDX}`;
   };
 
   return (
