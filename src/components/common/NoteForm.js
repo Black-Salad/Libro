@@ -141,39 +141,31 @@ const NoteForm = (props) => {
         <div className="card-body">
           <form>
             <div className="form-group">
-              <label>책 선택</label>
-              <br />
-
               {props.idx == null ? (
-                <select
-                  className="custom-select custom-select-sm w-auto mr-1"
-                  name="noteBook"
-                  onChange={(e) => noteOnChange(e)}
-                  value={note.bookIDX}
-                >
-                  {/* 책꽂이 for문 */}
-                  <option value="0">독서록을 쓸 책 선택</option>
-                  <option value="1">여행의 이유</option>
-                  <option value="2">점심메뉴</option>
-                  <option value="3">존리의 부자되기 습관</option>
-                  <option value="4">책이름이고</option>
-                  <option value="5">더 해빙 The Having</option>
-                </select>
+                <>
+                  <label>책 선택</label>
+                  <br />
+                  <select
+                    className="custom-select custom-select-sm w-auto mr-1"
+                    name="noteBook"
+                    onChange={(e) => noteOnChange(e)}
+                    value={note.bookIDX}
+                  >
+                    {/* 책꽂이 for문 */}
+                    <option value="0">독서록을 쓸 책 선택</option>
+                    <option value="1">여행의 이유</option>
+                    <option value="2">점심메뉴</option>
+                    <option value="3">존리의 부자되기 습관</option>
+                    <option value="4">책이름이고</option>
+                    <option value="5">더 해빙 The Having</option>
+                  </select>
+                </>
               ) : (
-                <select
-                  className="custom-select custom-select-sm w-auto mr-1"
-                  name="noteBook"
-                  onChange={(e) => noteModifyOnChange(e)}
-                  value={selectNote.bookIDX}
-                >
-                  {/* 책꽂이 for문 */}
-                  <option value="0">독서록을 쓸 책 선택</option>
-                  <option value="1">여행의 이유</option>
-                  <option value="2">점심메뉴</option>
-                  <option value="3">존리의 부자되기 습관</option>
-                  <option value="4">책이름이고</option>
-                  <option value="5">더 해빙 The Having</option>
-                </select>
+                <>
+                  <label>책 이름</label>
+                  <br />
+                  {selectNote.noteBook}
+                </>
               )}
             </div>
 
