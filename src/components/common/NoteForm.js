@@ -246,7 +246,6 @@ const NoteForm = (props) => {
                   type="button"
                   className="btn btn-outline-danger btn-sm has-icon"
                   style={{ marginLeft: "10px" }}
-                  onClick={noteModify}
                 >
                   취소
                 </button>
