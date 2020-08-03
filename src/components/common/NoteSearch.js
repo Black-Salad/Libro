@@ -3,10 +3,10 @@ import { Plus, Search, ChevronLeft } from "react-feather";
 import { Link } from "react-router-dom";
 
 const NoteSearch = (props) => {
-  const search = () => {
-    document.getElementById("searchform").classList.toggle("show");
-    document.querySelector("#notewrite").classList.toggle("show");
-  };
+  // const search = () => {
+  //   document.getElementById("searchform").classList.toggle("show");
+  //   document.querySelector("#notewrite").classList.toggle("show");
+  // };
   return (
     <>
       <div className="card mb-3">
@@ -19,7 +19,7 @@ const NoteSearch = (props) => {
               className="btn btn-sm btn-icon mr-2"
               data-toggle="collapse"
               data-target=".blog-toolbar"
-              onClick={search}
+              // onClick={search}
             >
               <ChevronLeft />
             </button>
@@ -47,7 +47,7 @@ const NoteSearch = (props) => {
               type="button"
               data-toggle="collapse"
               data-target=".blog-toolbar"
-              onClick={search}
+              // onClick={search}
             >
               <Search />
             </button>
