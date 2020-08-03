@@ -6,7 +6,7 @@ const ViewnoteDetail = (props) => {
   //임시 notes
   const [notes, setNotes] = useState([
     {
-      idx: 1,
+      noteIDX: 1,
       noteUser: "test01",
       noteBook: "여행의 이유",
       bookIDX: 1,
@@ -15,7 +15,7 @@ const ViewnoteDetail = (props) => {
       noteDate: "2020-03-20",
     },
     {
-      idx: 2,
+      noteIDX: 2,
       noteUser: "test01",
       noteBook: "점심메뉴",
       bookIDX: 2,
@@ -24,7 +24,7 @@ const ViewnoteDetail = (props) => {
       noteDate: "2020-07-30",
     },
     {
-      idx: 3,
+      noteIDX: 3,
       noteUser: "test01",
       noteBook: "존리의 부자되기 습관",
       bookIDX: 3,
@@ -33,7 +33,7 @@ const ViewnoteDetail = (props) => {
       noteDate: "2020-07-31",
     },
     {
-      idx: 4,
+      noteIDX: 4,
       noteUser: "test01",
       noteBook: "여기는 책이름이고",
       bookIDX: 4,
@@ -50,9 +50,9 @@ const ViewnoteDetail = (props) => {
   //useMemo는 배열값을 리턴해야하는데 배열이 아니라서 콘솔창에 오류표시남 수정필요
   useMemo(() => {
     notes.map((item) => {
-      if (item.idx == props.idx)
+      if (item.noteIDX == props.noteIDX)
         setSelectNote({
-          idx: item.idx,
+          noteIDX: item.noteIDX,
           noteUser: item.noteUser,
           noteBook: item.noteBook,
           bookIDX: item.bookIDX,
@@ -67,7 +67,7 @@ const ViewnoteDetail = (props) => {
   //---------------------------- 독서록 삭제 ------------------------------------------------------------------------
   const onDelete = () => {
     if (window.confirm("해당 독서록을 삭제하시겠습니까?")) {
-      const filterList = notes.filter((item) => item.idx !== props.idx);
+      const filterList = notes.filter((item) => item.noteIDX !== props.noteIDX);
       setNotes(filterList);
       alert("삭제완료");
       window.location.href = "/viewnotes";
@@ -105,7 +105,7 @@ const ViewnoteDetail = (props) => {
                   목록
                 </button>
               </Link>
-              <Link to={`/modifynote/${selectNote.idx}`}>
+              <Link to={`/modifynote/${selectNote.noteIDX}`}>
                 <button
                   className="btn btn-outline-success btn-sm has-icon"
                   type="button"

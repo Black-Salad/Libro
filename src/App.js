@@ -21,13 +21,13 @@ function App() {
       <Route path="/login" component={Login} />
       <Route path="/viewnotes" component={Viewnotes} />
       <Route path="/writenote" component={Writenote} />
-      <Route path="/modifynote/:idx" component={Modifynote} />
+      <Route path="/modifynote/:noteIDX" component={Modifynote} />
       <Route path="/search" component={Searchbooks} />
       <Route path="/navigate" component={Navigate} />
       <Route path="/myprofile" component={Myprofile} />
       <Route path="/setting" component={Setting} />
       <Route path="/register" component={Register} />
-      <Route path="/viewnotedetail/:idx" component={ViewnoteDetail} />
+      <Route path="/viewnotedetail/:noteIDX" component={ViewnoteDetail} />
     </Layout>
   );
 }

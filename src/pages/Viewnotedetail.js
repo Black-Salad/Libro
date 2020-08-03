@@ -8,7 +8,7 @@ const ViewnoteDetail = ({ match }) => {
       <BreadCrumbs breads={["내 독서록"]} />
 
       {/* note contents */}
-      <ViewnoteDetailCom idx={match.params.idx} />
+      <ViewnoteDetailCom noteIDX={match.params.noteIDX} />
     </>
   );
 };

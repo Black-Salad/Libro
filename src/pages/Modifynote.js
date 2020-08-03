@@ -8,7 +8,7 @@ const Modifynote = ({ match }) => {
     <>
       <BreadCrumbs breads={["독서록 쓰기"]} />
 
-      <NoteForm status={"modify"} idx={match.params.idx} />
+      <NoteForm status={"modify"} noteIDX={match.params.noteIDX} />
 
       <Bookprofile />
     </>

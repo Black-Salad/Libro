@@ -9,7 +9,7 @@ const Viewnotes = () => {
   //임시 notes
   const [notes, setNotes] = useState([
     {
-      idx: 1,
+      noteIDX: 1,
       noteUser: "test01",
       noteBook: "여행의 이유",
       bookIDX: 1,
@@ -18,7 +18,7 @@ const Viewnotes = () => {
       noteDate: "2020-03-20",
     },
     {
-      idx: 2,
+      noteIDX: 2,
       noteUser: "test01",
       noteBook: "점심메뉴",
       bookIDX: 2,
@@ -27,7 +27,7 @@ const Viewnotes = () => {
       noteDate: "2020-07-30",
     },
     {
-      idx: 3,
+      noteIDX: 3,
       noteUser: "test01",
       noteBook: "존리의 부자되기 습관",
       bookIDX: 3,
@@ -36,7 +36,7 @@ const Viewnotes = () => {
       noteDate: "2020-07-31",
     },
     {
-      idx: 4,
+      noteIDX: 4,
       noteUser: "test01",
       noteBook: "여기는 책이름이고",
       bookIDX: 4,

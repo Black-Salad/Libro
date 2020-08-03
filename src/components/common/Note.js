@@ -17,7 +17,7 @@ const Note = (props) => {
           <img src="/img/blog/1.jpg" className="card-img-top" alt="..." />
           <div className="card-body">
             <h6 className="card-title">
-              <Link to={`./viewnotedetail/${props.item.idx}`}>
+              <Link to={`./viewnotedetail/${props.item.noteIDX}`}>
                 {props.item.noteTitle}
               </Link>
             </h6>
