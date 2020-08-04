@@ -14,7 +14,7 @@ const NoteForm = (props) => {
     noteBook: "",
     noteTitle: "",
     noteContents: "",
-    noteDate: now.toLocaleString(),
+    noteDate: now.toISOString().substring(0, 10),
   });
 
   const notes = useSelector((state) => state.note.notes);

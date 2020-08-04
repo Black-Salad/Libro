@@ -67,6 +67,15 @@ const initialState = {
       noteContents: "여기는 독서록 내용을 적는곳이지",
       noteDate: "2020-07-20",
     },
+    {
+      noteIDX: 5,
+      noteUser: "test01",
+      noteBook: "여기는 책이름이고222",
+      bookIDX: 5,
+      noteTitle: "여기는 독서록 제목을 적는곳이구222",
+      noteContents: "여기는 독서록 내용을 적는곳이지222",
+      noteDate: "2020-09-20",
+    },
   ],
   searchNotes: [],
 };
@@ -86,7 +95,7 @@ function note(state = initialState, action) {
               bookIDX: action.note.bookIDX,
               noteTitle: action.note.noteTitle,
               noteContents: action.note.noteContents,
-              noteDate: now.toLocaleString(),
+              noteDate: now.toISOString().substring(0, 10),
             }
           : item
       );
