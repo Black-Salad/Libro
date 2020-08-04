@@ -1,61 +1,15 @@
 import React, { useState } from "react";
 import { Plus, Search, ChevronLeft } from "react-feather";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteNote, searchNote } from "../../modules/note";
 
 const Note = () => {
-  //임시 notes
-  const [notes, setNotes] = useState([
-    {
-      noteIDX: 1,
-      noteUser: "test01",
-      noteBook: "여행의 이유",
-      bookIDX: 1,
-      noteTitle: "여행의 이유를 읽고나서",
-      noteContents: "예~~~~~~~~~~~~~~~`여행~~~~~~~~`",
-      noteDate: "2020-03-20",
-    },
-    {
-      noteIDX: 2,
-      noteUser: "test01",
-      noteBook: "점심메뉴",
-      bookIDX: 2,
-      noteTitle: "점심은 뭘 먹어야 잘 먹었다 소문이 날까",
-      noteContents: "잘모르겠따",
-      noteDate: "2020-07-30",
-    },
-    {
-      noteIDX: 3,
-      noteUser: "test01",
-      noteBook: "존리의 부자되기 습관",
-      bookIDX: 3,
-      noteTitle: "부자가되려면..............",
-      noteContents: "...........",
-      noteDate: "2020-07-31",
-    },
-    {
-      noteIDX: 4,
-      noteUser: "test01",
-      noteBook: "여기는 책이름이고",
-      bookIDX: 4,
-      noteTitle: "여기는 독서록 제목을 적는곳이구",
-      noteContents: "여기는 독서록 내용을 적는곳이지",
-      noteDate: "2020-07-20",
-    },
-  ]);
-
-  const [searchNotes, setSearchNotes] = useState([]);
+  const dispatch = useDispatch();
 
   //--------------------- 삭제 ----------------------------------------------
   const onDelete = (noteIDX) => {
-    if (window.confirm("해당 독서록을 삭제하시겠습니까?")) {
-      let filterList = notes.filter((item) => item.noteIDX !== noteIDX);
-      setNotes(filterList);
-
-      filterList = searchNotes.filter((item) => item.noteIDX !== noteIDX);
-      setSearchNotes(filterList);
-
-      alert("삭제완료");
-    }
+    dispatch(deleteNote(noteIDX));
   };
 
   //--------------------- 검색( 추후 백엔드쪽개발, 그냥 구현만 해놓음 )----------------------------------------------
@@ -66,18 +20,14 @@ const Note = () => {
   const onKeyPressSearch = (e) => {
     if (e.key === "Enter") {
       //e.chardCode === 13
-
-      const filterList = notes.filter(
-        (item) =>
-          item.noteBook.indexOf(e.target.value) !== -1 ||
-          item.noteTitle.indexOf(e.target.value) !== -1 ||
-          item.noteContents.indexOf(e.target.value) !== -1
-      );
-      setSearchNotes(filterList);
+      dispatch(searchNote(e.target.value));
       document.getElementsByClassName("gutters-sm")[0].style.display = "none";
       document.getElementsByClassName("gutters-sm")[1].style.display = "flex";
     }
   };
+
+  const notes = useSelector((state) => state.note.notes);
+  const searchNotes = useSelector((state) => state.note.searchNotes);
 
   return (
     <>

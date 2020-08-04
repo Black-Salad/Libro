@@ -1,47 +1,13 @@
 import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteNote } from "../../modules/note";
 
 const ViewnoteDetail = (props) => {
   //---------------------------- props => param값 **비교해서 selectnote에 값삽입------------------------------------------------------------------------
-  //임시 notes
-  const [notes, setNotes] = useState([
-    {
-      noteIDX: 1,
-      noteUser: "test01",
-      noteBook: "여행의 이유",
-      bookIDX: 1,
-      noteTitle: "여행의 이유를 읽고나서",
-      noteContents: "예~~~~~~~~~~~~~~~`여행~~~~~~~~`",
-      noteDate: "2020-03-20",
-    },
-    {
-      noteIDX: 2,
-      noteUser: "test01",
-      noteBook: "점심메뉴",
-      bookIDX: 2,
-      noteTitle: "점심은 뭘 먹어야 잘 먹었다 소문이 날까",
-      noteContents: "잘모르겠따",
-      noteDate: "2020-07-30",
-    },
-    {
-      noteIDX: 3,
-      noteUser: "test01",
-      noteBook: "존리의 부자되기 습관",
-      bookIDX: 3,
-      noteTitle: "부자가되려면..............",
-      noteContents: "...........",
-      noteDate: "2020-07-31",
-    },
-    {
-      noteIDX: 4,
-      noteUser: "test01",
-      noteBook: "여기는 책이름이고",
-      bookIDX: 4,
-      noteTitle: "여기는 독서록 제목을 적는곳이구",
-      noteContents: "여기는 독서록 내용을 적는곳이지",
-      noteDate: "2020-07-20",
-    },
-  ]);
+
+  const dispatch = useDispatch();
+  const notes = useSelector((state) => state.note.notes);
 
   //select useState
   const [selectNote, setSelectNote] = useState({});
@@ -65,12 +31,15 @@ const ViewnoteDetail = (props) => {
   }, selectNote);
 
   //---------------------------- 독서록 삭제 ------------------------------------------------------------------------
-  const onDelete = () => {
+  const onDelete = (noteIDX) => {
     if (window.confirm("해당 독서록을 삭제하시겠습니까?")) {
-      const filterList = notes.filter((item) => item.noteIDX !== props.noteIDX);
-      setNotes(filterList);
+      console.log(props.noteIDX);
+      dispatch(deleteNote(noteIDX));
+      // const filterList = notes.filter((item) => item.noteIDX !== props.noteIDX);
+      // setNotes(filterList);
       alert("삭제완료");
-      window.location.href = "/viewnotes";
+      // 페이지 이동
+      // window.location.href = "/viewnotes";
     }
   };
 
@@ -118,7 +87,7 @@ const ViewnoteDetail = (props) => {
               <button
                 className="btn btn-outline-danger btn-sm has-icon"
                 type="button"
-                onClick={onDelete}
+                onClick={() => onDelete(selectNote.noteIDX)}
               >
                 삭제
               </button>
