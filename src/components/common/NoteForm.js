@@ -126,7 +126,7 @@ const NoteForm = (props) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="blogTitle">제목</label>
+              <label>제목</label>
               {props.noteIDX == null ? (
                 <input
                   type="text"
