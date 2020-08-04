@@ -75,7 +75,7 @@ const ViewnoteDetail = (props) => {
   };
 
   return (
-    <div>
+    <>
       {/* note contents */}
       <div className="card">
         <div className="card-body">
@@ -90,12 +90,14 @@ const ViewnoteDetail = (props) => {
             <div className=" text-secondary">{selectNote.noteTitle}</div>
           </div>
           <hr />
+
           <div className="form-group">
             <label>내용</label>
             <div className="text-secondary">{selectNote.noteContents}</div>
           </div>
           <br />
-          <div className="form-group">
+
+          <div className="form-group" style={{ textAlign: "end" }}>
             <div className="list-with-gap">
               <Link to="/viewnotes">
                 <button
@@ -124,7 +126,92 @@ const ViewnoteDetail = (props) => {
           </div>
         </div>
       </div>
-    </div>
+
+      {/* 댓글 추후 컴포넌트로 만들기 */}
+      <div class="card">
+        <div class="card-body">
+          <fieldset class="form-fieldset">
+            <legend>댓글</legend>
+
+            {/* 댓글for문 */}
+            <div class="media forum-item">
+              <a href="#" data-toggle="collapse" data-target=".forum-content">
+                <img
+                  src="../img/user1.svg"
+                  class="mr-3 rounded-circle"
+                  width="50"
+                  alt="User"
+                />
+              </a>
+              <div class="media-body">
+                <h6>
+                  <a
+                    href="#"
+                    data-toggle="collapse"
+                    data-target=".forum-content"
+                    class="text-body"
+                  >
+                    닉네임이나 이메일을 적어보자
+                  </a>
+                </h6>
+                <p class="text-secondary">
+                  왕ㅇ 여행가고싶ㄴㅔ여 댓글내용을 입력해보자
+                </p>
+                <p class="text-muted">2020-08-03</p>
+              </div>
+            </div>
+            <hr />
+            <div class="media forum-item">
+              <a href="#" data-toggle="collapse" data-target=".forum-content">
+                <img
+                  src="../img/user1.svg"
+                  class="mr-3 rounded-circle"
+                  width="50"
+                  alt="User"
+                />
+              </a>
+              <div class="media-body">
+                <h6>
+                  <a
+                    href="#"
+                    data-toggle="collapse"
+                    data-target=".forum-content"
+                    class="text-body"
+                  >
+                    닉네임이나 이메일을 적어보자
+                  </a>
+                </h6>
+                <p class="text-secondary">
+                  왕ㅇ 여행가고싶ㄴㅔ여 댓글내용을 입력해보자
+                </p>
+                <p class="text-muted">2020-08-03</p>
+              </div>
+            </div>
+          </fieldset>
+
+          {/* 댓글쓰기form */}
+          <form>
+            <fieldset class="form-fieldset">
+              {/* <legend>댓글달기</legend> */}
+              <div class="form-group">
+                <label for="fieldsetExampleInput">
+                  test123@naver.com(닉네임이나 이메일)
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="fieldsetExampleInput2"
+                  placeholder="댓글내용"
+                />
+              </div>
+              <button class="btn btn-primary" type="button">
+                댓글등록
+              </button>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </>
   );
 };
 
