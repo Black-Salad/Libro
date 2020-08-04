@@ -5,7 +5,7 @@ import BreadCrumbs from "../components/common/BreadCrumbs";
 
 const Viewnotes = () => {
   return (
-    <div>
+    <>
       <BreadCrumbs breads={["내 독서록"]} />
 
       {/* 글등록 및 검색 */}
@@ -38,7 +38,7 @@ const Viewnotes = () => {
           </a>
         </li>
       </ul>
-    </div>
+    </>
   );
 };
 

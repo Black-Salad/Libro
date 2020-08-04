@@ -28,7 +28,7 @@ const NoteForm = (props) => {
       noteDate: "2020-03-20",
     },
     {
-      noteIdx: 2,
+      noteIDX: 2,
       noteUser: "test01",
       noteBook: "점심메뉴",
       bookIDX: 2,
@@ -101,7 +101,7 @@ const NoteForm = (props) => {
           noteIDX: item.noteIDX,
           noteUser: item.noteUser,
           noteBook: item.noteBook,
-          bookIDX: 1,
+          bookIDX: item.bookIDX,
           noteTitle: item.noteTitle,
           noteContents: item.noteContents,
           noteDate: item.noteDate,
@@ -121,6 +121,7 @@ const NoteForm = (props) => {
         props.noteIDX == item.noteIDX
           ? {
               ...item,
+              noteIDX: selectNote.noteIDX,
               noteUser: selectNote.noteUser,
               noteBook: selectNote.noteBook,
               bookIDX: selectNote.bookIDX,
@@ -217,14 +218,25 @@ const NoteForm = (props) => {
           </form>
 
           {props.status == "write" ? (
-            <button
-              type="button"
-              className="btn btn-btn btn-outline-primary btn-sm has-icon"
-              style={{ margin: "10px auto" }}
-              onClick={noteSave}
-            >
-              저장
-            </button>
+            <>
+              <button
+                type="button"
+                className="btn btn-btn btn-outline-primary btn-sm has-icon"
+                style={{ margin: "10px auto" }}
+                onClick={noteSave}
+              >
+                저장
+              </button>
+              <Link to="/viewnotes">
+                <button
+                  type="button"
+                  className="btn btn-outline-danger btn-sm has-icon"
+                  style={{ marginLeft: "10px" }}
+                >
+                  취소
+                </button>
+              </Link>
+            </>
           ) : (
             <>
               <button
