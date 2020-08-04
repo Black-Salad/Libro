@@ -128,13 +128,13 @@ const ViewnoteDetail = (props) => {
       </div>
 
       {/* 댓글 추후 컴포넌트로 만들기 */}
-      <div class="card">
-        <div class="card-body">
-          <fieldset class="form-fieldset">
+      <div className="card" style={{ marginTop: "10px" }}>
+        <div className="card-body">
+          <fieldset className="form-fieldset">
             <legend>댓글</legend>
 
             {/* 댓글for문 */}
-            <div class="media forum-item">
+            <div className="media forum-item">
               <a href="#" data-toggle="collapse" data-target=".forum-content">
                 <img
                   src="../img/user1.svg"
@@ -161,50 +161,50 @@ const ViewnoteDetail = (props) => {
               </div>
             </div>
             <hr />
-            <div class="media forum-item">
+            <div className="media forum-item">
               <a href="#" data-toggle="collapse" data-target=".forum-content">
                 <img
                   src="../img/user1.svg"
-                  class="mr-3 rounded-circle"
+                  className="mr-3 rounded-circle"
                   width="50"
                   alt="User"
                 />
               </a>
-              <div class="media-body">
+              <div className="media-body">
                 <h6>
                   <a
                     href="#"
                     data-toggle="collapse"
                     data-target=".forum-content"
-                    class="text-body"
+                    className="text-body"
                   >
                     닉네임이나 이메일을 적어보자
                   </a>
                 </h6>
-                <p class="text-secondary">
+                <p className="text-secondary">
                   왕ㅇ 여행가고싶ㄴㅔ여 댓글내용을 입력해보자
                 </p>
-                <p class="text-muted">2020-08-03</p>
+                <p className="text-muted">2020-08-03</p>
               </div>
             </div>
           </fieldset>
 
           {/* 댓글쓰기form */}
           <form>
-            <fieldset class="form-fieldset">
+            <fieldset className="form-fieldset">
               {/* <legend>댓글달기</legend> */}
-              <div class="form-group">
+              <div className="form-group">
                 <label for="fieldsetExampleInput">
                   test123@naver.com(닉네임이나 이메일)
                 </label>
                 <input
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="fieldsetExampleInput2"
                   placeholder="댓글내용"
                 />
               </div>
-              <button class="btn btn-primary" type="button">
+              <button className="btn btn-primary" type="button">
                 댓글등록
               </button>
             </fieldset>
