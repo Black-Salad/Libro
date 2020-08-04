@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import Bookprofile from "./Bookprofile";
+// import "react-responsive-modal/styles.css";
+// import { Modal } from "react-responsive-modal";
 
 const Books = (props) => {
   const [myBooks, setMyBooks] = useState([
@@ -76,6 +79,14 @@ const Books = (props) => {
     },
   ]);
   const [displayBooks, setDisplayBooks] = useState([]);
+  // 모달 팝업 스테이트
+  // const [modalState, setModalState] = useState({ open: false });
+  // const onOpenModal = () => {
+  //   setModalState({ open: true });
+  // };
+  // const onCloseModal = () => {
+  //   setModalState({ open: false });
+  // };
 
   useEffect(() => {
     let filteredList = myBooks.filter((book) => book.b_state === props.kind);
@@ -85,10 +96,10 @@ const Books = (props) => {
   const bookList = displayBooks.map((book, index) => (
     <li
       key={index}
-      className="list-group-item col-4 col-xs-4 col-sm-3 col-md-3 col-xl-2 mb-3"
+      className="list-group-item col-4 col-xs-4 col-sm-3 col-md-3 col-xl-2"
       style={{
         textAlign: "center",
-        padding: "10px",
+        padding: "3%",
         background: "none",
         border: "none",
       }}
@@ -102,6 +113,14 @@ const Books = (props) => {
     </li>
   ));
 
-  return <ul className="list-group list-group-horizontal row">{bookList}</ul>;
+  return (
+    <div>
+      <ul className="list-group list-group-horizontal row">{bookList}</ul>
+      {/* <button onClick={onOpenModal}>Open modal</button>
+      <Modal open={modalState} onClose={onCloseModal} center>
+        <h2>Simple centered modal</h2>
+      </Modal> */}
+    </div>
+  );
 };
 export default Books;

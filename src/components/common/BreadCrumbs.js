@@ -7,7 +7,7 @@ const BreadCrumbs = (props) => {
         <ol className="breadcrumb border breadcrumb-style1">
           {props.breads.map((bread, index) => (
             <li key={index} className="breadcrumb-item active">
-              <a href="#">{bread}</a>
+              {bread}
             </li>
           ))}
         </ol>

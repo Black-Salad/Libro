@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Route, Link } from "react-router-dom";
+import { Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Login from "./pages/account/Login";
 import Bookshelf from "./pages/Bookshelf";
@@ -13,6 +13,7 @@ import Myprofile from "./pages/Myprofile";
 import Register from "./pages/account/Register";
 import ViewnoteDetail from "./pages/ViewnoteDetail";
 import Modifynote from "./pages/Modifynote";
+import BookshelfMore from "./pages/BookshelfMore";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
       <Route path="/setting" component={Setting} />
       <Route path="/register" component={Register} />
       <Route path="/viewnotedetail/:idx" component={ViewnoteDetail} />
+      <Route path="/bookshelfmore" component={BookshelfMore} />
     </Layout>
   );
 }

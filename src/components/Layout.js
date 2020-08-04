@@ -1,7 +1,6 @@
-import React, { Children } from "react";
+import React from "react";
 import Topheader from "./Topheader";
 import Sidebar from "./Sidebar";
-import BreadCrumbs from "./common/BreadCrumbs";
 
 const Layout = (props) => {
   const children = props.children || null;
