@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Plus, Search, ChevronLeft } from "react-feather";
 import { Link } from "react-router-dom";
 
@@ -7,6 +7,16 @@ const NoteSearch = (props) => {
   //   document.getElementById("searchform").classList.toggle("show");
   //   document.querySelector("#notewrite").classList.toggle("show");
   // };
+
+  //search useState
+  const [searchNotes, setsearchNotes] = useState([]);
+
+  const onKeyPressSearch = (e) => {
+    if (e.key === "Enter") {
+      //e.chardCode === 13
+      alert(e.target.value);
+    }
+  };
   return (
     <>
       <div className="card mb-3">
@@ -26,7 +36,8 @@ const NoteSearch = (props) => {
             <input
               type="text"
               className="form-control form-control-sm bg-gray-200 border-gray-200"
-              placeholder="독서록 검색"
+              placeholder="책제목 / 독서록제목 /  독서록 내용"
+              onKeyPress={(e) => onKeyPressSearch(e)}
             />
           </div>
           <div
