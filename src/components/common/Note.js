@@ -26,6 +26,11 @@ const Note = () => {
     }
   };
 
+  const back = () => {
+    document.getElementsByClassName("gutters-sm")[0].style.display = "flex";
+    document.getElementsByClassName("gutters-sm")[1].style.display = "none";
+    document.getElementsByClassName("form-control")[0].value = "";
+  };
   const notes = useSelector((state) => state.note.notes);
   const searchNotes = useSelector((state) => state.note.searchNotes);
 
@@ -42,7 +47,7 @@ const Note = () => {
               className="btn btn-sm btn-icon mr-2"
               data-toggle="collapse"
               data-target=".blog-toolbar"
-              // onClick={search}
+              onClick={back}
             >
               <ChevronLeft />
             </button>
