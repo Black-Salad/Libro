@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteNote } from "../../modules/note";
@@ -13,8 +13,7 @@ const ViewnoteDetail = (props) => {
   const [selectNote, setSelectNote] = useState({});
 
   //값 가져와서 selectNote에 값 설정
-  //useMemo는 배열값을 리턴해야하는데 배열이 아니라서 콘솔창에 오류표시남 수정필요
-  useMemo(() => {
+  useEffect(() => {
     notes.map((item) => {
       if (item.noteIDX == props.noteIDX)
         setSelectNote({
@@ -27,8 +26,7 @@ const ViewnoteDetail = (props) => {
           noteDate: item.noteDate,
         });
     });
-    return selectNote;
-  }, selectNote);
+  }, []);
 
   //---------------------------- 독서록 삭제 ------------------------------------------------------------------------
   const onDelete = (noteIDX) => {
