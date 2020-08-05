@@ -35,15 +35,24 @@ const Bookprofile = (props) => {
               />
             </div>
             <div className="col-lg-9 col-md-9 col-sm-9 col-8 mb-3">
-              <h6 style={{ fontSize: "100%", fontWeight: 600 }}>
+              <h6 style={{ fontSize: "85%", fontWeight: 600 }}>
                 {currentBook.title}
               </h6>
-              <div style={{ fontSize: "80%", marginBottom: "10px" }}>
-                {currentBook.authors.join(", ") + " 저"}
+              <div style={{ fontSize: "70%", marginBottom: "10px" }}>
+                {currentBook.authors.join(", ") +
+                  " 저 / " +
+                  currentBook.publisher}
               </div>
 
               {currentBook.contents !== undefined ? (
-                <div style={{ fontSize: "80%" }}>
+                <div
+                  style={{
+                    fontSize: "60%",
+                    textOverflow: "ellipsis",
+                    overflow: "auto",
+                    maxHeight: "150px",
+                  }}
+                >
                   {currentBook.contents}
                   <a href={currentBook.url} target="_blank">
                     ...더보기
