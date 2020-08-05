@@ -33,7 +33,7 @@ const NoteForm = (props) => {
   // 저장버튼 클릭시 setNotes
   const noteSave = () => {
     note.noteIDX = notes.length + 1;
-    note.noteDate = now.toLocaleString();
+    note.noteDate = now.toISOString().substring(0, 10);
     if (note.noteBook == 0) {
       alert("책을 골라주세요");
       return false;
