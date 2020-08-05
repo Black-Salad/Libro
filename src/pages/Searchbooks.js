@@ -84,6 +84,10 @@ const Searchbooks = () => {
   });
 
   const onSearchBook = (query, sort) => {
+    if (query === "") {
+      alert("검색어를 입력하세요");
+      return false;
+    }
     const url = `${KAKAO_API_URL}/v3/search/book`;
     axios
       .get(url, {
@@ -151,10 +155,10 @@ const Searchbooks = () => {
       {/* <div className="d-flex align-items-center collapse transition-none show blog-toolbar"> */}
 
       {/* 검색창 구역 */}
-      <div className="col-lg-8 col-md-8 col-sm-8 mb-3">
+      <div className="col-lg-12 col-md-12 col-sm-12 mb-3">
         <input
           type="text"
-          className="form-control"
+          className="col-11 bg-gray-200 border-gray-200 rounded-lg"
           name="keyword"
           value={keyword}
           onChange={onChangeKeyword}
@@ -162,7 +166,7 @@ const Searchbooks = () => {
           placeholder="제목 / 저자명 / 출판사"
         />
         <button
-          className="btn btn-light btn-sm btn-icon ml-auto mr-1"
+          className="col-1 btn btn-light btn-sm btn-icon ml-auto mr-1"
           onClick={() => onSearchBook(keyword, "recency")}
         >
           <Search />
