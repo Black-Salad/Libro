@@ -107,11 +107,15 @@ const NoteForm = (props) => {
                   >
                     {/* 책꽂이 for문 */}
                     <option value="0">독서록을 쓸 책 선택</option>
-                    <option value="1">여행의 이유</option>
-                    <option value="2">점심메뉴</option>
-                    <option value="3">존리의 부자되기 습관</option>
-                    <option value="4">책이름이고</option>
-                    <option value="5">더 해빙 The Having</option>
+                    <option value="여행의 이유">여행의 이유</option>
+                    <option value="점심메뉴">점심메뉴</option>
+                    <option value="존리의 부자되기 습관">
+                      존리의 부자되기 습관
+                    </option>
+                    <option value="책이름이고">책이름이고</option>
+                    <option value="더 해빙 The Having">
+                      더 해빙 The Having
+                    </option>
                   </select>
                 </>
               ) : (
