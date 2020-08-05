@@ -107,26 +107,26 @@ const ViewnoteDetail = (props) => {
               <a href="#" data-toggle="collapse" data-target=".forum-content">
                 <img
                   src="../img/user1.svg"
-                  class="mr-3 rounded-circle"
+                  className="mr-3 rounded-circle"
                   width="50"
                   alt="User"
                 />
               </a>
-              <div class="media-body">
+              <div className="media-body">
                 <h6>
                   <a
                     href="#"
                     data-toggle="collapse"
                     data-target=".forum-content"
-                    class="text-body"
+                    className="text-body"
                   >
                     닉네임이나 이메일을 적어보자
                   </a>
                 </h6>
-                <p class="text-secondary">
+                <p className="text-secondary">
                   왕ㅇ 여행가고싶ㄴㅔ여 댓글내용을 입력해보자
                 </p>
-                <p class="text-muted">2020-08-03</p>
+                <p className="text-muted">2020-08-03</p>
               </div>
             </div>
             <hr />
@@ -163,7 +163,7 @@ const ViewnoteDetail = (props) => {
             <fieldset className="form-fieldset">
               {/* <legend>댓글달기</legend> */}
               <div className="form-group">
-                <label for="fieldsetExampleInput">
+                <label htmlFor="fieldsetExampleInput">
                   test123@naver.com(닉네임이나 이메일)
                 </label>
                 <input

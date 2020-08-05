@@ -33,9 +33,7 @@ const BookshelfMore = ({ location, match }) => {
       />
       <div>
         <div style={{ display: "flex" }}>
-          <Link to={`/bookshelfmore?kind=${kind}`}>
-            <span>{kindDisplayStr}</span>
-          </Link>
+          <span>{kindDisplayStr}</span>
         </div>
         <Books kind={kind}></Books>
       </div>

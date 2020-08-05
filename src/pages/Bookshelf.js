@@ -21,9 +21,7 @@ const Bookshelf = () => {
 
       <div>
         <div style={{ display: "flex" }}>
-          <Link to="/bookshelfmore?kind=reading">
-            <span>읽고 있는 책 </span>
-          </Link>
+          <span>읽고 있는 책 </span>
           {/* <Button onClick={onOpen}>임시</Button> */}
           <span style={{ marginLeft: "auto" }}>
             <Link to="/bookshelfmore?kind=reading">
@@ -39,9 +37,7 @@ const Bookshelf = () => {
       <hr />
       <div>
         <div style={{ display: "flex" }}>
-          <Link to="/bookshelfmore?kind=finished">
-            <span>읽은 책 </span>
-          </Link>
+          <span>읽은 책 </span>
           <span style={{ marginLeft: "auto" }}>
             <Link to="/bookshelfmore?kind=finished">
               {/* <Link to="/bookshelfmore/finished"> */}
@@ -55,9 +51,7 @@ const Bookshelf = () => {
       <hr />
       <div>
         <div style={{ display: "flex" }}>
-          <Link to="/bookshelfmore?kind=interested">
-            <span>관심 책 </span>
-          </Link>
+          <span>관심 책 </span>
           <span style={{ marginLeft: "auto" }}>
             <Link to="/bookshelfmore?kind=interested">
               {/* <Link to="/bookshelfmore/interested"> */}

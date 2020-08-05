@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import * as Icon from "react-feather";
 import { Link } from "react-router-dom";
 
 const Sidebar = () => {
-  const toggleSidebar = () => {
+  const locationArr = window.location.pathname.split("/");
+  const [selectedMenu, setSelectedMenu] = useState({
+    selected: locationArr[1],
+  });
+  const toggleSidebar = (menu) => {
     document.querySelector("body").className = "";
+    setSelectedMenu({ selected: menu });
   };
 
   return (
@@ -20,7 +25,6 @@ const Sidebar = () => {
         <span
           className="nav-link nav-icon rounded-circle ml-auto"
           data-toggle="sidebar"
-          // onClick={toggleSidebar}
         >
           <Icon.X />
         </span>
@@ -31,7 +35,12 @@ const Sidebar = () => {
           <li className="nav-label">My Room</li>
           <li className="nav-item">
             <Link to="/">
-              <span className="nav-link has-icon" onClick={toggleSidebar}>
+              <span
+                className={`nav-link has-icon ${
+                  selectedMenu.selected === "" ? "active" : null
+                }`}
+                onClick={() => toggleSidebar("")}
+              >
                 {/* 클릭 시 class에 active 추가 */}
                 <Icon.Book />내 책꽂이
               </span>
@@ -39,14 +48,24 @@ const Sidebar = () => {
           </li>
           <li className="nav-item">
             <Link to="/viewnotes">
-              <span className="nav-link has-icon" onClick={toggleSidebar}>
+              <span
+                className={`nav-link has-icon ${
+                  selectedMenu.selected === "viewnotes" ? "active" : null
+                }`}
+                onClick={() => toggleSidebar("viewnotes")}
+              >
                 <Icon.BookOpen />내 독서록
               </span>
             </Link>
           </li>
           <li className="nav-item">
             <Link to="/writenote">
-              <span className="nav-link has-icon" onClick={toggleSidebar}>
+              <span
+                className={`nav-link has-icon ${
+                  selectedMenu.selected === "writenotes" ? "active" : null
+                }`}
+                onClick={() => toggleSidebar("writenotes")}
+              >
                 <Icon.Edit />
                 독서록 쓰기
               </span>
@@ -55,14 +74,24 @@ const Sidebar = () => {
           <li className="nav-label">Navigate</li>
           <li className="nav-item">
             <Link to="/search">
-              <span className="nav-link has-icon" onClick={toggleSidebar}>
+              <span
+                className={`nav-link has-icon ${
+                  selectedMenu.selected === "searchbooks" ? "active" : null
+                }`}
+                onClick={() => toggleSidebar("searchbooks")}
+              >
                 <Icon.Search />책 검색
               </span>
             </Link>
           </li>
           <li className="nav-item">
             <Link to="/navigate">
-              <span className="nav-link has-icon" onClick={toggleSidebar}>
+              <span
+                className={`nav-link has-icon ${
+                  selectedMenu.selected === "navigate" ? "active" : null
+                }`}
+                onClick={() => toggleSidebar("navigate")}
+              >
                 <Icon.Compass />
                 둘러보기
               </span>
@@ -71,14 +100,24 @@ const Sidebar = () => {
           <li className="nav-label">Setting</li>
           <li className="nav-item">
             <Link to="/myprofile">
-              <span className="nav-link has-icon" onClick={toggleSidebar}>
+              <span
+                className={`nav-link has-icon ${
+                  selectedMenu.selected === "myprofile" ? "active" : null
+                }`}
+                onClick={() => toggleSidebar("myprofile")}
+              >
                 <Icon.User />내 프로필
               </span>
             </Link>
           </li>
           <li className="nav-item">
             <Link to="/setting">
-              <span className="nav-link has-icon" onClick={toggleSidebar}>
+              <span
+                className={`nav-link has-icon ${
+                  selectedMenu.selected === "setting" ? "active" : null
+                }`}
+                onClick={() => toggleSidebar("setting")}
+              >
                 <Icon.Settings />
                 설정
               </span>
