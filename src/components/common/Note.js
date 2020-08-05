@@ -15,9 +15,6 @@ const Note = () => {
   };
 
   //--------------------- 검색( 추후 백엔드쪽개발, 그냥 구현만 해놓음 )----------------------------------------------
-  window.onload = () => {
-    document.getElementsByClassName("gutters-sm")[1].style.display = "none";
-  };
 
   const onKeyPressSearch = (e) => {
     if (e.key === "Enter") {
@@ -139,7 +136,7 @@ const Note = () => {
       </div>
 
       {/*****************  검색구현하려고 만든 검색결과 나중엔 백엔드쪽에서 한번에 처리 ****************/}
-      <div className="row gutters-sm">
+      <div className="row gutters-sm" style={{ display: "none" }}>
         {searchNotes.map((item, index) => {
           return (
             <React.Fragment key={index}>
