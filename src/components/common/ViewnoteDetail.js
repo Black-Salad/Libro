@@ -163,9 +163,7 @@ const ViewnoteDetail = (props) => {
             <fieldset className="form-fieldset">
               {/* <legend>댓글달기</legend> */}
               <div className="form-group">
-                <label htmlFor="fieldsetExampleInput">
-                  test123@naver.com(닉네임이나 이메일)
-                </label>
+                <label>test123@naver.com(닉네임이나 이메일)</label>
                 <input
                   type="text"
                   className="form-control"
