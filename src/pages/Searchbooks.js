@@ -4,6 +4,7 @@ import axios from "axios";
 import { KAKAO_API_URL, KAKAO_API_KEY } from "../constants/config";
 import BreadCrumbs from "../components/common/BreadCrumbs";
 import Bookitem from "../components/common/Bookitem";
+import Bookprofile from "../components/common/Bookprofile";
 
 const Searchbooks = () => {
   // 임시 데이터입니다.
@@ -57,7 +58,22 @@ const Searchbooks = () => {
       thumbnail: "/img/book_thumbnail/글쓰기특강.jpg",
     },
   ]);
+  const [modalState, setModalState] = useState({ open: false });
+  // 현재 선택한 책 정보 저장하는 스테이트
 
+  const [currentBook, setCurrentBook] = useState({
+    idx: 0,
+    kind: "",
+    title: "",
+    authors: [""],
+    isbn: "",
+    thumbnail: "",
+  });
+
+  const onOpenModal = (book) => {
+    setModalState({ open: true });
+    setCurrentBook(book);
+  };
   // 검색 키워드 스테이트 정의 및 초기값 세팅
   const [keyword, setKeyword] = useState("");
   // 검색 결과 저장하는 스테이트
@@ -108,7 +124,11 @@ const Searchbooks = () => {
   };
 
   const displayList = result.itemList.map((item, index) => (
-    <li key={index} className="list-group-item d-flex align-items-center">
+    <li
+      key={index}
+      className="list-group-item d-flex align-items-center"
+      onClick={() => onOpenModal(item)}
+    >
       <div className="media">
         <img src={item.thumbnail} />
         <div className="media-body ml-2">
@@ -160,6 +180,11 @@ const Searchbooks = () => {
       </ul>
       {/* </div> */}
       {/* <Temp /> */}
+      <Bookprofile
+        open={modalState.open}
+        setModalState={setModalState}
+        currentBook={currentBook}
+      />
     </div>
   );
 };
