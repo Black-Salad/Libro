@@ -9,6 +9,7 @@ const Books = (props) => {
       title: "아가미",
       authors: ["구병모"],
       isbn: "1162203390 9791162203392",
+      publisher: "위즈덤하우스",
       thumbnail: "/img/book_thumbnail/아가미.jpg",
     },
     {
@@ -17,6 +18,7 @@ const Books = (props) => {
       title: "여행의 이유",
       authors: ["김영하"],
       isbn: "8936433695 9788936433697",
+      publisher: "문학동네",
       thumbnail: "/img/book_thumbnail/여행의이유.jpg",
     },
     {
@@ -25,6 +27,7 @@ const Books = (props) => {
       title: "파과",
       authors: ["구병모"],
       isbn: "1162203625 9791162203620",
+      publisher: "위즈덤하우스",
       thumbnail: "/img/book_thumbnail/파과.jpg",
     },
     {
@@ -33,6 +36,7 @@ const Books = (props) => {
       title: "돈만 모으는 여자는 위험하다",
       authors: ["정은길"],
       isbn: "8960869031 9788960869035",
+      publisher: "위즈덤하우스",
       thumbnail: "/img/book_thumbnail/돈만모으는여자는위험하다.jpg",
     },
     {
@@ -41,6 +45,7 @@ const Books = (props) => {
       title: "젠더는 해롭다",
       authors: ["쉴라 제프리스"],
       isbn: "1190158027 9791190158022",
+      publisher: "열다북스",
       thumbnail: "/img/book_thumbnail/젠더는해롭다.jpg",
     },
     {
@@ -49,6 +54,7 @@ const Books = (props) => {
       title: "글쓰기 특강",
       authors: ["유시민"],
       isbn: "8965133521 9788965133520",
+      publisher: "생각의길",
       thumbnail: "/img/book_thumbnail/글쓰기특강.jpg",
     },
   ]);
@@ -63,6 +69,7 @@ const Books = (props) => {
     authors: [""],
     isbn: "",
     thumbnail: "",
+    publisher: "",
   });
 
   const onOpenModal = (book) => {
