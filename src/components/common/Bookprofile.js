@@ -35,29 +35,39 @@ const Bookprofile = (props) => {
               />
             </div>
             <div className="col-lg-9 col-md-9 col-sm-9 col-8 mb-3">
-              <h6
-                style={{ fontSize: "100%", fontWeight: 600, marginBottom: 0 }}
-              >
+              <h6 style={{ fontSize: "100%", fontWeight: 600 }}>
                 {currentBook.title}
               </h6>
-              <span style={{ fontSize: "80%", marginBottom: "10px" }}>
+              <div style={{ fontSize: "80%", marginBottom: "10px" }}>
                 {currentBook.authors.join(", ") + " 저"}
-              </span>
-              <span style={{ fontSize: "80%" }}>
-                {currentBook.contents !== undefined
-                  ? currentBook.contents
-                  : null}
-              </span>
+              </div>
+
+              {currentBook.contents !== undefined ? (
+                <div style={{ fontSize: "80%" }}>
+                  {currentBook.contents}
+                  <a href={currentBook.url} target="_blank">
+                    ...더보기
+                  </a>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
         <div className="col-lg-12 col-md-12 col-sm-12 mb-2">
           <div style={{ textAlign: "center" }}>
-            <button type="button" className="btn btn-primary has-icon">
+            <button
+              type="button"
+              className="btn btn-primary has-icon"
+              style={{ margin: "5px" }}
+            >
               책꽂이로 담기
             </button>
             &nbsp;&nbsp;
-            <button type="button" className="btn btn-danger has-icon">
+            <button
+              type="button"
+              className="btn btn-danger has-icon"
+              style={{ margin: "5px" }}
+            >
               책꽂이에서 빼기
             </button>
           </div>
