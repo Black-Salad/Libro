@@ -1,12 +1,12 @@
 import React from "react";
 import Note from "../components/common/Note";
 import BreadCrumbs from "../components/common/BreadCrumbs";
-// import NoteSearch from "../components/common/NoteSearch";
+import { Link } from "react-router-dom";
 
 const Viewnotes = () => {
   return (
     <>
-      <BreadCrumbs breads={["내 독서록"]} />
+      <BreadCrumbs breads={[<Link to="/viewnotes">내 독서록</Link>]} />
 
       {/* 글등록 및 검색 */}
       {/* <NoteSearch /> */}
