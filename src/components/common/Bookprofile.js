@@ -18,7 +18,7 @@ const Bookprofile = (props) => {
         onClose={onCloseModal}
         center
         classNames={{ modal: "modal-content" }}
-        styles={{ modal: { maxWidth: "500px" } }}
+        styles={{ modal: { maxWidth: "500px" }, overlay: { zIndex: 2000 } }}
       >
         <div className="inner-main-body" style={{ fontSize: "120%" }}>
           <div className="row">
