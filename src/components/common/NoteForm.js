@@ -1,92 +1,121 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { insertNote, modifyNote } from "../../modules/note";
+import React, { useState, useRef, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
+import axios from "axios";
+import Moment from "react-moment";
 
 const NoteForm = (props) => {
-  //---------------------------- 독서록 등록 ------------------------------------------------------------------------
-  //useState
   let now = new Date();
+  let history = useHistory();
+  const apiUrl = `http://localhost:8000/api/note/`;
+  const apiUrl2 = `http://localhost:8000/api/note/${props.noteIDX}/`;
 
-  const [note, setNote] = useState({
-    noteIDX: 0,
-    noteUser: "test01",
-    noteBook: "",
-    noteTitle: "",
-    noteContents: "",
-    noteDate: now.toISOString().substring(0, 10),
-  });
+  const [note, setNote] = useState({});
 
-  const notes = useSelector((state) => state.note.notes);
+  //독서록 등록
+  useEffect(() => {
+    if (props.noteIDX == null) {
+      setNote({
+        user_id: 1,
+        book_id: 0,
+        note_title: "",
+        note_contents: "",
+        note_like: 0,
+        note_private: true,
+        note_viewcount: 0,
+        note_date: now.toISOString().substring(0, 10),
+      });
+    } else {
+      axios
+        .get(apiUrl2)
+        .then((response) => {
+          setNote(response.data);
+        })
+        .catch((response) => {
+          console.error(response);
+        });
+    }
+  }, []);
 
-  const dispatch = useDispatch();
+  const [notes, setNotes] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(apiUrl)
+      .then((response) => {
+        setNotes(response.data);
+      })
+      .catch((response) => {
+        console.error(response);
+      });
+  }, []);
 
   //내용이 바뀔때마다 setNote
   const noteOnChange = (e) => {
-    setNote({ ...note, [e.target.name]: [e.target.value] });
+    setNote({ ...note, [e.target.name]: e.target.value });
+    console.log(note);
   };
 
   //ref 설정
   const refTitle = useRef(null);
   const refContents = useRef(null);
 
-  // 저장버튼 클릭시 setNotes
+  //독서록 저장
   const noteSave = () => {
-    note.noteIDX = notes.length + 1;
-    note.noteDate = now.toISOString().substring(0, 10);
-    if (note.noteBook == 0) {
+    note.note_id = notes.length + 1;
+    note.note_date = now.toISOString().substring(0, 10);
+    if (note.book_id == 0) {
       alert("책을 골라주세요");
       return false;
     }
 
-    if (note.noteTite == "") {
+    if (note.note_title == "") {
       alert("제목을 입력해주세요");
       refTitle.current.focus();
       return false;
     }
 
-    if (note.refContents == "") {
+    if (note.note_contents == "") {
       alert("내용을 입력해주세요");
+      refContents.current.focus();
       return false;
     }
-    // setNotes({ ...notes, note });
-    dispatch(insertNote(note));
-    //location 필요
+
+    axios
+      .post(apiUrl, note)
+      .then((response) => {
+        console.log(response.data);
+        alert("등록완료");
+        history.push("/viewnotes");
+      })
+      .catch((response) => {
+        console.error(response);
+      });
   };
 
-  //---------------------------- 독서록 수정 ------------------------------------------------------------------------
-
-  //select useState
-  const [selectNote, setSelectNote] = useState({});
-
-  //값 가져와서 selectNote에 값 설정
-  useEffect(() => {
-    notes.map((item) => {
-      if (item.noteIDX == props.noteIDX)
-        setSelectNote({
-          noteIDX: item.noteIDX,
-          noteUser: item.noteUser,
-          noteBook: item.noteBook,
-          bookIDX: item.bookIDX,
-          noteTitle: item.noteTitle,
-          noteContents: item.noteContents,
-          noteDate: item.noteDate,
-        });
-    });
-  }, []);
-
-  const noteModifyOnChange = (e) => {
-    setSelectNote({ ...selectNote, [e.target.name]: [e.target.value] });
-  };
-
-  //수정완료
+  //수정
   const noteModify = () => {
-    dispatch(modifyNote(selectNote));
-    alert("수정완료");
-    // console.log(history);
-    // console.log(props.history);
-    // 페이지이동
-    // window.location.href = `/viewnotedetail/${props.noteIDX}`;
+    if (note.note_title == "") {
+      alert("제목을 입력해주세요");
+      refTitle.current.focus();
+      return false;
+    }
+
+    if (note.note_contents == "") {
+      alert("내용을 입력해주세요");
+      refContents.current.focus();
+      return false;
+    }
+
+    axios
+      .put(apiUrl2, note)
+      .then((response) => {
+        alert("수정완료");
+        console.log(response.data);
+        history.push(`/viewnotedetail/${props.noteIDX}`);
+      })
+      .catch((response) => {
+        console.error(response);
+      });
   };
 
   return (
@@ -101,17 +130,15 @@ const NoteForm = (props) => {
                   <br />
                   <select
                     className="custom-select custom-select-sm w-auto mr-1"
-                    name="noteBook"
+                    name="book_id"
                     onChange={(e) => noteOnChange(e)}
-                    value={note.bookIDX}
+                    value={note.book_id}
                   >
                     {/* 책꽂이 for문 */}
                     <option value="0">독서록을 쓸 책 선택</option>
-                    <option value="여행의 이유">여행의 이유</option>
-                    <option value="점심메뉴">점심메뉴</option>
-                    <option value="존리의 부자되기 습관">
-                      존리의 부자되기 습관
-                    </option>
+                    <option value="1">여행의 이유</option>
+                    <option value="2">점심메뉴</option>
+                    <option value="3">존리의 부자되기 습관</option>
                     <option value="책이름이고">책이름이고</option>
                     <option value="더 해빙 The Having">
                       더 해빙 The Having
@@ -122,53 +149,32 @@ const NoteForm = (props) => {
                 <>
                   <label>책 이름</label>
                   <br />
-                  {selectNote.noteBook}
+                  {note.book_id}
                 </>
               )}
             </div>
 
             <div className="form-group">
               <label>제목</label>
-              {props.noteIDX == null ? (
-                <input
-                  type="text"
-                  className="form-control"
-                  name="noteTitle"
-                  value={note.noteTitle}
-                  ref={refTitle}
-                  onChange={(e) => noteOnChange(e)}
-                />
-              ) : (
-                <input
-                  type="text"
-                  className="form-control"
-                  name="noteTitle"
-                  value={selectNote.noteTitle}
-                  // ref={refTitle}
-                  onChange={(e) => noteModifyOnChange(e)}
-                />
-              )}
+              <input
+                type="text"
+                className="form-control"
+                name="note_title"
+                value={note.note_title}
+                ref={refTitle}
+                onChange={(e) => noteOnChange(e)}
+              />
             </div>
 
             <div className="form-group">
               <label>내용</label>
-              {props.noteIDX == null ? (
-                <textarea
-                  className="form-control"
-                  name="noteContents"
-                  value={note.noteContents}
-                  ref={refContents}
-                  onChange={(e) => noteOnChange(e)}
-                ></textarea>
-              ) : (
-                <textarea
-                  className="form-control"
-                  name="noteContents"
-                  value={selectNote.noteContents}
-                  // ref={refContents}
-                  onChange={(e) => noteModifyOnChange(e)}
-                ></textarea>
-              )}
+              <textarea
+                className="form-control"
+                name="note_contents"
+                value={note.note_contents}
+                ref={refContents}
+                onChange={(e) => noteOnChange(e)}
+              ></textarea>
             </div>
           </form>
 
@@ -202,7 +208,7 @@ const NoteForm = (props) => {
               >
                 수정완료
               </button>
-              <Link to={`/viewnotedetail/${selectNote.noteIDX}`}>
+              <Link to={`/viewnotedetail/${note.note_id}`}>
                 <button
                   type="button"
                   className="btn btn-outline-danger btn-sm has-icon"

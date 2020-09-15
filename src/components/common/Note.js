@@ -1,41 +1,66 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Plus, Search, ChevronLeft } from "react-feather";
-import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { deleteNote, searchNote } from "../../modules/note";
+import { Link, useHistory } from "react-router-dom";
+import axios from "axios";
+import Moment from "react-moment";
 
 const Note = () => {
-  const dispatch = useDispatch();
+  let history = useHistory();
 
-  //--------------------- 삭제 ----------------------------------------------
+  const [notes, setNotes] = useState([]);
+
+  //값 가져와서 setNotes
+  useEffect(() => {
+    const apiUrl = `http://localhost:8000/api/note/`;
+    axios
+      .get(apiUrl)
+      .then((response) => {
+        console.log("notes Data", response);
+        setNotes(response.data);
+      })
+      .catch((response) => {
+        console.error(response);
+      });
+  }, []);
+
+  //삭제
   const onDelete = (noteIDX) => {
+    const apiUrl = `http://localhost:8000/api/note/${noteIDX}`;
     if (window.confirm("해당 독서록을 삭제하시겠습니까?")) {
-      dispatch(deleteNote(noteIDX));
+      axios
+        .delete(apiUrl)
+        .then((response) => {
+          console.log("note delete Data", response);
+          alert("삭제완료");
+          history.go(0);
+        })
+        .catch((response) => {
+          console.error(response);
+        });
     }
   };
 
-  //--------------------- 검색( 추후 백엔드쪽개발, 그냥 구현만 해놓음 )----------------------------------------------
-
+  //검색
   const onKeyPressSearch = (e) => {
     if (e.key === "Enter") {
-      //e.chardCode === 13
-      dispatch(searchNote(e.target.value));
-      document.getElementsByClassName("gutters-sm")[0].style.display = "none";
-      document.getElementsByClassName("gutters-sm")[1].style.display = "flex";
+      // e.chardCode === 13
+      alert(e.target.value);
+      const noteTitle = e.target.value;
+      // const apiUrl = `http://localhost:8000/api/note/?note_title=${noteTitle}`;
+      // axios
+      //   .get(apiUrl)
+      //   .then((response) => {
+      //     console.log("notes Data", response);
+      //     setNotes(response.data);
+      //   })
+      //   .catch((response) => {
+      //     console.error(response);
+      //   });
     }
   };
-
-  const back = () => {
-    document.getElementsByClassName("gutters-sm")[0].style.display = "flex";
-    document.getElementsByClassName("gutters-sm")[1].style.display = "none";
-    document.getElementsByClassName("form-control")[0].value = "";
-  };
-  const notes = useSelector((state) => state.note.notes);
-  const searchNotes = useSelector((state) => state.note.searchNotes);
 
   return (
     <>
-      {/******************** 검색 구현하려고 NotedSearch 임시로 가져옴 ************************/}
       <div className="card mb-3">
         <div className="card-body p-2" style={{ height: "50px" }}>
           <div
@@ -46,14 +71,13 @@ const Note = () => {
               className="btn btn-sm btn-icon mr-2"
               data-toggle="collapse"
               data-target=".blog-toolbar"
-              onClick={back}
             >
               <ChevronLeft />
             </button>
             <input
               type="text"
               className="form-control form-control-sm bg-gray-200 border-gray-200"
-              placeholder="책제목 / 독서록제목 /  독서록 내용"
+              placeholder="독서록제목"
               onKeyPress={(e) => onKeyPressSearch(e)}
             />
           </div>
@@ -75,7 +99,6 @@ const Note = () => {
               type="button"
               data-toggle="collapse"
               data-target=".blog-toolbar"
-              // onClick={search}
             >
               <Search />
             </button>
@@ -96,19 +119,21 @@ const Note = () => {
                   />
                   <div className="card-body">
                     <h6 className="card-title">
-                      <Link to={`./viewnotedetail/${item.noteIDX}`}>
-                        {item.noteTitle}
+                      <Link to={`./viewnotedetail/${item.note_id}`}>
+                        {item.note_title}
                       </Link>
                     </h6>
                     <div className="card-subtitle text-muted font-size-sm mb-2">
-                      {item.noteBook}
+                      {item.book_id}
                     </div>
                   </div>
                   <div className="card-footer font-size-sm text-muted">
-                    <span className="ml-1 mr-auto">{item.noteDate}</span>
-                    <a
+                    <span className="ml-1 mr-auto">
+                      <Moment format={"YYYY/MM/DD"}>{item.note_date}</Moment>
+                    </span>
+                    <span
                       className="btn btn-link has-icon btn-xs bigger-130 text-danger"
-                      onClick={() => onDelete(item.noteIDX)}
+                      onClick={() => onDelete(item.note_id)}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -126,60 +151,7 @@ const Note = () => {
                         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                       </svg>
                       삭제
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </React.Fragment>
-          );
-        })}
-      </div>
-
-      {/*****************  검색구현하려고 만든 검색결과 나중엔 백엔드쪽에서 한번에 처리 ****************/}
-      <div className="row gutters-sm" style={{ display: "none" }}>
-        {searchNotes.map((item, index) => {
-          return (
-            <React.Fragment key={index}>
-              <div className="col-6 col-sm-4 col-md-3 col-xl-3 mb-3">
-                <div className="card h-100">
-                  <img
-                    src="/img/blog/1.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
-                  <div className="card-body">
-                    <h6 className="card-title">
-                      <Link to={`./viewnotedetail/${item.noteIDX}`}>
-                        {item.noteTitle}
-                      </Link>
-                    </h6>
-                    <div className="card-subtitle text-muted font-size-sm mb-2">
-                      {item.noteBook}
-                    </div>
-                  </div>
-                  <div className="card-footer font-size-sm text-muted">
-                    <span className="ml-1 mr-auto">{item.noteDate}</span>
-                    <a
-                      className="btn btn-link has-icon btn-xs bigger-130 text-danger"
-                      onClick={() => onDelete(item.noteIDX)}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="feather feather-trash mr-1"
-                      >
-                        <polyline points="3 6 5 6 21 6"></polyline>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                      </svg>
-                      삭제
-                    </a>
+                    </span>
                   </div>
                 </div>
               </div>
