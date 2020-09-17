@@ -22,7 +22,8 @@ const NoteForm = (props) => {
         note_like: 0,
         note_private: true,
         note_viewcount: 0,
-        note_date: now.toISOString().substring(0, 10),
+        note_date: now.toISOString(),
+        note_state: true,
       });
     } else {
       axios
@@ -62,7 +63,7 @@ const NoteForm = (props) => {
   //독서록 저장
   const noteSave = () => {
     note.note_id = notes.length + 1;
-    note.note_date = now.toISOString().substring(0, 10);
+    note.note_date = now.toISOString();
     if (note.book_id == 0) {
       alert("책을 골라주세요");
       return false;
@@ -123,35 +124,50 @@ const NoteForm = (props) => {
       <div className="card">
         <div className="card-body">
           <form>
-            <div className="form-group">
-              {props.noteIDX == null ? (
-                <>
-                  <label>책 선택</label>
-                  <br />
-                  <select
-                    className="custom-select custom-select-sm w-auto mr-1"
-                    name="book_id"
-                    onChange={(e) => noteOnChange(e)}
-                    value={note.book_id}
-                  >
-                    {/* 책꽂이 for문 */}
-                    <option value="0">독서록을 쓸 책 선택</option>
-                    <option value="1">여행의 이유</option>
-                    <option value="2">점심메뉴</option>
-                    <option value="3">존리의 부자되기 습관</option>
-                    <option value="책이름이고">책이름이고</option>
-                    <option value="더 해빙 The Having">
-                      더 해빙 The Having
-                    </option>
-                  </select>
-                </>
-              ) : (
-                <>
-                  <label>책 이름</label>
-                  <br />
-                  {note.book_id}
-                </>
-              )}
+            <div className="form-row">
+              <div className="form-group col-sm-9">
+                {props.noteIDX == null ? (
+                  <>
+                    <label>책 선택</label>
+                    <br />
+                    <select
+                      className="custom-select"
+                      name="book_id"
+                      onChange={(e) => noteOnChange(e)}
+                      value={note.book_id}
+                    >
+                      <option value="0">독서록을 쓸 책 선택</option>
+                      {/* 책꽂이 for문 */}
+                      <option value="1">여행의 이유</option>
+                      <option value="2">점심메뉴</option>
+                      <option value="3">존리의 부자되기 습관</option>
+                      <option value="책이름이고">책이름이고</option>
+                      <option value="더 해빙 The Having">
+                        더 해빙 The Having
+                      </option>
+                    </select>
+                  </>
+                ) : (
+                  <>
+                    <label>책 이름</label>
+                    <br />
+                    {note.book_id}
+                  </>
+                )}
+              </div>
+              <div className="form-group col-sm-3">
+                <label>공개 여부</label>
+                <br />
+                <select
+                  className="custom-select"
+                  name="note_private"
+                  onChange={(e) => noteOnChange(e)}
+                  value={note.note_private}
+                >
+                  <option value="true">O</option>
+                  <option value="false">X</option>
+                </select>
+              </div>
             </div>
 
             <div className="form-group">
@@ -160,7 +176,7 @@ const NoteForm = (props) => {
                 type="text"
                 className="form-control"
                 name="note_title"
-                value={note.note_title}
+                value={note.note_title || ""}
                 ref={refTitle}
                 onChange={(e) => noteOnChange(e)}
               />

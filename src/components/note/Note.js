@@ -25,10 +25,10 @@ const Note = () => {
 
   //삭제
   const onDelete = (noteIDX) => {
-    const apiUrl = `http://localhost:8000/api/note/${noteIDX}`;
+    const apiUrl = `http://localhost:8000/api/note/${noteIDX}/`;
     if (window.confirm("해당 독서록을 삭제하시겠습니까?")) {
       axios
-        .delete(apiUrl)
+        .patch(apiUrl, { note_state: false })
         .then((response) => {
           console.log("note delete Data", response);
           alert("삭제완료");
