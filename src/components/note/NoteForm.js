@@ -1,11 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
-import Moment from "react-moment";
 
 const NoteForm = (props) => {
   let now = new Date();
   let history = useHistory();
+
+  const loginUserId = 1;
+  const loginUserName = "test01";
+  const loginUserEmail = "test01@naver.com";
+
   const apiUrl = `http://localhost:8000/api/note/`;
   const apiUrl2 = `http://localhost:8000/api/note/${props.noteIDX}/`;
 
@@ -15,7 +19,7 @@ const NoteForm = (props) => {
   useEffect(() => {
     if (props.noteIDX == null) {
       setNote({
-        user_id: 1,
+        user_id: loginUserId,
         book_id: 0,
         note_title: "",
         note_contents: "",
@@ -151,7 +155,7 @@ const NoteForm = (props) => {
                   <>
                     <label>책 이름</label>
                     <br />
-                    {note.book_id}
+                    {note.book_name}
                   </>
                 )}
               </div>

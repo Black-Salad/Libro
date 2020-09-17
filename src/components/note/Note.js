@@ -7,11 +7,15 @@ import Moment from "react-moment";
 const Note = () => {
   let history = useHistory();
 
+  const loginUserId = 1;
+  const loginUserName = "test01";
+  const loginUserEmail = "test01@naver.com";
+
   const [notes, setNotes] = useState([]);
 
   //값 가져와서 setNotes
   useEffect(() => {
-    const apiUrl = `http://localhost:8000/api/note/`;
+    const apiUrl = `http://localhost:8000/api/note/?user_id=${loginUserId}`;
     axios
       .get(apiUrl)
       .then((response) => {
