@@ -3,6 +3,7 @@ import { Plus, Search, ChevronLeft } from "react-feather";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import Moment from "react-moment";
+import NoteLike from "./NoteLike";
 
 const Note = () => {
   let history = useHistory();
@@ -62,6 +63,12 @@ const Note = () => {
       //   });
     }
   };
+
+  //좋아요버튼
+  const noneLikeButton =
+    "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../assets/preview/2012/png/iconmonstr-favorite-2.png&r=255&g=0&b=0";
+  const likeButton =
+    "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../assets/preview/2012/png/iconmonstr-favorite-1.png&r=255&g=0&b=0";
 
   return (
     <>
@@ -135,6 +142,27 @@ const Note = () => {
                     <span className="ml-1 mr-auto">
                       <Moment format={"YYYY/MM/DD"}>{item.note_date}</Moment>
                     </span>
+                  </div>
+                  <div className="card-footer justify-content-between">
+                    <span className="has-icon btn-xs">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        className="feather feather-eye mr-1"
+                      >
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                      </svg>
+                      {item.note_viewcount}
+                    </span>
+
+                    <NoteLike noteIDX={item.note_id} />
+
                     <span
                       className="btn btn-link has-icon btn-xs bigger-130 text-danger"
                       onClick={() => onDelete(item.note_id)}
@@ -147,8 +175,6 @@ const Note = () => {
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
                         className="feather feather-trash mr-1"
                       >
                         <polyline points="3 6 5 6 21 6"></polyline>

@@ -5,6 +5,7 @@ import Moment from "react-moment";
 import NoteComment from "./NoteComment";
 
 const ViewnoteDetail = (props) => {
+  let now = new Date();
   let history = useHistory();
 
   const loginUserId = 1;
@@ -14,6 +15,9 @@ const ViewnoteDetail = (props) => {
   const apiUrl = `http://localhost:8000/api/note/${props.noteIDX}/`;
   const apiUrl2 = `http://localhost:8000/api/note/comment?note_id=${props.noteIDX}`;
   const apiUrl3 = `http://localhost:8000/api/note/comment/`;
+  const apiUrl4 = `http://localhost:8000/api/note/like?note_id=${props.noteIDX}&user_id=${loginUserId}`;
+  const apiUrl5 = `http://localhost:8000/api/note/like/`;
+  const apiUrl6 = `http://localhost:8000/api/note/like?note_id=${props.noteIDX}&like_state=true`;
 
   const [note, setNote] = useState({});
   const [comments, setComments] = useState([]);
@@ -23,27 +27,39 @@ const ViewnoteDetail = (props) => {
     user_name: loginUserName,
     comment_contents: "",
   });
+  const [like, setLike] = useState({
+    note_id: props.noteIDX,
+    user_id: loginUserId,
+    like_date: now.toISOString(),
+    like_state: true,
+  });
+  const [likeUser, setLikeUser] = useState({
+    like_id: 0,
+  });
+  const [likeCnt, setLikeCnt] = useState(0);
 
   //값 가져와서 setNote
   useEffect(() => {
-    axios
-      .get(apiUrl)
-      .then((response) => {
-        console.log("noteDetail Data", response);
-        setNote(response.data);
-      })
-      .catch((response) => {
-        console.error(response);
-      });
-    axios
-      .get(apiUrl2)
-      .then((response) => {
-        console.log("comment", response);
-        setComments(response.data);
-      })
-      .catch((response) => {
-        console.error(response);
-      });
+    axios.get(apiUrl).then((response) => {
+      console.log("noteDetail Data", response);
+      setNote(response.data);
+    });
+
+    axios.get(apiUrl2).then((response) => {
+      console.log("comment", response);
+      setComments(response.data);
+    });
+
+    axios.get(apiUrl4).then((response) => {
+      console.log("like", response.data);
+      if (response.data.length == 1) setLikeUser(response.data[0]);
+      else setLikeUser(response.data);
+    });
+
+    axios.get(apiUrl6).then((response) => {
+      console.log("likecnt", response.data.length);
+      setLikeCnt(response.data.length);
+    });
   }, []);
 
   //독서록 삭제
@@ -62,32 +78,57 @@ const ViewnoteDetail = (props) => {
     }
   };
 
-  const noneLike =
-    "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../assets/preview/2012/png/iconmonstr-favorite-2.png&r=255&g=0&b=0";
-  const like =
-    "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../assets/preview/2012/png/iconmonstr-favorite-1.png&r=255&g=0&b=0";
-
   //댓글 내용 바뀔떄마다 setComment
   const commentOnChange = (e) => {
     setComment({ ...comment, [e.target.name]: e.target.value });
     console.log(comment);
   };
 
-  //댓글달기
+  //댓글 등록
   const commentWrite = () => {
     if (comment.comment_contents == "") {
       alert("내용을 입력해주세요");
       return false;
     }
-    axios
-      .post(apiUrl3, comment)
-      .then((response) => {
-        console.log(response.data);
-        alert("등록완료");
+    axios.post(apiUrl3, comment).then((response) => {
+      console.log(response.data);
+      alert("등록완료");
+      history.go(0);
+    });
+  };
+
+  //좋아요버튼
+  const noneLikeButton =
+    "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../assets/preview/2012/png/iconmonstr-favorite-2.png&r=255&g=0&b=0";
+  const likeButton =
+    "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../assets/preview/2012/png/iconmonstr-favorite-1.png&r=255&g=0&b=0";
+
+  const onClickLike = () => {
+    console.log(like);
+
+    if (likeUser.length == 0) {
+      axios.post(apiUrl5, like).then((response) => {
+        console.log("like 저장", response);
         history.go(0);
-      })
-      .catch((response) => {
-        console.error(response);
+      });
+    } else {
+      axios
+        .patch(apiUrl5 + `${likeUser.like_id}/`, { like_state: true })
+        .then((response) => {
+          console.log("like", response);
+          history.go(0);
+        });
+    }
+  };
+
+  const onClickNoneLike = () => {
+    console.log("likeUser", likeUser[0]);
+
+    axios
+      .patch(apiUrl5 + `${likeUser.like_id}/`, { like_state: false })
+      .then((response) => {
+        console.log("none like", response);
+        history.go(0);
       });
   };
 
@@ -100,6 +141,7 @@ const ViewnoteDetail = (props) => {
             <img
               src={note.book_img}
               style={{ width: "50px", boxShadow: "grey 1px 1px 1px 1px" }}
+              alt=""
             />
             <div className="media-body text-muted ml-3">
               <h6 className="mb-0 text-dark">
@@ -109,14 +151,27 @@ const ViewnoteDetail = (props) => {
                 <Moment format={"YYYY/MM/DD HH:mm:ss"}>{note.note_date}</Moment>
               </div>
             </div>
+
             <div className="has-icon">
-              <strong className="text-danger">{note.note_like}</strong>
-              <button type="button" className="btn btn-icon">
-                <img src={like} style={{ width: "30px" }} />
-              </button>
-              <button type="button" className="btn btn-icon">
-                <img src={noneLike} style={{ width: "30px" }} />
-              </button>
+              <strong className="text-danger">{likeCnt}</strong>
+
+              {likeUser.like_state ? (
+                <button
+                  type="button"
+                  className="btn btn-icon"
+                  onClick={onClickNoneLike}
+                >
+                  <img src={likeButton} style={{ width: "30px" }} alt="" />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-icon"
+                  onClick={onClickLike}
+                >
+                  <img src={noneLikeButton} style={{ width: "30px" }} alt="" />
+                </button>
+              )}
             </div>
           </div>
           <h5>
