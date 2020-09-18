@@ -43,6 +43,9 @@ const ViewnoteDetail = (props) => {
     axios.get(apiUrl).then((response) => {
       console.log("noteDetail Data", response);
       setNote(response.data);
+
+      //조회수 추후 cookie로 조건문
+      axios.patch(apiUrl, { note_viewcount: response.data.note_viewcount + 1 });
     });
 
     axios.get(apiUrl2).then((response) => {
@@ -104,8 +107,6 @@ const ViewnoteDetail = (props) => {
     "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../assets/preview/2012/png/iconmonstr-favorite-1.png&r=255&g=0&b=0";
 
   const onClickLike = () => {
-    console.log(like);
-
     if (likeUser.length == 0) {
       axios.post(apiUrl5, like).then((response) => {
         console.log("like 저장", response);
@@ -122,8 +123,6 @@ const ViewnoteDetail = (props) => {
   };
 
   const onClickNoneLike = () => {
-    console.log("likeUser", likeUser[0]);
-
     axios
       .patch(apiUrl5 + `${likeUser.like_id}/`, { like_state: false })
       .then((response) => {

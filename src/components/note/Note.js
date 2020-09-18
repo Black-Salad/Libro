@@ -49,18 +49,17 @@ const Note = () => {
   const onKeyPressSearch = (e) => {
     if (e.key === "Enter") {
       // e.chardCode === 13
-      alert(e.target.value);
-      const noteTitle = e.target.value;
-      // const apiUrl = `http://localhost:8000/api/note/?note_title=${noteTitle}`;
-      // axios
-      //   .get(apiUrl)
-      //   .then((response) => {
-      //     console.log("notes Data", response);
-      //     setNotes(response.data);
-      //   })
-      //   .catch((response) => {
-      //     console.error(response);
-      //   });
+      const search = e.target.value;
+      const apiUrl = `http://localhost:8000/api/note/search/?search=${search}`;
+      axios
+        .get(apiUrl)
+        .then((response) => {
+          console.log("notes Data", response);
+          setNotes(response.data);
+        })
+        .catch((response) => {
+          console.error(response);
+        });
     }
   };
 
@@ -88,7 +87,7 @@ const Note = () => {
             <input
               type="text"
               className="form-control form-control-sm bg-gray-200 border-gray-200"
-              placeholder="독서록제목"
+              placeholder="책제목 / 독서록 제목 / 독서록 내용"
               onKeyPress={(e) => onKeyPressSearch(e)}
             />
           </div>
@@ -124,9 +123,9 @@ const Note = () => {
               <div className="col-6 col-sm-4 col-md-3 col-xl-3 mb-3">
                 <div className="card h-100">
                   <img
-                    src="/img/blog/1.jpg"
-                    className="card-img-top"
+                    src={item.book_img}
                     alt="..."
+                    style={{ width: "70%", margin: "auto" }}
                   />
                   <div className="card-body">
                     <h6 className="card-title">
@@ -135,7 +134,7 @@ const Note = () => {
                       </Link>
                     </h6>
                     <div className="card-subtitle text-muted font-size-sm mb-2">
-                      {item.book_id}
+                      {item.book_name}
                     </div>
                   </div>
                   <div className="card-footer font-size-sm text-muted">
