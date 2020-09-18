@@ -1,6 +1,6 @@
 import React from "react";
-import Note from "../components/common/Note";
-import BreadCrumbs from "../components/common/BreadCrumbs";
+import Note from "../../components/note/Note";
+import BreadCrumbs from "../../components/common/BreadCrumbs";
 import { Link } from "react-router-dom";
 
 const Viewnotes = () => {

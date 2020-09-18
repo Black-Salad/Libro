@@ -4,15 +4,15 @@ import { Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Login from "./pages/account/Login";
 import Bookshelf from "./pages/Bookshelf";
-import Viewnotes from "./pages/Viewnotes";
-import Writenote from "./pages/Writenote";
+import Viewnotes from "./pages/note/Viewnotes";
+import Writenote from "./pages/note/Writenote";
 import Searchbooks from "./pages/Searchbooks";
 import Navigate from "./pages/Navigate";
 import Setting from "./pages/Setting";
 import Myprofile from "./pages/Myprofile";
 import Register from "./pages/account/Register";
-import ViewnoteDetail from "./pages/ViewnoteDetail";
-import Modifynote from "./pages/Modifynote";
+import ViewnoteDetail from "./pages/note/ViewnoteDetail";
+import Modifynote from "./pages/note/Modifynote";
 import BookshelfMore from "./pages/BookshelfMore";
 
 function App() {

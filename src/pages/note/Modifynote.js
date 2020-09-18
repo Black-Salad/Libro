@@ -1,6 +1,6 @@
 import React from "react";
-import BreadCrumbs from "../components/common/BreadCrumbs";
-import NoteForm from "../components/common/NoteForm";
+import BreadCrumbs from "../../components/common/BreadCrumbs";
+import NoteForm from "../../components/note/NoteForm";
 import { Link } from "react-router-dom";
 
 const Modifynote = ({ match }) => {
