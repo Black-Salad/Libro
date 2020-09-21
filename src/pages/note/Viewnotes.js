@@ -8,9 +8,6 @@ const Viewnotes = () => {
     <>
       <BreadCrumbs breads={[<Link to="/viewnotes">내 독서록</Link>]} />
 
-      {/* 글등록 및 검색 */}
-      {/* <NoteSearch /> */}
-
       {/* 독서록리스트 */}
       <Note />
 
