@@ -1,5 +1,5 @@
 import React from "react";
-import Note from "../../components/note/Note";
+import NoteSearch from "../../components/note/NoteSearch";
 import BreadCrumbs from "../../components/common/BreadCrumbs";
 import { Link } from "react-router-dom";
 
@@ -8,11 +8,8 @@ const Viewnotes = () => {
     <>
       <BreadCrumbs breads={[<Link to="/viewnotes">내 독서록</Link>]} />
 
-      {/* 글등록 및 검색 */}
-      {/* <NoteSearch /> */}
-
       {/* 독서록리스트 */}
-      <Note />
+      <NoteSearch />
 
       {/* 페이징처리 */}
       <ul className="pagination justify-content-center mb-0">

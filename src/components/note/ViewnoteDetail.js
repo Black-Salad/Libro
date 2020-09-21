@@ -38,7 +38,7 @@ const ViewnoteDetail = (props) => {
   });
   const [likeCnt, setLikeCnt] = useState(0);
 
-  //값 가져와서 setNote
+  //useEffect
   useEffect(() => {
     axios.get(apiUrl).then((response) => {
       console.log("noteDetail Data", response);
@@ -152,8 +152,6 @@ const ViewnoteDetail = (props) => {
             </div>
 
             <div className="has-icon">
-              <strong className="text-danger">{likeCnt}</strong>
-
               {likeUser.like_state ? (
                 <button
                   type="button"
@@ -171,6 +169,23 @@ const ViewnoteDetail = (props) => {
                   <img src={noneLikeButton} style={{ width: "30px" }} alt="" />
                 </button>
               )}
+              <strong className="text-danger">{likeCnt}</strong>
+              <span className="has-icon btn-xs">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  className="feather feather-eye mr-1"
+                >
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                {note.note_viewcount}
+              </span>
             </div>
           </div>
           <h5>
