@@ -1,8 +1,17 @@
 import React, { useState } from "react";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
+// import BookStar from "./BookStar";
 import { axios } from "axios";
 import { KAKAO_API_URL, KAKAO_API_KEY } from "../../constants/config";
+
+import { Fab } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import StarIcon from "@material-ui/icons/Star";
+import AddIcon from "@material-ui/icons/Add";
+import RemoveIcon from "@material-ui/icons/Remove";
+import CheckIcon from "@material-ui/icons/Check";
+import CreateIcon from "@material-ui/icons/Create";
 
 const Bookprofile = (props) => {
   const { open, setModalState, currentBook } = props;
@@ -62,24 +71,23 @@ const Bookprofile = (props) => {
             </div>
           </div>
         </div>
-        <div className="col-lg-12 col-md-12 col-sm-12 mb-2">
-          <div style={{ textAlign: "center" }}>
-            <button
-              type="button"
-              className="btn btn-primary has-icon"
-              style={{ margin: "5px" }}
-            >
-              책꽂이로 담기
-            </button>
-            &nbsp;&nbsp;
-            <button
-              type="button"
-              className="btn btn-danger has-icon"
-              style={{ margin: "5px" }}
-            >
-              책꽂이에서 빼기
-            </button>
-          </div>
+        <div>
+          {/* <BookStar /> */}
+          {/* <Fab size="small" color="default" title="관심 책에 추가">
+            <StarIcon />
+          </Fab> */}
+          <Fab size="small" color="primary" title="이 책 읽기">
+            <AddIcon />
+          </Fab>
+          <Fab size="small" color="primary" title="완독했어요">
+            <CheckIcon />
+          </Fab>
+          <Fab size="small" color="secondary" title="책꽂이에서 삭제">
+            <RemoveIcon />
+          </Fab>
+          <Fab size="small" color="default" title="독서록 쓰기">
+            <CreateIcon />
+          </Fab>
         </div>
       </Modal>
     </div>
