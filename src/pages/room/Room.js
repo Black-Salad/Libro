@@ -3,6 +3,7 @@ import Note from "../../components/note/Note";
 import BreadCrumbs from "../../components/common/BreadCrumbs";
 import { Link } from "react-router-dom";
 import Layout from "../../components/Layout";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
 const room = () => {
   return (
@@ -29,8 +30,25 @@ const room = () => {
         </div>
       </div>
 
-      {/* 독서록리스트 */}
-      <Note />
+      <Link to="#" style={{ float: "right" }}>
+        more
+        <ArrowForwardIosIcon />
+      </Link>
+      <section>
+        <p className="text-secondary font-size-m">책꽂이</p>
+        <p className="text-secondary font-size-sm">등록된 책이 없습니다</p>
+      </section>
+
+      <hr />
+      <Link to="#" style={{ float: "right" }}>
+        more
+        <ArrowForwardIosIcon />
+      </Link>
+      <section>
+        <p className="text-secondary font-size-m">독서록</p>
+
+        <Note />
+      </section>
     </Layout>
   );
 };
