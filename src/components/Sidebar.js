@@ -32,46 +32,9 @@ const Sidebar = () => {
       {/* <!-- 사이드바 바디 --> */}
       <div className="sidebar-body">
         <ul className="nav nav-sub">
-          <li className="nav-label">My Room</li>
-          <li className="nav-item">
-            <Link to="/">
-              <span
-                className={`nav-link has-icon ${
-                  selectedMenu.selected === "" ? "active" : null
-                }`}
-                onClick={() => toggleSidebar("")}
-              >
-                {/* 클릭 시 class에 active 추가 */}
-                <Icon.Book />내 책꽂이
-              </span>
-            </Link>
+          <li className="nav-label" style={{ marginTop: ".5rem" }}>
+            Search
           </li>
-          <li className="nav-item">
-            <Link to="/viewnotes">
-              <span
-                className={`nav-link has-icon ${
-                  selectedMenu.selected === "viewnotes" ? "active" : null
-                }`}
-                onClick={() => toggleSidebar("viewnotes")}
-              >
-                <Icon.BookOpen />내 독서록
-              </span>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/writenote">
-              <span
-                className={`nav-link has-icon ${
-                  selectedMenu.selected === "writenotes" ? "active" : null
-                }`}
-                onClick={() => toggleSidebar("writenotes")}
-              >
-                <Icon.Edit />
-                독서록 쓰기
-              </span>
-            </Link>
-          </li>
-          <li className="nav-label">Navigate</li>
           <li className="nav-item">
             <Link to="/search">
               <span
@@ -84,32 +47,92 @@ const Sidebar = () => {
               </span>
             </Link>
           </li>
-          <li className="nav-item">
-            <Link to="/navigate">
-              <span
-                className={`nav-link has-icon ${
-                  selectedMenu.selected === "navigate" ? "active" : null
-                }`}
-                onClick={() => toggleSidebar("navigate")}
-              >
-                <Icon.Compass />
-                둘러보기
-              </span>
-            </Link>
+          <li className="nav-label" style={{ marginTop: ".5rem" }}>
+            My Room
           </li>
-          <li className="nav-label">Setting</li>
           <li className="nav-item">
-            <Link to="/myprofile">
-              <span
-                className={`nav-link has-icon ${
-                  selectedMenu.selected === "myprofile" ? "active" : null
-                }`}
-                onClick={() => toggleSidebar("myprofile")}
-              >
-                <Icon.User />내 프로필
-              </span>
-            </Link>
+            {/* <Link to="/"> */}
+            <span className={`nav-link has-icon show`}>
+              <Icon.Book />내 서재
+            </span>
+            {/* </Link> */}
+            <ul>
+              <li>
+                <Link to="/">
+                  <a
+                    className={selectedMenu.selected === "" ? "active" : null}
+                    onClick={() => toggleSidebar("")}
+                  >
+                    {/* 클릭 시 class에 active 추가 */}내 책꽂이
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link to="/viewnotes">
+                  <a
+                    className={
+                      selectedMenu.selected === "viewnotes" ? "active" : null
+                    }
+                    onClick={() => toggleSidebar("viewnotes")}
+                  >
+                    내 독서록
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link to="/writenote">
+                  <a
+                    className={
+                      selectedMenu.selected === "writenotes" ? "active" : null
+                    }
+                    onClick={() => toggleSidebar("writenotes")}
+                  >
+                    독서록 쓰기
+                  </a>
+                </Link>
+              </li>
+            </ul>
           </li>
+
+          <li className="nav-label" style={{ marginTop: ".5rem" }}>
+            Navigate
+          </li>
+
+          <li className="nav-item">
+            {/* <Link to="/navigate"> */}
+            <span
+              className={`nav-link has-icon show ${
+                selectedMenu.selected === "navigate" ? "active" : null
+              }`}
+              onClick={() => toggleSidebar("navigate")}
+            >
+              <Icon.Compass />
+              둘러보기
+            </span>
+            {/* </Link> */}
+
+            <ul>
+              <li>
+                {/* <Link to="/"> */}
+                <a>타임라인</a>
+                {/* </Link> */}
+              </li>
+              <li>
+                {/* <Link to="/viewnotes"> */}
+                <a>친구들</a>
+                {/* </Link> */}
+              </li>
+              <li>
+                {/* <Link to="/writenote"> */}
+                <a>독서록 탐색</a>
+                {/* </Link> */}
+              </li>
+            </ul>
+          </li>
+          <li className="nav-label" style={{ marginTop: ".5rem" }}>
+            Setting
+          </li>
+
           <li className="nav-item">
             <Link to="/setting">
               <span
