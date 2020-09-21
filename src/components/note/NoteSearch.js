@@ -4,6 +4,8 @@ import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import Moment from "react-moment";
 import NoteLike from "./NoteLike";
+import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
+import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 
 const Note = () => {
   let history = useHistory();
@@ -62,12 +64,6 @@ const Note = () => {
         });
     }
   };
-
-  //좋아요버튼
-  const noneLikeButton =
-    "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../assets/preview/2012/png/iconmonstr-favorite-2.png&r=255&g=0&b=0";
-  const likeButton =
-    "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../assets/preview/2012/png/iconmonstr-favorite-1.png&r=255&g=0&b=0";
 
   return (
     <>
@@ -144,20 +140,7 @@ const Note = () => {
                   </div>
                   <div className="card-footer justify-content-between">
                     <span className="has-icon btn-xs">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        className="feather feather-eye mr-1"
-                      >
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                      {item.note_viewcount}
+                      <RemoveRedEyeOutlinedIcon /> {item.note_viewcount}
                     </span>
 
                     <NoteLike noteIDX={item.note_id} />
@@ -166,19 +149,7 @@ const Note = () => {
                       className="btn btn-link has-icon btn-xs bigger-130 text-danger"
                       onClick={() => onDelete(item.note_id)}
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        className="feather feather-trash mr-1"
-                      >
-                        <polyline points="3 6 5 6 21 6"></polyline>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                      </svg>
+                      <DeleteOutlinedIcon color="secondary" />
                       삭제
                     </span>
                   </div>

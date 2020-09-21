@@ -3,6 +3,8 @@ import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import Moment from "react-moment";
 import NoteComment from "./NoteComment";
+import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
+import NoteLike from "./NoteLike";
 
 const ViewnoteDetail = (props) => {
   let now = new Date();
@@ -15,9 +17,6 @@ const ViewnoteDetail = (props) => {
   const apiUrl = `http://localhost:8000/api/note/${props.noteIDX}/`;
   const apiUrl2 = `http://localhost:8000/api/note/comment?note_id=${props.noteIDX}`;
   const apiUrl3 = `http://localhost:8000/api/note/comment/`;
-  const apiUrl4 = `http://localhost:8000/api/note/like?note_id=${props.noteIDX}&user_id=${loginUserId}`;
-  const apiUrl5 = `http://localhost:8000/api/note/like/`;
-  const apiUrl6 = `http://localhost:8000/api/note/like?note_id=${props.noteIDX}&like_state=true`;
 
   const [note, setNote] = useState({});
   const [comments, setComments] = useState([]);
@@ -27,16 +26,6 @@ const ViewnoteDetail = (props) => {
     user_name: loginUserName,
     comment_contents: "",
   });
-  const [like, setLike] = useState({
-    note_id: props.noteIDX,
-    user_id: loginUserId,
-    like_date: now.toISOString(),
-    like_state: true,
-  });
-  const [likeUser, setLikeUser] = useState({
-    like_id: 0,
-  });
-  const [likeCnt, setLikeCnt] = useState(0);
 
   //useEffect
   useEffect(() => {
@@ -51,17 +40,6 @@ const ViewnoteDetail = (props) => {
     axios.get(apiUrl2).then((response) => {
       console.log("comment", response);
       setComments(response.data);
-    });
-
-    axios.get(apiUrl4).then((response) => {
-      console.log("like", response.data);
-      if (response.data.length == 1) setLikeUser(response.data[0]);
-      else setLikeUser(response.data);
-    });
-
-    axios.get(apiUrl6).then((response) => {
-      console.log("likecnt", response.data.length);
-      setLikeCnt(response.data.length);
     });
   }, []);
 
@@ -95,40 +73,8 @@ const ViewnoteDetail = (props) => {
     }
     axios.post(apiUrl3, comment).then((response) => {
       console.log(response.data);
-      alert("등록완료");
       history.go(0);
     });
-  };
-
-  //좋아요버튼
-  const noneLikeButton =
-    "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../assets/preview/2012/png/iconmonstr-favorite-2.png&r=255&g=0&b=0";
-  const likeButton =
-    "https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../assets/preview/2012/png/iconmonstr-favorite-1.png&r=255&g=0&b=0";
-
-  const onClickLike = () => {
-    if (likeUser.length == 0) {
-      axios.post(apiUrl5, like).then((response) => {
-        console.log("like 저장", response);
-        history.go(0);
-      });
-    } else {
-      axios
-        .patch(apiUrl5 + `${likeUser.like_id}/`, { like_state: true })
-        .then((response) => {
-          console.log("like", response);
-          history.go(0);
-        });
-    }
-  };
-
-  const onClickNoneLike = () => {
-    axios
-      .patch(apiUrl5 + `${likeUser.like_id}/`, { like_state: false })
-      .then((response) => {
-        console.log("none like", response);
-        history.go(0);
-      });
   };
 
   return (
@@ -152,40 +98,8 @@ const ViewnoteDetail = (props) => {
             </div>
 
             <div className="has-icon">
-              {likeUser.like_state ? (
-                <button
-                  type="button"
-                  className="btn btn-icon"
-                  onClick={onClickNoneLike}
-                >
-                  <img src={likeButton} style={{ width: "30px" }} alt="" />
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  className="btn btn-icon"
-                  onClick={onClickLike}
-                >
-                  <img src={noneLikeButton} style={{ width: "30px" }} alt="" />
-                </button>
-              )}
-              <strong className="text-danger">{likeCnt}</strong>
-              <span className="has-icon btn-xs">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  className="feather feather-eye mr-1"
-                >
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                  <circle cx="12" cy="12" r="3"></circle>
-                </svg>
-                {note.note_viewcount}
-              </span>
+              <NoteLike noteIDX={props.noteIDX} />
+              <RemoveRedEyeOutlinedIcon /> {note.note_viewcount}
             </div>
           </div>
           <h5>

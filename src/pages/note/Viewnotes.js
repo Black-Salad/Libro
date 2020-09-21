@@ -2,17 +2,18 @@ import React from "react";
 import NoteSearch from "../../components/note/NoteSearch";
 import BreadCrumbs from "../../components/common/BreadCrumbs";
 import { Link } from "react-router-dom";
+import Layout from "../../components/Layout";
 
 const Viewnotes = () => {
   return (
-    <>
+    <Layout>
       <BreadCrumbs breads={[<Link to="/viewnotes">내 독서록</Link>]} />
 
       {/* 독서록리스트 */}
       <NoteSearch />
 
       {/* 페이징처리 */}
-      <ul className="pagination justify-content-center mb-0">
+      {/* <ul className="pagination justify-content-center mb-0">
         <li className="page-item disabled">
           <span className="page-link">Previous</span>
         </li>
@@ -34,8 +35,8 @@ const Viewnotes = () => {
             Next
           </a>
         </li>
-      </ul>
-    </>
+      </ul> */}
+    </Layout>
   );
 };
 
