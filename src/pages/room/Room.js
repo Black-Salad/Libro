@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Layout from "../../components/Layout";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
-const room = () => {
+const room = (props) => {
   return (
     <Layout>
       <BreadCrumbs breads={[<Link to="/room">Room</Link>]} />

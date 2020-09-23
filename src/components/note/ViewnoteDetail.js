@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { Cookies } from "react-cookie";
 import axios from "axios";
 import Moment from "react-moment";
 import NoteComment from "./NoteComment";
@@ -7,12 +8,12 @@ import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
 import NoteLike from "./NoteLike";
 
 const ViewnoteDetail = (props) => {
-  let now = new Date();
   let history = useHistory();
+  const cookies = new Cookies();
 
-  const loginUserId = 1;
-  const loginUserName = "test01";
-  const loginUserEmail = "test01@naver.com";
+  const loginUserId = cookies.get("loginUserId");
+  const loginUserName = cookies.get("loginUserName");
+  const loginUserEmail = cookies.get("loginUserEmail");
 
   const apiUrl = `http://localhost:8000/api/note/${props.noteIDX}/`;
   const apiUrl2 = `http://localhost:8000/api/note/comment?note_id=${props.noteIDX}`;
@@ -90,7 +91,7 @@ const ViewnoteDetail = (props) => {
             />
             <div className="media-body text-muted ml-3">
               <h6 className="mb-0 text-dark">
-                <strong>{note.book_name}</strong>
+                <strong>{note.book_title}</strong>
               </h6>
               <div className="small">
                 <Moment format={"YYYY/MM/DD HH:mm:ss"}>{note.note_date}</Moment>

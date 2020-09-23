@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link, useHistory } from "react-router-dom";
+import { Cookies } from "react-cookie";
 import axios from "axios";
 import Moment from "react-moment";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 
 const NoteComment = (props) => {
   let history = useHistory();
-
-  const loginUserId = 1;
-  const loginUserName = "test01";
-  const loginUserEmail = "test01@naver.com";
+  const cookies = new Cookies();
+  const loginUserId = cookies.get("loginUserId");
 
   const commentDelate = (comment_id) => {
     const apiUrl = `http://localhost:8000/api/note/comment/${comment_id}/`;
@@ -17,7 +16,6 @@ const NoteComment = (props) => {
       axios
         .patch(apiUrl, { comment_state: false })
         .then((response) => {
-          console.log("comment delete Data", response);
           alert("삭제완료");
           history.go(0);
         })

@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 import { Route } from "react-router-dom";
-import Layout from "./components/Layout";
 import Login from "./pages/account/Login";
 import Bookshelf from "./pages/Bookshelf";
 import Viewnotes from "./pages/note/Viewnotes";

@@ -1,19 +1,22 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { Cookies } from "react-cookie";
 import axios from "axios";
 
 const NoteForm = (props) => {
   let now = new Date();
   let history = useHistory();
-
-  const loginUserId = 1;
-  const loginUserName = "test01";
-  const loginUserEmail = "test01@naver.com";
+  const cookies = new Cookies();
+  const loginUserId = cookies.get("loginUserId");
 
   const apiUrl = `http://localhost:8000/api/note/`;
   const apiUrl2 = `http://localhost:8000/api/note/${props.noteIDX}/`;
+  const apiUrl3 = `http://localhost:8000/api/book/shelf/join/?user_id=${loginUserId}&shelf_state=1`;
+  const apiUrl4 = `http://localhost:8000/api/book/`;
 
   const [note, setNote] = useState({});
+  const [notes, setNotes] = useState([]);
+  const [shelf, setShelf] = useState([]);
 
   //독서록 등록
   useEffect(() => {
@@ -21,38 +24,35 @@ const NoteForm = (props) => {
       setNote({
         user_id: loginUserId,
         book_id: 0,
+        book_img: "",
+        book_title: "",
         note_title: "",
         note_contents: "",
-        note_like: 0,
         note_private: true,
         note_viewcount: 0,
         note_date: now.toISOString(),
         note_state: true,
       });
     } else {
-      axios
-        .get(apiUrl2)
-        .then((response) => {
-          setNote(response.data);
-        })
-        .catch((response) => {
-          console.error(response);
-        });
-    }
-  }, []);
-
-  const [notes, setNotes] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get(apiUrl)
-      .then((response) => {
-        setNotes(response.data);
-      })
-      .catch((response) => {
-        console.error(response);
+      axios.get(apiUrl2).then((response) => {
+        setNote(response.data);
       });
+    }
+
+    axios.get(apiUrl3).then((response) => {
+      setShelf(response.data);
+      console.log(response.data);
+    });
+
+    axios.get(apiUrl).then((response) => {
+      setNotes(response.data);
+    });
   }, []);
+
+  //ref 설정
+  const refTitle = useRef(null);
+  const refContents = useRef(null);
+  const refSelect = useRef(null);
 
   //내용이 바뀔때마다 setNote
   const noteOnChange = (e) => {
@@ -60,9 +60,18 @@ const NoteForm = (props) => {
     console.log(note);
   };
 
-  //ref 설정
-  const refTitle = useRef(null);
-  const refContents = useRef(null);
+  const selectOnChange = (e) => {
+    axios.get(apiUrl4 + `${e.target.value}/`).then((response) => {
+      console.log(response.data);
+      console.log(note);
+      setNote({
+        ...note,
+        book_id: response.data.book_id,
+        book_img: response.data.book_img,
+        book_title: response.data.book_title,
+      });
+    });
+  };
 
   //독서록 저장
   const noteSave = () => {
@@ -85,16 +94,13 @@ const NoteForm = (props) => {
       return false;
     }
 
-    axios
-      .post(apiUrl, note)
-      .then((response) => {
+    if (window.confirm("등록하시겠습니까?")) {
+      axios.post(apiUrl, note).then((response) => {
         console.log(response.data);
         alert("등록완료");
         history.push("/viewnotes");
-      })
-      .catch((response) => {
-        console.error(response);
       });
+    }
   };
 
   //수정
@@ -111,16 +117,11 @@ const NoteForm = (props) => {
       return false;
     }
 
-    axios
-      .put(apiUrl2, note)
-      .then((response) => {
-        alert("수정완료");
-        console.log(response.data);
-        history.push(`/viewnotedetail/${props.noteIDX}`);
-      })
-      .catch((response) => {
-        console.error(response);
-      });
+    axios.put(apiUrl2, note).then((response) => {
+      alert("수정완료");
+      console.log(response.data);
+      history.push(`/viewnotedetail/${props.noteIDX}`);
+    });
   };
 
   return (
@@ -136,19 +137,20 @@ const NoteForm = (props) => {
                     <br />
                     <select
                       className="custom-select"
-                      name="book_id"
-                      onChange={(e) => noteOnChange(e)}
-                      value={note.book_id}
+                      ref={refSelect}
+                      onChange={(e) => selectOnChange(e)}
                     >
                       <option value="0">독서록을 쓸 책 선택</option>
-                      {/* 책꽂이 for문 */}
-                      <option value="1">여행의 이유</option>
-                      <option value="2">점심메뉴</option>
-                      <option value="3">존리의 부자되기 습관</option>
-                      <option value="책이름이고">책이름이고</option>
-                      <option value="더 해빙 The Having">
-                        더 해빙 The Having
-                      </option>
+
+                      {shelf.map((item, index) => {
+                        return (
+                          <React.Fragment key={index}>
+                            <option value={item.book_id.book_id}>
+                              {item.book_id.book_title}
+                            </option>
+                          </React.Fragment>
+                        );
+                      })}
                     </select>
                   </>
                 ) : (

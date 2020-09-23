@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Plus, Search, ChevronLeft } from "react-feather";
 import { Link, useHistory } from "react-router-dom";
+import { Cookies } from "react-cookie";
 import axios from "axios";
 import Moment from "react-moment";
 import NoteLike from "./NoteLike";
@@ -9,10 +10,8 @@ import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 
 const Note = () => {
   let history = useHistory();
-
-  const loginUserId = 1;
-  const loginUserName = "test01";
-  const loginUserEmail = "test01@naver.com";
+  const cookies = new Cookies();
+  const loginUserId = cookies.get("loginUserId");
 
   const [notes, setNotes] = useState([]);
 
@@ -130,7 +129,7 @@ const Note = () => {
                       </Link>
                     </h6>
                     <div className="card-subtitle text-muted font-size-sm mb-2">
-                      {item.book_name}
+                      {item.book_title}
                     </div>
                   </div>
                   <div className="card-footer font-size-sm text-muted">
@@ -148,9 +147,9 @@ const Note = () => {
                     <span
                       className="btn btn-link has-icon btn-xs bigger-130 text-danger"
                       onClick={() => onDelete(item.note_id)}
+                      title="삭제"
                     >
                       <DeleteOutlinedIcon color="secondary" />
-                      삭제
                     </span>
                   </div>
                 </div>

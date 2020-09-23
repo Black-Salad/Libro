@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useRef } from "react";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -10,9 +11,10 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import * as Icon from "react-feather";
 
 const Register = () => {
+  // style
   const useStyles = makeStyles((theme) => ({
     paper: {
       display: "flex",
@@ -39,63 +41,148 @@ const Register = () => {
   }));
   const classes = useStyles();
 
-  const theme = createMuiTheme({
-    palette: {
-      background: {
-        default: "#1A2038",
-      },
-    },
+  const [pwConfirm, setPwConfirm] = useState("");
+  const apiUrl1 = `http://localhost:8000/api/user/`;
+  const apiUrl2 = `http://localhost:8000/api/user/?user_email=${user.user_email}`;
+  const checkbox = useRef(null);
+  let history = useHistory();
+
+  const [user, setUser] = useState({
+    user_email: "",
+    user_pw: "",
+    user_name: "",
   });
+
+  const [error, setError] = useState({
+    user_name: false,
+    user_email: false,
+    user_pw: false,
+  });
+
+  // 값이 바뀔 때마다 onchange
+  const userOnChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
+  const pwConfirmOnChange = (e) => {
+    setPwConfirm(e.target.value);
+  };
+
+  // 정상값 확인
+  const onkeyup = (e) => {
+    switch (e.target.name) {
+      case "user_name":
+        if (user.user_name.length <= 1) setError({ ...error, user_name: true });
+        else setError({ ...error, user_name: false });
+        break;
+      case "user_email":
+        if (!isEmail(user.user_email)) setError({ ...error, user_email: true });
+        else setError({ ...error, user_email: false });
+        break;
+      case "user_pw":
+        if (user.user_pw != pwConfirm) setError({ ...error, user_pw: true });
+        else setError({ ...error, user_pw: false });
+        break;
+      case "user_pw_confirm":
+        if (user.user_pw != pwConfirm) setError({ ...error, user_pw: true });
+        else setError({ ...error, user_pw: false });
+        break;
+      default:
+    }
+  };
+
+  // 이메일 형식확인
+  const isEmail = (email) => {
+    const emailRegex = /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    return emailRegex.test(email);
+  };
+
+  // 회원가입 user테이블에 저장
+  const register = () => {
+    console.log(user);
+    if (
+      user.user_name.length == 0 ||
+      user.user_email.length == 0 ||
+      user.user_pw.length == 0
+    ) {
+      alert("공란을 입력바랍니다.");
+      return false;
+    }
+
+    if (error.user_name && error.user_email && error.user_pw) {
+      alert("정확히 입력바랍니다");
+      return false;
+    }
+
+    if (!checkbox.current.checked) {
+      alert("개인 정보 정책에 동의바랍니다.");
+      return false;
+    }
+
+    axios.get(apiUrl2).then((response) => {
+      console.log(response);
+      if (response.data.length == 0) {
+        axios
+          .post(apiUrl1, user)
+          .then(() => {
+            alert("회원가입이 완료되었습니다.");
+            history.push("/login");
+          })
+          .catch(() => {
+            alert("서버오류");
+          });
+      } else {
+        alert("사용 중인 이메일입니다.");
+        setError({ ...error, user_email: true });
+      }
+    });
+  };
+
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Container component="main" maxWidth="xs" className={classes.main}>
-        {/* <CssBaseline /> */}
         <Box className={classes.paper} boxShadow={3}>
           <Typography component="h1" variant="h5">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
-              <line x1="16" y1="8" x2="2" y2="22"></line>
-              <line x1="17.5" y1="15" x2="9" y2="15"></line>
-            </svg>
-            Libro
+            <Icon.Feather /> Libro
           </Typography>
           <form className={classes.form} noValidate>
             <TextField
               variant="outlined"
               margin="normal"
               fullWidth
-              name="username"
+              name="user_name"
               label="Username"
-              id="username"
               autoFocus
+              onChange={(e) => userOnChange(e)}
+              onKeyUp={(e) => onkeyup(e)}
+              error={error.user_name}
+              helperText={
+                error.user_name ? "최소 2글자 이상 입력바랍니다." : ""
+              }
             />
             <TextField
               variant="outlined"
               margin="normal"
               fullWidth
-              id="email"
               label="Email Address"
-              name="email"
+              name="user_email"
+              onChange={(e) => userOnChange(e)}
+              onKeyUp={(e) => onkeyup(e)}
+              error={error.user_email}
+              helperText={
+                error.user_email ? "이메일을 확인해주시길 바랍니다." : ""
+              }
             />
 
             <TextField
               variant="outlined"
               margin="normal"
               fullWidth
-              name="password"
+              name="user_pw"
               label="Password"
               type="password"
-              id="password"
+              onChange={(e) => userOnChange(e)}
+              onKeyUp={(e) => onkeyup(e)}
             />
             <TextField
               variant="outlined"
@@ -103,17 +190,25 @@ const Register = () => {
               fullWidth
               label="Password Confirmation"
               type="password"
+              name="user_pw_confirm"
+              onChange={(e) => pwConfirmOnChange(e)}
+              onKeyUp={(e) => onkeyup(e)}
+              error={error.user_pw}
+              helperText={
+                error.user_pw ? "비밀번호를 확인해주시길 바랍니다." : ""
+              }
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox color="primary" />}
               label={<Box fontSize={14}>개인 정보 정책에 동의합니다</Box>}
+              inputRef={checkbox}
             />
             <Button
-              type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={() => register()}
             >
               회원가입
             </Button>
@@ -136,7 +231,7 @@ const Register = () => {
           2020.
         </Typography>
       </Box>
-    </ThemeProvider>
+    </>
   );
 };
 
