@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import * as Icon from "react-feather";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import HomeIcon from "@material-ui/icons/Home";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -8,7 +8,6 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 const Topheader = () => {
   const cookies = new Cookies();
-  let history = useHistory();
 
   // 로그인정보가 없으면 로그인화면으로 이동
   useEffect(() => {
@@ -16,7 +15,7 @@ const Topheader = () => {
       alert("로그인정보가 없습니다.");
       window.location = "/login";
     }
-  }, []);
+  });
 
   // 로그아웃
   const logout = () => {
@@ -81,10 +80,13 @@ const Topheader = () => {
                 </span>
               </div>
             </div>
-            <Link to="/room" className="dropdown-item has-icon">
+            <Link
+              to={`/room/${cookies.get("loginUserId")}`}
+              className="dropdown-item has-icon"
+            >
               <HomeIcon /> &nbsp; My Room
             </Link>
-            <Link to="#" className="dropdown-item has-icon">
+            <Link to="/setting" className="dropdown-item has-icon">
               <SettingsIcon /> &nbsp; 설정
             </Link>
             <button

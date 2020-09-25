@@ -37,16 +37,16 @@ const NoteLike = (props) => {
 
   //좋아요버튼
   const onClickLike = () => {
-    console.log(like);
-
     axios.post(apiUrl3, likeUser).then((response) => {
-      history.go(0);
+      setLikeCnt(likeCnt + 1);
+      setLike([response.data]);
     });
   };
 
   const onClickNoneLike = () => {
     axios.delete(apiUrl3 + `${like[0].like_id}/`).then((response) => {
-      history.go(0);
+      setLikeCnt(likeCnt - 1);
+      setLike(response.data);
     });
   };
 

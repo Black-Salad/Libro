@@ -41,17 +41,16 @@ const Register = () => {
   }));
   const classes = useStyles();
 
-  const [pwConfirm, setPwConfirm] = useState("");
-  const apiUrl1 = `http://localhost:8000/api/user/`;
-  const apiUrl2 = `http://localhost:8000/api/user/?user_email=${user.user_email}`;
-  const checkbox = useRef(null);
-  let history = useHistory();
-
   const [user, setUser] = useState({
     user_email: "",
     user_pw: "",
     user_name: "",
   });
+  const [pwConfirm, setPwConfirm] = useState("");
+  const apiUrl1 = `http://localhost:8000/api/user/`;
+  const apiUrl2 = `http://localhost:8000/api/user/?user_email=${user.user_email}`;
+  const checkbox = useRef(null);
+  let history = useHistory();
 
   const [error, setError] = useState({
     user_name: false,
@@ -80,11 +79,11 @@ const Register = () => {
         else setError({ ...error, user_email: false });
         break;
       case "user_pw":
-        if (user.user_pw != pwConfirm) setError({ ...error, user_pw: true });
+        if (user.user_pw !== pwConfirm) setError({ ...error, user_pw: true });
         else setError({ ...error, user_pw: false });
         break;
       case "user_pw_confirm":
-        if (user.user_pw != pwConfirm) setError({ ...error, user_pw: true });
+        if (user.user_pw !== pwConfirm) setError({ ...error, user_pw: true });
         else setError({ ...error, user_pw: false });
         break;
       default:
@@ -101,9 +100,9 @@ const Register = () => {
   const register = () => {
     console.log(user);
     if (
-      user.user_name.length == 0 ||
-      user.user_email.length == 0 ||
-      user.user_pw.length == 0
+      user.user_name.length === 0 ||
+      user.user_email.length === 0 ||
+      user.user_pw.length === 0
     ) {
       alert("공란을 입력바랍니다.");
       return false;
@@ -121,7 +120,7 @@ const Register = () => {
 
     axios.get(apiUrl2).then((response) => {
       console.log(response);
-      if (response.data.length == 0) {
+      if (response.data.length === 0) {
         axios
           .post(apiUrl1, user)
           .then(() => {

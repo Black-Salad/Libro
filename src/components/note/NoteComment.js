@@ -15,7 +15,7 @@ const NoteComment = (props) => {
     if (window.confirm("해당 댓글을 삭제하시겠습니까?")) {
       axios
         .patch(apiUrl, { comment_state: false })
-        .then((response) => {
+        .then(() => {
           alert("삭제완료");
           history.go(0);
         })
@@ -26,7 +26,7 @@ const NoteComment = (props) => {
   };
   return (
     <>
-      {loginUserId != props.item.user_id ? (
+      {loginUserId !== props.item.user_id ? (
         <div className="chat-msg">
           <div className="popover popover-static bs-popover-right">
             <div className="arrow"></div>

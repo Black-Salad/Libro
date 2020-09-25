@@ -109,29 +109,34 @@ const ViewnoteDetail = (props) => {
           <hr />
           <p>{note.note_contents}</p>
           <div className="btn-group-sm pt-3 list-with-gap">
-            <Link to="/viewnotes">
-              <button
-                className="btn btn-outline-primary btn-sm has-icon"
-                type="button"
-              >
-                목록
-              </button>
-            </Link>
-            <Link to={`/modifynote/${note.note_id}`}>
-              <button
-                className="btn btn-outline-success btn-sm has-icon"
-                type="button"
-              >
-                수정
-              </button>
-            </Link>
             <button
-              className="btn btn-outline-danger btn-sm has-icon"
+              className="btn btn-outline-primary btn-sm has-icon"
               type="button"
-              onClick={() => onDelete(note.note_id)}
+              onClick={() => {
+                history.go(-1);
+              }}
             >
-              삭제
+              목록
             </button>
+            {note.user_id == loginUserId ? (
+              <>
+                <Link to={`/modifynote/${note.note_id}`}>
+                  <button
+                    className="btn btn-outline-success btn-sm has-icon"
+                    type="button"
+                  >
+                    수정
+                  </button>
+                </Link>
+                <button
+                  className="btn btn-outline-danger btn-sm has-icon"
+                  type="button"
+                  onClick={() => onDelete(note.note_id)}
+                >
+                  삭제
+                </button>
+              </>
+            ) : null}
           </div>
         </div>
       </div>
