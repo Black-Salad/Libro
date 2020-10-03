@@ -7,13 +7,14 @@ import NoteComment from "./NoteComment";
 import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
 import NoteLike from "./NoteLike";
 
-const ViewnoteDetail = (props) => {
+const NoteDetail = (props) => {
   let history = useHistory();
   const cookies = new Cookies();
 
   const loginUserId = cookies.get("loginUserId");
   const loginUserName = cookies.get("loginUserName");
   const loginUserEmail = cookies.get("loginUserEmail");
+  const loginUserImg = cookies.get("loginUserImg");
 
   const apiUrl = `http://localhost:8000/api/note/${props.noteIDX}/`;
   const apiUrl2 = `http://localhost:8000/api/note/comment?note_id=${props.noteIDX}`;
@@ -25,6 +26,7 @@ const ViewnoteDetail = (props) => {
     note_id: props.noteIDX,
     user_id: loginUserId,
     user_name: loginUserName,
+    user_img: loginUserImg,
     comment_contents: "",
   });
 
@@ -74,7 +76,7 @@ const ViewnoteDetail = (props) => {
     }
     axios.post(apiUrl3, comment).then((response) => {
       console.log(response.data);
-      history.go(0);
+      setComments(comments.append(response.data));
     });
   };
 
@@ -111,26 +113,21 @@ const ViewnoteDetail = (props) => {
           <div className="btn-group-sm pt-3 list-with-gap">
             <button
               className="btn btn-outline-primary btn-sm has-icon"
-              type="button"
               onClick={() => {
-                history.go(-1);
+                history.push(`/room/${note.user_id}`);
               }}
             >
-              목록
+              Room
             </button>
             {note.user_id == loginUserId ? (
               <>
                 <Link to={`/modifynote/${note.note_id}`}>
-                  <button
-                    className="btn btn-outline-success btn-sm has-icon"
-                    type="button"
-                  >
+                  <button className="btn btn-outline-success btn-sm has-icon">
                     수정
                   </button>
                 </Link>
                 <button
                   className="btn btn-outline-danger btn-sm has-icon"
-                  type="button"
                   onClick={() => onDelete(note.note_id)}
                 >
                   삭제
@@ -171,7 +168,6 @@ const ViewnoteDetail = (props) => {
               <div className="input-group-append">
                 <button
                   className="btn btn-primary"
-                  type="button"
                   onClick={() => commentWrite()}
                 >
                   댓글등록
@@ -185,4 +181,4 @@ const ViewnoteDetail = (props) => {
   );
 };
 
-export default ViewnoteDetail;
+export default NoteDetail;

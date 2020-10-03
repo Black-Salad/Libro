@@ -26,21 +26,23 @@ const NoteComment = (props) => {
   };
   return (
     <>
-      {loginUserId !== props.item.user_id ? (
+      {loginUserId != props.item.user_id ? (
         <div className="chat-msg">
           <div className="popover popover-static bs-popover-right">
             <div className="arrow"></div>
 
             <div className="popover-body">
               <div className="media">
-                <Link to="" data-toggle="collapse" data-target=".forum-content">
-                  <img
-                    src="../img/user1.svg"
-                    className="mr-1 rounded-circle"
-                    width="50"
-                    alt="User"
-                  />
-                </Link>
+                <img
+                  src={props.item.user_img}
+                  className="mr-1 rounded-circle"
+                  width="50"
+                  alt="User"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    history.push(`/room/${props.item.user_id}`);
+                  }}
+                />
                 <div className="media-body ml-2">
                   <strong>{props.item.user_name}</strong>
 
@@ -58,7 +60,6 @@ const NoteComment = (props) => {
       ) : (
         <div className="chat-msg right">
           <button
-            type="button"
             className="btn btn-xs has-icon text-danger"
             onClick={() => commentDelate(props.item.comment_id)}
           >

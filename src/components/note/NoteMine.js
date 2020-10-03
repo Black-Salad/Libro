@@ -135,7 +135,10 @@ const NoteMine = () => {
                   <img
                     src={item.book_img}
                     alt="..."
-                    style={{ width: "70%", margin: "auto" }}
+                    style={{ width: "60%", margin: "auto", cursor: "pointer" }}
+                    onClick={() => {
+                      history.push(`/viewnotedetail/${item.note_id}`);
+                    }}
                   />
                   <div className="card-body">
                     <h6 className="card-title">

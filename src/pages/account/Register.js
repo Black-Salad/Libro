@@ -49,6 +49,7 @@ const Register = () => {
   const [pwConfirm, setPwConfirm] = useState("");
   const apiUrl1 = `http://localhost:8000/api/user/`;
   const apiUrl2 = `http://localhost:8000/api/user/?user_email=${user.user_email}`;
+  const apiUrl3 = `http://localhost:8000/api/user/?user_name=${user.user_name}`;
   const checkbox = useRef(null);
   let history = useHistory();
 
@@ -71,8 +72,17 @@ const Register = () => {
   const onkeyup = (e) => {
     switch (e.target.name) {
       case "user_name":
-        if (user.user_name.length <= 1) setError({ ...error, user_name: true });
-        else setError({ ...error, user_name: false });
+        axios.get(apiUrl3).then((response) => {
+          console.log(response.data);
+          if (response.data.length !== 0) {
+            setError({ ...error, user_name: true });
+          } else {
+            if (user.user_name.length <= 1)
+              setError({ ...error, user_name: true });
+            else setError({ ...error, user_name: false });
+          }
+        });
+
         break;
       case "user_email":
         if (!isEmail(user.user_email)) setError({ ...error, user_email: true });
@@ -156,7 +166,9 @@ const Register = () => {
               onKeyUp={(e) => onkeyup(e)}
               error={error.user_name}
               helperText={
-                error.user_name ? "최소 2글자 이상 입력바랍니다." : ""
+                error.user_name
+                  ? "최소 2글자 이상 또는 사용 중인 이름입니다."
+                  : ""
               }
             />
             <TextField

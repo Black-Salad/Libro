@@ -42,7 +42,7 @@ const LoginTest = () => {
   const classes = useStyles();
 
   const [user, setUser] = useState({ user_email: "", user_pw: "" });
-  const apiUrl1 = `http://localhost:8000/api/user/?user_email=${user.user_email}`;
+  const apiUrl1 = `http://localhost:8000/api/user/?user_email=${user.user_email}&user_state=true`;
   let history = useHistory();
   let cookies = new Cookies();
   const now = new Date();
@@ -85,7 +85,10 @@ const LoginTest = () => {
 
     // email,pw 확인 후 쿠키저장 후 index화면으로 이동
     axios.get(apiUrl1).then((response) => {
-      if (response.data[0].user_pw == user.user_pw) {
+      console.log(response.data);
+      if (response.data.length == 0) {
+        alert("탈퇴한 계정 정보입니다.");
+      } else if (response.data[0].user_pw == user.user_pw) {
         cookies.set("loginUserId", response.data[0].user_id, { maxAge: 3600 });
         cookies.set("loginUserName", response.data[0].user_name, {
           maxAge: 3600,

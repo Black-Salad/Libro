@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import Moment from "react-moment";
+import "react-responsive-modal/styles.css";
+import { Modal } from "react-responsive-modal";
 import NoteLike from "./NoteLike";
+import NoteDetail from "./NoteDetail";
 import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import Button from "@material-ui/core/Button";
@@ -13,7 +16,12 @@ import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 
 const NoteSearch = (props) => {
+  let history = useHistory();
   const [notes, setNotes] = useState([]);
+  const [modal, setModal] = useState({
+    open: false,
+    note_id: 0,
+  });
   const [more, setMore] = useState({
     limit: 8,
     show: false,
@@ -92,6 +100,23 @@ const NoteSearch = (props) => {
     });
   };
 
+  //모달창
+  const openModal = (noteIDX) => {
+    const popupWidth = 500;
+    const popupHeight = 700;
+    const popupX = document.body.offsetWidth / 2 - popupWidth / 2;
+    const popupY = window.screen.height / 2 - popupHeight / 2;
+    const url = `/viewnotedetail/${noteIDX}`;
+    const options = `top=${popupY}, left=${popupX}, width=${popupWidth}, height=${popupHeight}, status=no, menubar=no, toolbar=no, resizable=no`;
+    window.open(url, "독서록", options);
+
+    // setModal({ open: true, note_id: noteIDX });
+  };
+
+  const closeModal = () => {
+    setModal({ ...modal, open: false });
+  };
+
   const useStyles = makeStyles((theme) => ({
     root: {
       padding: "2px 4px",
@@ -142,11 +167,12 @@ const NoteSearch = (props) => {
                   <img
                     src={item.book_img}
                     alt="..."
-                    style={{ width: "70%", margin: "auto" }}
+                    style={{ width: "60%", margin: "auto", cursor: "pointer" }}
+                    onClick={() => openModal(item.note_id)}
                   />
                   <div className="card-body">
                     <h6 className="card-title">
-                      <Link to={`/viewnotedetail/${item.note_id}`}>
+                      <Link onClick={() => openModal(item.note_id)}>
                         {item.note_title}
                       </Link>
                     </h6>
@@ -172,6 +198,19 @@ const NoteSearch = (props) => {
           );
         })}
       </div>
+
+      <Modal
+        open={modal.open}
+        onClose={closeModal}
+        center
+        classNames={{ modal: "modal-content" }}
+        styles={{
+          overlay: { zIndex: 2000 },
+        }}
+      >
+        <NoteDetail noteIDX={modal.note_id} />
+      </Modal>
+
       {more.show ? (
         <Button
           fullWidth

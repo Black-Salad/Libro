@@ -4,10 +4,11 @@ import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import Box from "@material-ui/core/Box";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import PersonAddDisabledIcon from "@material-ui/icons/PersonAddDisabled";
 import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 
 const RoomProfile = (props) => {
   const apiUrl1 = `http://localhost:8000/api/user/${props.userIDX}`;
@@ -24,16 +25,19 @@ const RoomProfile = (props) => {
       });
   }, []);
 
-  const useStyles = makeStyles(() => ({
+  const useStyles = makeStyles((theme) => ({
     card: {
       display: "flex",
       marginBottom: "1rem",
-    },
-    cardDetails: {
-      flex: 1,
+      padding: "1rem",
+      textAlign: "center",
+      [theme.breakpoints.up("sm")]: {
+        textAlign: "left",
+      },
     },
     cardMedia: {
       width: 160,
+      borderRadius: "50%!important",
     },
   }));
   const classes = useStyles();
@@ -41,9 +45,11 @@ const RoomProfile = (props) => {
   return (
     <Box>
       <Card className={classes.card}>
-        <img className={classes.cardMedia} src={user.user_img} alt="" />
-        <div className={classes.cardDetails}>
-          <CardContent>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={4} md={3} lg={2}>
+            <img className={classes.cardMedia} src={user.user_img} alt="" />
+          </Grid>
+          <Grid item xs={12} sm={8} md={9} lg={10}>
             <Typography component="h2" variant="h5">
               {user.user_name}
             </Typography>
@@ -57,11 +63,19 @@ const RoomProfile = (props) => {
               variant="contained"
               color="primary"
               startIcon={<PersonAddIcon />}
+              className="mr-2"
             >
               Follow
             </Button>
-          </CardContent>
-        </div>
+            <Button
+              variant="contained"
+              color="secondary"
+              startIcon={<PersonAddDisabledIcon />}
+            >
+              UnFollow
+            </Button>
+          </Grid>
+        </Grid>
       </Card>
     </Box>
   );

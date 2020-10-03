@@ -8,7 +8,9 @@ import { Link } from "react-router-dom";
 const Room = ({ match }) => {
   return (
     <Layout>
-      <BreadCrumbs breads={[<Link to="/room">Room</Link>]} />
+      <BreadCrumbs
+        breads={[<Link to={`/room/${match.params.userIDX}`}>Room</Link>]}
+      />
 
       <RoomProfile userIDX={match.params.userIDX} />
 
