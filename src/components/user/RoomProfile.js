@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import FollowButton from "./FollowButton";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import PersonAddDisabledIcon from "@material-ui/icons/PersonAddDisabled";
-import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
 const RoomProfile = (props) => {
-  const apiUrl1 = `http://localhost:8000/api/user/${props.userIDX}`;
+  const apiUrl1 = `http://localhost:8000/api/user/${props.userIDX}/`;
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -59,21 +57,7 @@ const RoomProfile = (props) => {
             <Typography variant="subtitle1" paragraph>
               {user.user_introduction}
             </Typography>
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<PersonAddIcon />}
-              className="mr-2"
-            >
-              Follow
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              startIcon={<PersonAddDisabledIcon />}
-            >
-              UnFollow
-            </Button>
+            <FollowButton userIDX={props.userIDX} />
           </Grid>
         </Grid>
       </Card>
