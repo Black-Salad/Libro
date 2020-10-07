@@ -9,6 +9,7 @@ import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import Button from "@material-ui/core/Button";
+import VisibilityOffOutlinedIcon from "@material-ui/icons/VisibilityOffOutlined";
 
 const NoteMine = () => {
   let history = useHistory();
@@ -157,7 +158,15 @@ const NoteMine = () => {
                   </div>
                   <div className="card-footer justify-content-between">
                     <span className="has-icon btn-xs">
-                      <RemoveRedEyeOutlinedIcon /> {item.note_viewcount}
+                      {item.note_private == true ? (
+                        <>
+                          <RemoveRedEyeOutlinedIcon /> {item.note_viewcount}
+                        </>
+                      ) : (
+                        <>
+                          <VisibilityOffOutlinedIcon /> PVT
+                        </>
+                      )}
                     </span>
 
                     <NoteLike noteIDX={item.note_id} />

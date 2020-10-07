@@ -30,7 +30,7 @@ const NoteSearch = (props) => {
 
   const apiUrl = `http://localhost:8000/api/book/?book_isbn=${props.bookISBN}`;
   const apiUrl1 = `http://localhost:8000/api/note/`;
-  const apiUrl2 = `http://localhost:8000/api/note/search/?search=`;
+  const apiUrl2 = `http://localhost:8000/api/note/search/?note_private=true&search=`;
 
   //값 가져와서 setNotes
   useEffect(() => {

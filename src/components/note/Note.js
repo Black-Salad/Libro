@@ -13,7 +13,7 @@ const Note = (props) => {
   let history = useHistory();
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
-  const apiUrl1 = `http://localhost:8000/api/note/?user_id=${props.userIDX}`;
+  const apiUrl1 = `http://localhost:8000/api/note/?user_id=${props.userIDX}&note_private=true`;
 
   const [notes, setNotes] = useState([]);
   const [more, setMore] = useState({
