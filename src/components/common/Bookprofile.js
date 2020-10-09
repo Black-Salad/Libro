@@ -66,7 +66,11 @@ const Bookprofile = (props) => {
             </div>
           </div>
         </div>
-        <BookButtons loginUser={LoginUser} currentBook={currentBook} />
+        <BookButtons
+          loginUser={LoginUser}
+          currentBook={currentBook}
+          setModalState={setModalState}
+        />
       </Modal>
     </div>
   );

@@ -14,6 +14,7 @@ import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { format } from "date-fns";
 import Grid from "@material-ui/core/Grid";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   gridRoot: {
@@ -37,7 +38,8 @@ const dateParse = (dateStr) => {
 };
 
 const BookButtons = (props) => {
-  const { loginUser, currentBook } = props;
+  const history = useHistory();
+  const { loginUser, currentBook, setModalState } = props;
   const [starBtn, setStarBtn] = useState({ exist: false });
   const [shelfStatus, setShelfStatus] = useState({
     exist: false,
@@ -326,6 +328,12 @@ const BookButtons = (props) => {
       }
     }
   };
+
+  const onClickWrite = () => {
+    setModalState({ open: false });
+    history.push("/writenote");
+  };
+
   return (
     <div>
       <div className={classes.root}>
@@ -398,7 +406,12 @@ const BookButtons = (props) => {
             )}
           </Grid>
           <Grid item xs={4} className={classes.noteBtns}>
-            <Fab size="small" color="default" title="독서록 쓰기">
+            <Fab
+              size="small"
+              color="default"
+              title="독서록 쓰기"
+              onClick={() => onClickWrite()}
+            >
               <CreateIcon />
             </Fab>
           </Grid>
