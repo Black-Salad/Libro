@@ -3,7 +3,7 @@ import "./App.css";
 import { Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Login from "./pages/account/Login";
-import Bookshelf from "./pages/Bookshelf";
+import BookshelfPage from "./pages/BookshelfPage";
 import Viewnotes from "./pages/note/Viewnotes";
 import Writenote from "./pages/note/Writenote";
 import Searchbooks from "./pages/Searchbooks";
@@ -19,19 +19,21 @@ import Room from "./pages/room/Room";
 function App() {
   return (
     <>
-      <Route exact path="/" component={Bookshelf} />
-      <Route path="/login" component={Login} />
-      <Route path="/viewnotes" component={Viewnotes} />
-      <Route path="/writenote" component={Writenote} />
-      <Route path="/modifynote/:noteIDX" component={Modifynote} />
-      <Route path="/search" component={Searchbooks} />
-      <Route path="/navigate" component={Navigate} />
-      <Route path="/myprofile" component={Myprofile} />
-      <Route path="/setting" component={Setting} />
-      <Route path="/register" component={Register} />
-      <Route path="/bookshelfmore" component={BookshelfMore} />
-      <Route path="/viewnotedetail/:noteIDX" component={ViewnoteDetail} />
-      <Route path="/Room" component={Room} />
+      <Layout>
+        <Route exact path="/" component={BookshelfPage} />
+        <Route path="/login" component={Login} />
+        <Route path="/viewnotes" component={Viewnotes} />
+        <Route path="/writenote" component={Writenote} />
+        <Route path="/modifynote/:noteIDX" component={Modifynote} />
+        <Route path="/search" component={Searchbooks} />
+        <Route path="/navigate" component={Navigate} />
+        <Route path="/myprofile" component={Myprofile} />
+        <Route path="/setting" component={Setting} />
+        <Route path="/register" component={Register} />
+        <Route path="/bookshelfmore" component={BookshelfMore} />
+        <Route path="/viewnotedetail/:noteIDX" component={ViewnoteDetail} />
+        <Route path="/Room" component={Room} />
+      </Layout>
     </>
   );
 }

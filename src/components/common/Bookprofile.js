@@ -1,19 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
-// import BookStar from "./BookStar";
-import { axios } from "axios";
-import { KAKAO_API_URL, KAKAO_API_KEY } from "../../constants/config";
-
-import { Fab } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import StarIcon from "@material-ui/icons/Star";
-import AddIcon from "@material-ui/icons/Add";
-import RemoveIcon from "@material-ui/icons/Remove";
-import CheckIcon from "@material-ui/icons/Check";
-import CreateIcon from "@material-ui/icons/Create";
+import BookButtons from "./BookButtons";
 
 const Bookprofile = (props) => {
+  const LoginUser = 2;
   const { open, setModalState, currentBook } = props;
 
   const onCloseModal = () => {
@@ -27,9 +18,12 @@ const Bookprofile = (props) => {
         onClose={onCloseModal}
         center
         classNames={{ modal: "modal-content" }}
-        styles={{ overlay: { zIndex: 2000 } }}
+        styles={{ overlay: { zIndex: 1050 } }}
       >
-        <div className="inner-main-body" style={{ fontSize: "120%" }}>
+        <div
+          className="inner-main-body"
+          style={{ fontSize: "120%", paddingBottom: 0 }}
+        >
           <div className="row">
             <div className="col-lg-3 col-md-3 col-sm-3 col-4 mb-1">
               <img
@@ -52,7 +46,6 @@ const Bookprofile = (props) => {
                   " 저 / " +
                   currentBook.publisher}
               </div>
-
               {currentBook.contents !== undefined ? (
                 <div
                   style={{
@@ -71,24 +64,7 @@ const Bookprofile = (props) => {
             </div>
           </div>
         </div>
-        <div>
-          {/* <BookStar /> */}
-          {/* <Fab size="small" color="default" title="관심 책에 추가">
-            <StarIcon />
-          </Fab> */}
-          <Fab size="small" color="primary" title="이 책 읽기">
-            <AddIcon />
-          </Fab>
-          <Fab size="small" color="primary" title="완독했어요">
-            <CheckIcon />
-          </Fab>
-          <Fab size="small" color="secondary" title="책꽂이에서 삭제">
-            <RemoveIcon />
-          </Fab>
-          <Fab size="small" color="default" title="독서록 쓰기">
-            <CreateIcon />
-          </Fab>
-        </div>
+        <BookButtons loginUser={LoginUser} currentBook={currentBook} />
       </Modal>
     </div>
   );
