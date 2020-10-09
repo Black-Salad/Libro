@@ -2,12 +2,16 @@ import React, { useState, useEffect } from "react";
 import { ChevronRight } from "react-feather";
 import BreadCrumbs from "../components/common/BreadCrumbs";
 import { Link } from "react-router-dom";
+import { Cookies } from "react-cookie";
 import axios from "axios";
 import Bookprofile from "../components/common/Bookprofile";
+import Layout from "../components/Layout";
 
 const BookshelfPage = () => {
   // 임시 데이터
-  const shelfUser = 2;
+  const cookies = new Cookies();
+  const loginUserId = cookies.get("loginUserId");
+  const shelfUser = loginUserId;
 
   // 보여줄 책 목록 저장 스테이트 * 3 (읽은 책, 읽는 중, 관심)
   const [didReads, setDidReads] = useState([]);
@@ -76,7 +80,7 @@ const BookshelfPage = () => {
   }, [modalState.open]);
 
   return (
-    <div>
+    <Layout>
       <BreadCrumbs breads={[<Link to="/">My Bookshelf</Link>]} />
 
       <div>
@@ -94,7 +98,7 @@ const BookshelfPage = () => {
             <div style={{ marginTop: 20, color: "grey" }}>
               읽고 있는 책이 없습니다.
               <br />
-              <Link to="/search">책 탐색하러 이동</Link>
+              <Link to="/searchbooks">책 탐색하러 이동</Link>
             </div>
           </div>
         ) : (
@@ -235,7 +239,7 @@ const BookshelfPage = () => {
         setModalState={setModalState}
         currentBook={currentBook}
       />
-    </div>
+    </Layout>
   );
 };
 

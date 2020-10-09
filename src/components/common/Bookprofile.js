@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
+import { Cookies } from "react-cookie";
 import BookButtons from "./BookButtons";
 
 const Bookprofile = (props) => {
-  const LoginUser = 2;
+  const cookies = new Cookies();
+  const LoginUser = cookies.get("loginUserId");
   const { open, setModalState, currentBook } = props;
 
   const onCloseModal = () => {

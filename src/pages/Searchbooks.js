@@ -6,6 +6,7 @@ import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import Pagination from "@material-ui/lab/Pagination";
+import Layout from "../components/Layout";
 
 import { KAKAO_API_URL, KAKAO_API_KEY } from "../constants/config";
 import BreadCrumbs from "../components/common/BreadCrumbs";
@@ -138,57 +139,59 @@ const Searchbooks = () => {
   ));
 
   return (
-    <div ref={myRef}>
-      <BreadCrumbs breads={["책 검색"]} />
-      {/* <div className="d-flex align-items-center collapse transition-none show blog-toolbar"> */}
+    <Layout>
+      <div ref={myRef}>
+        <BreadCrumbs breads={["책 검색"]} />
+        {/* <div className="d-flex align-items-center collapse transition-none show blog-toolbar"> */}
 
-      {/* 검색창 구역 */}
-      <Paper component="form" className={classes.searchWin}>
-        <InputBase
-          className={classes.input}
-          placeholder="제목 / 저자명 / 출판사"
-          // inputProps={{ "aria-label": "search google maps" }}
-          name="keyword"
-          value={keyword}
-          onChange={onChangeKeyword}
-        />
-        <IconButton
-          type="submit"
-          className={classes.iconButton}
-          aria-label="search"
-          onClick={(e) => onSearchBook(e, keyword, 1)}
-        >
-          <SearchIcon />
-        </IconButton>
-      </Paper>
-
-      <ul className="list-group list-group-example">
-        {result.itemCount !== 0 ? (
-          displayList
-        ) : (
-          <li className="list-group-item d-flex align-items-center">
-            검색하신 책이 존재하지 않습니다.
-          </li>
-        )}
-      </ul>
-      <Bookprofile
-        open={modalState.open}
-        setModalState={setModalState}
-        currentBook={currentBook}
-      />
-      {result.loading ? (
-        <div className={classes.paging}>
-          <Pagination
-            count={totalPage}
-            page={currentPage}
-            size="small"
-            shape="rounded"
-            onChange={(event, page) => onSearchBook(event, keyword, page)}
-            style={{ textAlign: "center" }}
+        {/* 검색창 구역 */}
+        <Paper component="form" className={classes.searchWin}>
+          <InputBase
+            className={classes.input}
+            placeholder="제목 / 저자명 / 출판사"
+            // inputProps={{ "aria-label": "search google maps" }}
+            name="keyword"
+            value={keyword}
+            onChange={onChangeKeyword}
           />
-        </div>
-      ) : null}
-    </div>
+          <IconButton
+            type="submit"
+            className={classes.iconButton}
+            aria-label="search"
+            onClick={(e) => onSearchBook(e, keyword, 1)}
+          >
+            <SearchIcon />
+          </IconButton>
+        </Paper>
+
+        <ul className="list-group list-group-example">
+          {result.itemCount !== 0 ? (
+            displayList
+          ) : (
+            <li className="list-group-item d-flex align-items-center">
+              검색하신 책이 존재하지 않습니다.
+            </li>
+          )}
+        </ul>
+        <Bookprofile
+          open={modalState.open}
+          setModalState={setModalState}
+          currentBook={currentBook}
+        />
+        {result.loading ? (
+          <div className={classes.paging}>
+            <Pagination
+              count={totalPage}
+              page={currentPage}
+              size="small"
+              shape="rounded"
+              onChange={(event, page) => onSearchBook(event, keyword, page)}
+              style={{ textAlign: "center" }}
+            />
+          </div>
+        ) : null}
+      </div>
+    </Layout>
   );
 };
 

@@ -1,12 +1,13 @@
 import React from "react";
 import BreadCrumbs from "../components/common/BreadCrumbs";
+import Layout from "../components/Layout";
 
 const Navigate = () => {
   return (
-    <div>
+    <Layout>
       <BreadCrumbs breads={["둘러보기"]} />
       둘러보기
-    </div>
+    </Layout>
   );
 };
 

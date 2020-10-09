@@ -20,7 +20,7 @@ import BookshelfMore from "./pages/BookshelfMore";
 function App() {
   return (
     <>
-<Route exact path="/" component={BookshelfPage} />
+      <Route exact path="/" component={BookshelfPage} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       <Route path="/viewnotes" component={Viewnotes} />

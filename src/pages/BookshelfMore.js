@@ -2,15 +2,19 @@ import React, { useState, useEffect } from "react";
 import BreadCrumbs from "../components/common/BreadCrumbs";
 import { Link } from "react-router-dom";
 import queryString from "query-string";
+import { Cookies } from "react-cookie";
 import axios from "axios";
 import Bookprofile from "../components/common/Bookprofile";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import Paper from "@material-ui/core/Paper";
+import Layout from "../components/Layout";
 
 const BookshelfMore = ({ location, match }) => {
   // 임시 데이터
-  const shelfUser = 2;
+  const cookies = new Cookies();
+  const loginUserId = cookies.get("loginUserId");
+  const shelfUser = loginUserId;
 
   const query = queryString.parse(location.search);
   const { kind } = query;
@@ -82,7 +86,7 @@ const BookshelfMore = ({ location, match }) => {
   }, [modalState.open]);
 
   return (
-    <div>
+    <Layout>
       <BreadCrumbs
         breads={[
           <Link to="/">My Bookshelf</Link>,
@@ -154,7 +158,7 @@ const BookshelfMore = ({ location, match }) => {
         setModalState={setModalState}
         currentBook={currentBook}
       />
-    </div>
+    </Layout>
   );
 };
 
