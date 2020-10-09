@@ -1,6 +1,6 @@
 import React from "react";
 import BreadCrumbs from "../../components/common/BreadCrumbs";
-import ViewnoteDetailCom from "../../components/note/ViewnoteDetail";
+import NoteDetail from "../../components/note/NoteDetail";
 import { Link } from "react-router-dom";
 import Layout from "../../components/Layout";
 
@@ -12,7 +12,7 @@ const ViewnoteDetail = ({ match }) => {
       />
 
       {/* note contents */}
-      <ViewnoteDetailCom noteIDX={match.params.noteIDX} />
+      <NoteDetail noteIDX={match.params.noteIDX} />
     </Layout>
   );
 };

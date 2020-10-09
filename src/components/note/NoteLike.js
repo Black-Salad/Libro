@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { Cookies } from "react-cookie";
 import axios from "axios";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
@@ -7,10 +8,8 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 const NoteLike = (props) => {
   let now = new Date();
   let history = useHistory();
-
-  const loginUserId = 2;
-  const loginUserName = "test01";
-  const loginUserEmail = "test01@naver.com";
+  const cookies = new Cookies();
+  const loginUserId = cookies.get("loginUserId");
 
   const apiUrl1 = `http://localhost:8000/api/note/like?note_id=${props.noteIDX}`;
   const apiUrl2 = `http://localhost:8000/api/note/like?note_id=${props.noteIDX}&user_id=${loginUserId}`;
@@ -28,30 +27,26 @@ const NoteLike = (props) => {
   //useEffect
   useEffect(() => {
     axios.get(apiUrl2).then((response) => {
-      console.log("like", response.data);
       setLike(response.data);
     });
 
     axios.get(apiUrl1).then((response) => {
-      console.log("likecnt", response.data.length);
       setLikeCnt(response.data.length);
     });
   }, []);
 
   //좋아요버튼
   const onClickLike = () => {
-    console.log(like);
-
     axios.post(apiUrl3, likeUser).then((response) => {
-      console.log("like", response);
-      history.go(0);
+      setLikeCnt(likeCnt + 1);
+      setLike([response.data]);
     });
   };
 
   const onClickNoneLike = () => {
     axios.delete(apiUrl3 + `${like[0].like_id}/`).then((response) => {
-      console.log("none like", response);
-      history.go(0);
+      setLikeCnt(likeCnt - 1);
+      setLike(response.data);
     });
   };
 
@@ -63,7 +58,7 @@ const NoteLike = (props) => {
           onClick={onClickNoneLike}
         >
           <FavoriteIcon color="secondary" />
-          {likeCnt}
+          &nbsp;{likeCnt}
         </span>
       ) : (
         <span
@@ -71,7 +66,7 @@ const NoteLike = (props) => {
           onClick={onClickLike}
         >
           <FavoriteBorderIcon color="secondary" />
-          {likeCnt}
+          &nbsp;{likeCnt}
         </span>
       )}
     </>

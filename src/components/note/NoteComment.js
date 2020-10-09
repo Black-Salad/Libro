@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link, useHistory } from "react-router-dom";
+import { Cookies } from "react-cookie";
 import axios from "axios";
 import Moment from "react-moment";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 
 const NoteComment = (props) => {
   let history = useHistory();
-
-  const loginUserId = 1;
-  const loginUserName = "test01";
-  const loginUserEmail = "test01@naver.com";
+  const cookies = new Cookies();
+  const loginUserId = cookies.get("loginUserId");
 
   const commentDelate = (comment_id) => {
     const apiUrl = `http://localhost:8000/api/note/comment/${comment_id}/`;
     if (window.confirm("해당 댓글을 삭제하시겠습니까?")) {
       axios
         .patch(apiUrl, { comment_state: false })
-        .then((response) => {
-          console.log("comment delete Data", response);
+        .then(() => {
           alert("삭제완료");
           history.go(0);
         })
@@ -35,14 +33,16 @@ const NoteComment = (props) => {
 
             <div className="popover-body">
               <div className="media">
-                <Link to="" data-toggle="collapse" data-target=".forum-content">
-                  <img
-                    src="../img/user1.svg"
-                    className="mr-1 rounded-circle"
-                    width="50"
-                    alt="User"
-                  />
-                </Link>
+                <img
+                  src={props.item.user_img}
+                  className="mr-1 rounded-circle"
+                  width="50"
+                  alt="User"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    history.push(`/room/${props.item.user_id}`);
+                  }}
+                />
                 <div className="media-body ml-2">
                   <strong>{props.item.user_name}</strong>
 
@@ -60,7 +60,6 @@ const NoteComment = (props) => {
       ) : (
         <div className="chat-msg right">
           <button
-            type="button"
             className="btn btn-xs has-icon text-danger"
             onClick={() => commentDelate(props.item.comment_id)}
           >
