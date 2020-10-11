@@ -1,6 +1,7 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import Login from "./pages/account/Login";
+import BookshelfPage from "./pages/BookshelfPage";
 import Register from "./pages/account/Register";
 import Viewnotes from "./pages/note/Viewnotes";
 import Writenote from "./pages/note/Writenote";
@@ -19,7 +20,7 @@ import BookshelfMore from "./pages/BookshelfMore";
 function App() {
   return (
     <>
-      <Route exact path="/" component={Bookshelf} />
+      <Route exact path="/" component={BookshelfPage} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       <Route path="/viewnotes" component={Viewnotes} />

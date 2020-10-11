@@ -1,66 +1,51 @@
-import React, { useState } from "react";
-import { Search } from "react-feather";
+import React, { useState, useRef } from "react";
 import axios from "axios";
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import InputBase from "@material-ui/core/InputBase";
+import IconButton from "@material-ui/core/IconButton";
+import SearchIcon from "@material-ui/icons/Search";
+import Pagination from "@material-ui/lab/Pagination";
+import Layout from "../components/Layout";
+
 import { KAKAO_API_URL, KAKAO_API_KEY } from "../constants/config";
 import BreadCrumbs from "../components/common/BreadCrumbs";
-import Bookitem from "../components/common/Bookitem";
 import Bookprofile from "../components/common/Bookprofile";
 
+const useStyles = makeStyles((theme) => ({
+  searchWin: {
+    padding: "2px 4px",
+    display: "flex",
+    alignItems: "center",
+    width: "75%",
+    height: "40px",
+    marginBottom: "15px",
+  },
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
+  },
+  iconButton: {
+    padding: 10,
+  },
+  paging: {
+    "& > *": {
+      marginTop: theme.spacing(2),
+      // margin: "20px auto",
+      // width: "100%",
+    },
+  },
+}));
+const scrollToTop = (ref) => window.scrollTo(0, ref.current.offsetTop);
 const Searchbooks = () => {
-  // 임시 데이터입니다.
-  const [myBooks, setMyBooks] = useState([
-    {
-      idx: 1,
-      kind: "reading",
-      title: "아가미",
-      authors: ["구병모"],
-      isbn: "1162203390 9791162203392",
-      thumbnail: "/img/book_thumbnail/아가미.jpg",
-    },
-    {
-      idx: 2,
-      kind: "finished",
-      title: "여행의이유",
-      authors: ["김영하"],
-      isbn: "8936433695 9788936433697",
-      thumbnail: "/img/book_thumbnail/여행의이유.jpg",
-    },
-    {
-      idx: 3,
-      kind: "finished",
-      title: "파과",
-      authors: ["구병모"],
-      isbn: "1162203625 9791162203620",
-      thumbnail: "/img/book_thumbnail/파과.jpg",
-    },
-    {
-      idx: 4,
-      kind: "interested",
-      title: "돈만 모으는 여자는 위험하다",
-      authors: ["정은길"],
-      isbn: "8960869031 9788960869035",
-      thumbnail: "/img/book_thumbnail/돈만모으는여자는위험하다.jpg",
-    },
-    {
-      idx: 5,
-      kind: "interested",
-      title: "젠더는 해롭다",
-      authors: ["쉴라 제프리스"],
-      isbn: "1190158027 9791190158022",
-      thumbnail: "/img/book_thumbnail/젠더는해롭다.jpg",
-    },
-    {
-      idx: 6,
-      kind: "finished",
-      title: "글쓰기 특강",
-      authors: ["유시민"],
-      isbn: "8965133521 9788965133520",
-      thumbnail: "/img/book_thumbnail/글쓰기특강.jpg",
-    },
-  ]);
+  const classes = useStyles();
+  // 모달 스테이트
   const [modalState, setModalState] = useState({ open: false });
+  const onOpenModal = (book) => {
+    setModalState({ open: true });
+    setCurrentBook(book);
+  };
   // 현재 선택한 책 정보 저장하는 스테이트
-
   const [currentBook, setCurrentBook] = useState({
     idx: 0,
     kind: "",
@@ -70,10 +55,6 @@ const Searchbooks = () => {
     thumbnail: "",
   });
 
-  const onOpenModal = (book) => {
-    setModalState({ open: true });
-    setCurrentBook(book);
-  };
   // 검색 키워드 스테이트 정의 및 초기값 세팅
   const [keyword, setKeyword] = useState("");
   // 검색 결과 저장하는 스테이트
@@ -82,8 +63,20 @@ const Searchbooks = () => {
     itemCount: null,
     itemList: [],
   });
+  const onChangeKeyword = (e) => {
+    setKeyword(e.target.value);
+  };
 
-  const onSearchBook = (query, sort) => {
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const myRef = useRef(null);
+
+  // 검색 AJAX 메서드
+  const onSearchBook = (e, query, page) => {
+    e.preventDefault();
+    setCurrentPage(page);
+
     if (query === "") {
       alert("검색어를 입력하세요");
       return false;
@@ -92,24 +85,25 @@ const Searchbooks = () => {
     axios
       .get(url, {
         headers: {
-          // "Content-Type": "application/json; charset=utf-8",
-          // Host: "dapi.kakao.com",
           Authorization: `KakaoAK ${KAKAO_API_KEY}`,
         },
         params: {
           query: `${query}`,
-          sort: `${sort}`,
-          //size: 8,
+          page: page,
+          size: 8,
         },
         timeout: 3000,
       })
       .then(({ data }) => {
-        console.log(data);
+        console.log(data.meta);
         setResult({
           loading: true,
-          itemCount: data.meta.total_count,
+          itemCount: data.meta.pageable_count,
           itemList: data.documents,
         });
+
+        setTotalPage(Math.ceil(data.meta.pageable_count / 8));
+        scrollToTop(myRef);
       })
       .catch((err) => {
         console.error(err); // 에러 표시
@@ -121,10 +115,6 @@ const Searchbooks = () => {
           alert("검색하신 책이 존재하지 않습니다.");
         }
       });
-  };
-
-  const onChangeKeyword = (e) => {
-    setKeyword(e.target.value);
   };
 
   const displayList = result.itemList.map((item, index) => (
@@ -141,7 +131,6 @@ const Searchbooks = () => {
             {item.authors.join(", ") + " 저"}
           </span>
           <div>
-            {}
             <span className="badge badge-info"></span>
           </div>
         </div>
@@ -150,46 +139,59 @@ const Searchbooks = () => {
   ));
 
   return (
-    <div>
-      <BreadCrumbs breads={["책 검색"]} />
-      {/* <div className="d-flex align-items-center collapse transition-none show blog-toolbar"> */}
+    <Layout>
+      <div ref={myRef}>
+        <BreadCrumbs breads={["책 검색"]} />
+        {/* <div className="d-flex align-items-center collapse transition-none show blog-toolbar"> */}
 
-      {/* 검색창 구역 */}
-      <div className="col-lg-12 col-md-12 col-sm-12 mb-3">
-        <input
-          type="text"
-          className="col-11 bg-gray-200 border-gray-200 rounded-lg"
-          name="keyword"
-          value={keyword}
-          onChange={onChangeKeyword}
-          // onKeyPress={onKeyPressFunction}
-          placeholder="제목 / 저자명 / 출판사"
+        {/* 검색창 구역 */}
+        <Paper component="form" className={classes.searchWin}>
+          <InputBase
+            className={classes.input}
+            placeholder="제목 / 저자명 / 출판사"
+            // inputProps={{ "aria-label": "search google maps" }}
+            name="keyword"
+            value={keyword}
+            onChange={onChangeKeyword}
+          />
+          <IconButton
+            type="submit"
+            className={classes.iconButton}
+            aria-label="search"
+            onClick={(e) => onSearchBook(e, keyword, 1)}
+          >
+            <SearchIcon />
+          </IconButton>
+        </Paper>
+
+        <ul className="list-group list-group-example">
+          {result.itemCount !== 0 ? (
+            displayList
+          ) : (
+            <li className="list-group-item d-flex align-items-center">
+              검색하신 책이 존재하지 않습니다.
+            </li>
+          )}
+        </ul>
+        <Bookprofile
+          open={modalState.open}
+          setModalState={setModalState}
+          currentBook={currentBook}
         />
-        <button
-          className="col-1 btn btn-light btn-sm btn-icon ml-auto mr-1"
-          onClick={() => onSearchBook(keyword, "recency")}
-        >
-          <Search />
-        </button>
+        {result.loading ? (
+          <div className={classes.paging}>
+            <Pagination
+              count={totalPage}
+              page={currentPage}
+              size="small"
+              shape="rounded"
+              onChange={(event, page) => onSearchBook(event, keyword, page)}
+              style={{ textAlign: "center" }}
+            />
+          </div>
+        ) : null}
       </div>
-
-      <ul className="list-group list-group-example">
-        {result.itemCount !== 0 ? (
-          displayList
-        ) : (
-          <li className="list-group-item d-flex align-items-center">
-            검색하신 책이 존재하지 않습니다.
-          </li>
-        )}
-      </ul>
-      {/* </div> */}
-      {/* <Temp /> */}
-      <Bookprofile
-        open={modalState.open}
-        setModalState={setModalState}
-        currentBook={currentBook}
-      />
-    </div>
+    </Layout>
   );
 };
 
