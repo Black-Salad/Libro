@@ -16,6 +16,7 @@ import Searchbooks from "./pages/Searchbooks";
 import Navigate from "./pages/Navigate";
 import Myprofile from "./pages/Myprofile";
 import BookshelfMore from "./pages/BookshelfMore";
+import Timeline from "./pages/Timeline";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
       <Route path="/myprofile" component={Myprofile} />
       <Route path="/setting" component={Setting} />
       <Route path="/bookshelfmore" component={BookshelfMore} />
+      <Route path="/timeline" component={Timeline} />
     </>
   );
 }

@@ -7,6 +7,7 @@ import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import CheckIcon from "@material-ui/icons/Check";
 import CreateIcon from "@material-ui/icons/Create";
+import FindInPageIcon from "@material-ui/icons/FindInPage";
 import Popover from "@material-ui/core/Popover";
 import { yellow } from "@material-ui/core/colors";
 import { Chip } from "@material-ui/core";
@@ -14,7 +15,7 @@ import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { format } from "date-fns";
 import Grid from "@material-ui/core/Grid";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   gridRoot: {
@@ -147,13 +148,25 @@ const BookButtons = (props) => {
                   })
                   .then((response) => {
                     setStarBtn({ exist: true });
+                    console.log(response);
+                    axios
+                      .post(`http://localhost:8000/api/timeline/`, {
+                        user_id: loginUser,
+                        tl_kind: "3",
+                        star_id: response.data.star_id,
+                      })
+                      .then((res) => {
+                        console.log(res);
+                      })
+                      .catch((res) => {
+                        console.error(res);
+                      });
                   })
                   .catch((response) => {
                     console.error(response);
                   });
               } else {
                 // book db에 없으면 추가.
-                console.log("여기");
                 axios
                   .post(`http://localhost:8000/api/book/`, {
                     book_title: currentBook.title,
@@ -175,6 +188,19 @@ const BookButtons = (props) => {
                       })
                       .then((response) => {
                         setStarBtn({ exist: true });
+                        console.log(response);
+                        axios
+                          .post(`http://localhost:8000/api/timeline/`, {
+                            user_id: loginUser,
+                            tl_kind: "3",
+                            star_id: response.data.star_id,
+                          })
+                          .then((res) => {
+                            console.log(res);
+                          })
+                          .catch((res) => {
+                            console.error(res);
+                          });
                       })
                       .catch((response) => {
                         console.error(response);
@@ -221,6 +247,18 @@ const BookButtons = (props) => {
                 start_date: response.data.start_date,
                 end_date: response.data.end_date,
               });
+              axios
+                .post(`http://localhost:8000/api/timeline/`, {
+                  user_id: loginUser,
+                  tl_kind: "1",
+                  shelf_id: response.data.shelf_id,
+                })
+                .then((res) => {
+                  console.log(res);
+                })
+                .catch((res) => {
+                  console.error(res);
+                });
               handleClose();
             })
             .catch((response) => {
@@ -258,6 +296,18 @@ const BookButtons = (props) => {
                     start_date: response.data.start_date,
                     end_date: response.data.end_date,
                   });
+                  axios
+                    .post(`http://localhost:8000/api/timeline/`, {
+                      user_id: loginUser,
+                      tl_kind: "1",
+                      shelf_id: response.data.shelf_id,
+                    })
+                    .then((res) => {
+                      console.log(res);
+                    })
+                    .catch((res) => {
+                      console.error(res);
+                    });
                   handleClose();
                 })
                 .catch((response) => {
@@ -292,6 +342,18 @@ const BookButtons = (props) => {
             start_date: response.data.start_date,
             end_date: response.data.end_date,
           });
+          axios
+            .post(`http://localhost:8000/api/timeline/`, {
+              user_id: loginUser,
+              tl_kind: "2",
+              shelf_id: response.data.shelf_id,
+            })
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((res) => {
+              console.error(res);
+            });
           handleClose();
         })
         .catch((response) => {
@@ -414,6 +476,15 @@ const BookButtons = (props) => {
             >
               <CreateIcon />
             </Fab>
+            <Link to={`/searchnotes/${currentBook.isbn}`}>
+              <Fab
+                size="small"
+                color="default"
+                title="이 책에 대한 독서록 탐색"
+              >
+                <FindInPageIcon />
+              </Fab>
+            </Link>
           </Grid>
         </Grid>
       </div>

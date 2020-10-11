@@ -11,7 +11,7 @@ const NoteForm = (props) => {
 
   const apiUrl = `http://localhost:8000/api/note/`;
   const apiUrl2 = `http://localhost:8000/api/note/${props.noteIDX}/`;
-  const apiUrl3 = `http://localhost:8000/api/book/shelf/join/?user_id=${loginUserId}&shelf_state=1`;
+  const apiUrl3 = `http://localhost:8000/api/book/shelf/join/?user_id=${loginUserId}&shelf_state=2`;
   const apiUrl4 = `http://localhost:8000/api/book/`;
 
   const [note, setNote] = useState({});

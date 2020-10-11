@@ -101,8 +101,12 @@ const Sidebar = () => {
           </li>
 
           <li className="nav-item">
-            <Link to="/navigate">
-              <span className={`nav-link has-ico`}>
+            <Link to="/timeline">
+              <span
+                className={`nav-link has-icon show ${
+                  selectedMenu === "timeline" ? "active" : null
+                }`}
+              >
                 <Icon.Clock />
                 타임라인
               </span>
