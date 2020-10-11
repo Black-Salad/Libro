@@ -10,7 +10,6 @@ const SettingProfile = () => {
   const cookies = new Cookies();
 
   const loginUserId = cookies.get("loginUserId");
-  const loginUserName = cookies.get("loginUserName");
   const loginUserEmail = cookies.get("loginUserEmail");
 
   const apiUrl1 = `http://localhost:8000/api/user/${loginUserId}/`;

@@ -95,6 +95,7 @@ const SettingPassword = () => {
             onChange={(e) => userPwOnChange(e)}
             onKeyUp={(e) => onkeyup(e)}
             error={error.user_pw}
+            autoComplete="current-password"
           />
           <TextField
             variant="outlined"
@@ -104,6 +105,7 @@ const SettingPassword = () => {
             label="New password"
             name="user_pw"
             onChange={(e) => pwOnChange(e)}
+            autoComplete="new-password"
           />
           <TextField
             variant="outlined"
@@ -115,6 +117,7 @@ const SettingPassword = () => {
             onChange={(e) => pwConfirmOnChange(e)}
             onKeyUp={(e) => onkeyup(e)}
             error={error.user_pw_confirm}
+            autoComplete="new-password"
           />
         </div>
         <Button

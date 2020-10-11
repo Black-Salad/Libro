@@ -30,7 +30,7 @@ const NoteSearch = (props) => {
 
   const apiUrl = `http://localhost:8000/api/book/?book_isbn=${props.bookISBN}`;
   const apiUrl1 = `http://localhost:8000/api/note/`;
-  const apiUrl2 = `http://localhost:8000/api/note/search/?search=`;
+  const apiUrl2 = `http://localhost:8000/api/note/search/?note_private=true&search=`;
 
   //값 가져와서 setNotes
   useEffect(() => {
@@ -172,7 +172,7 @@ const NoteSearch = (props) => {
                   />
                   <div className="card-body">
                     <h6 className="card-title">
-                      <Link onClick={() => openModal(item.note_id)}>
+                      <Link to="" onClick={() => openModal(item.note_id)}>
                         {item.note_title}
                       </Link>
                     </h6>
@@ -190,7 +190,7 @@ const NoteSearch = (props) => {
                       <RemoveRedEyeOutlinedIcon /> {item.note_viewcount}
                     </span>
 
-                    <NoteLike noteIDX={item.note_id} />
+                    <NoteLike noteIDX={item.note_id} userIDX={item.user_id} />
                   </div>
                 </div>
               </div>

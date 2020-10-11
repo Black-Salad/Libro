@@ -11,10 +11,18 @@ const FollowButton = (props) => {
   const loginUserId = cookies.get("loginUserId");
 
   const apiUrl1 = `http://localhost:8000/api/user/follow/`;
+  const apiUrl4 = `http://localhost:8000/api/user/alarm/`;
   const [followCnt, setFollowCnt] = useState();
   const [follow, setFollow] = useState({
     user_id: loginUserId,
     target_user_id: props.userIDX,
+  });
+  const [alarm, setAlarm] = useState({
+    user_id: loginUserId,
+    target_user_id: props.userIDX,
+    note_id: 0,
+    alarm_type: 1,
+    alarm_status: true,
   });
 
   // useEffect
@@ -32,6 +40,11 @@ const FollowButton = (props) => {
     axios.post(apiUrl1, follow).then((response) => {
       setFollowCnt(1);
       setFollow(response.data);
+
+      // 알람
+      axios.post(apiUrl4, alarm).then((response) => {
+        console.log("Alarm", response.data);
+      });
     });
   };
 
@@ -53,7 +66,8 @@ const FollowButton = (props) => {
               variant="contained"
               color="primary"
               startIcon={<PersonAddIcon />}
-              className="mr-2"
+              className="mb-1"
+              size="small"
               onClick={() => followBtn()}
             >
               Follow
@@ -65,6 +79,8 @@ const FollowButton = (props) => {
               variant="contained"
               color="secondary"
               startIcon={<PersonAddDisabledIcon />}
+              className="mb-1"
+              size="small"
               onClick={() => unFollowBtn()}
             >
               UnFollow

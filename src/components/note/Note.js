@@ -13,7 +13,7 @@ const Note = (props) => {
   let history = useHistory();
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
-  const apiUrl1 = `http://localhost:8000/api/note/?user_id=${props.userIDX}`;
+  const apiUrl1 = `http://localhost:8000/api/note/?user_id=${props.userIDX}&note_private=true`;
 
   const [notes, setNotes] = useState([]);
   const [more, setMore] = useState({
@@ -101,8 +101,8 @@ const Note = (props) => {
                       <RemoveRedEyeOutlinedIcon /> {item.note_viewcount}
                     </span>
 
-                    <NoteLike noteIDX={item.note_id} />
-                    {item.user_id === loginUserId ? (
+                    <NoteLike noteIDX={item.note_id} userIDX={item.user_id} />
+                    {item.user_id == loginUserId ? (
                       <span
                         className="btn btn-link has-icon btn-xs bigger-130 text-danger"
                         onClick={() => onDelete(item.note_id)}

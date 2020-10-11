@@ -14,6 +14,7 @@ const NoteLike = (props) => {
   const apiUrl1 = `http://localhost:8000/api/note/like?note_id=${props.noteIDX}`;
   const apiUrl2 = `http://localhost:8000/api/note/like?note_id=${props.noteIDX}&user_id=${loginUserId}`;
   const apiUrl3 = `http://localhost:8000/api/note/like/`;
+  const apiUrl4 = `http://localhost:8000/api/user/alarm/`;
 
   const [like, setLike] = useState({});
   const [likeUser, setLikeUser] = useState({
@@ -21,8 +22,14 @@ const NoteLike = (props) => {
     user_id: loginUserId,
     like_date: now.toISOString(),
   });
-
   const [likeCnt, setLikeCnt] = useState(0);
+  const [alarm, setAlarm] = useState({
+    user_id: loginUserId,
+    target_user_id: props.userIDX,
+    note_id: props.noteIDX,
+    alarm_type: 2,
+    alarm_status: true,
+  });
 
   //useEffect
   useEffect(() => {
@@ -40,6 +47,13 @@ const NoteLike = (props) => {
     axios.post(apiUrl3, likeUser).then((response) => {
       setLikeCnt(likeCnt + 1);
       setLike([response.data]);
+
+      // 본인이 한 게시물엔 알람 안가게
+      if (loginUserId != props.userIDX) {
+        axios.post(apiUrl4, alarm).then((response) => {
+          console.log("Alarm", response.data);
+        });
+      }
     });
   };
 
