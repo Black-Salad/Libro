@@ -172,7 +172,7 @@ const NoteSearch = (props) => {
                   />
                   <div className="card-body">
                     <h6 className="card-title">
-                      <Link onClick={() => openModal(item.note_id)}>
+                      <Link to="" onClick={() => openModal(item.note_id)}>
                         {item.note_title}
                       </Link>
                     </h6>
@@ -190,7 +190,7 @@ const NoteSearch = (props) => {
                       <RemoveRedEyeOutlinedIcon /> {item.note_viewcount}
                     </span>
 
-                    <NoteLike noteIDX={item.note_id} />
+                    <NoteLike noteIDX={item.note_id} userIDX={item.user_id} />
                   </div>
                 </div>
               </div>

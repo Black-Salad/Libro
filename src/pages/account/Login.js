@@ -85,7 +85,6 @@ const LoginTest = () => {
 
     // email,pw 확인 후 쿠키저장 후 index화면으로 이동
     axios.get(apiUrl1).then((response) => {
-      console.log(response.data);
       if (response.data.length == 0) {
         alert("탈퇴한 계정 정보입니다.");
       } else if (response.data[0].user_pw == user.user_pw) {
@@ -127,6 +126,7 @@ const LoginTest = () => {
                   : user.user_email
               }
               autoFocus
+              autoComplete="username"
             />
             <TextField
               variant="outlined"
@@ -137,6 +137,7 @@ const LoginTest = () => {
               onKeyPress={(e) => onKeyPress(e)}
               label="Password"
               type="password"
+              autoComplete="current-password"
             />
             <FormControlLabel
               control={

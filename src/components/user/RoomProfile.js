@@ -10,17 +10,23 @@ import Grid from "@material-ui/core/Grid";
 
 const RoomProfile = (props) => {
   const apiUrl1 = `http://localhost:8000/api/user/${props.userIDX}/`;
+  const apiUrl2 = `http://localhost:8000/api/user/follow/`;
   const [user, setUser] = useState({});
+  const [follower, setFollower] = useState();
+  const [following, setFollowing] = useState();
 
   useEffect(() => {
-    axios
-      .get(apiUrl1)
-      .then((response) => {
-        setUser(response.data);
-      })
-      .catch((response) => {
-        console.error(response);
-      });
+    axios.get(apiUrl1).then((response) => {
+      setUser(response.data);
+    });
+    axios.get(apiUrl2 + `?user_id=${props.userIDX}`).then((response) => {
+      console.log(response.data);
+      setFollowing(response.data.length);
+    });
+    axios.get(apiUrl2 + `?target_user_id=${props.userIDX}`).then((response) => {
+      console.log(response.data);
+      setFollower(response.data.length);
+    });
   }, []);
 
   const useStyles = makeStyles((theme) => ({
@@ -34,8 +40,16 @@ const RoomProfile = (props) => {
       },
     },
     cardMedia: {
-      width: 160,
+      maxWidth: 180,
       borderRadius: "50%!important",
+    },
+    cardName: {
+      "@media (max-width: 599px)": {
+        width: "100%",
+      },
+      "@media (min-width: 599px)": {
+        marginRight: "1rem",
+      },
     },
   }));
   const classes = useStyles();
@@ -44,20 +58,30 @@ const RoomProfile = (props) => {
     <Box>
       <Card className={classes.card}>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={4} md={3} lg={2}>
+          <Grid item xs={12} sm={4} md={4} lg={3}>
             <img className={classes.cardMedia} src={user.user_img} alt="" />
           </Grid>
-          <Grid item xs={12} sm={8} md={9} lg={10}>
-            <Typography component="h2" variant="h5">
-              {user.user_name}
-            </Typography>
+          <Grid item xs={12} sm={8} md={8} lg={9}>
+            <Grid container>
+              <Typography
+                component="h2"
+                variant="h5"
+                className={classes.cardName}
+              >
+                {user.user_name}
+              </Typography>
+              <Grid item sm={3} xs={12}>
+                <FollowButton userIDX={props.userIDX} />
+              </Grid>
+            </Grid>
+            팔로워 <b>{follower}</b> 팔로우 <b>{following}</b>
+            <hr />
             <Typography variant="subtitle1" color="textSecondary">
               {user.user_email}
             </Typography>
             <Typography variant="subtitle1" paragraph>
-              {user.user_introduction}
+              {user.user_introduction} <br />
             </Typography>
-            <FollowButton userIDX={props.userIDX} />
           </Grid>
         </Grid>
       </Card>

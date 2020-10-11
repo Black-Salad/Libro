@@ -42,7 +42,7 @@ const Account = () => {
 
   const deleteUser = () => {
     if (window.confirm("정말로 탈퇴하시겠습니까?")) {
-      axios.patch(apiUrl1, { user_state: false }).then((response) => {
+      axios.patch(apiUrl1, { user_state: false }).then(() => {
         alert("탈퇴완료");
         cookies.remove("loginUserId");
         cookies.remove("loginUserName");

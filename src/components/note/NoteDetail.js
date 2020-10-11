@@ -19,6 +19,7 @@ const NoteDetail = (props) => {
   const apiUrl = `http://localhost:8000/api/note/${props.noteIDX}/`;
   const apiUrl2 = `http://localhost:8000/api/note/comment?note_id=${props.noteIDX}`;
   const apiUrl3 = `http://localhost:8000/api/note/comment/`;
+  const apiUrl4 = `http://localhost:8000/api/user/alarm/`;
 
   const [note, setNote] = useState({});
   const [comments, setComments] = useState([]);
@@ -29,12 +30,20 @@ const NoteDetail = (props) => {
     user_img: loginUserImg,
     comment_contents: "",
   });
+  const [alarm, setAlarm] = useState({
+    user_id: loginUserId,
+    target_user_id: 0,
+    note_id: props.noteIDX,
+    alarm_type: 3,
+    alarm_status: true,
+  });
 
   //useEffect
   useEffect(() => {
     axios.get(apiUrl).then((response) => {
       console.log("noteDetail Data", response);
       setNote(response.data);
+      setAlarm({ ...alarm, target_user_id: response.data.user_id });
 
       //조회수 추후 cookie로 조건문
       axios.patch(apiUrl, { note_viewcount: response.data.note_viewcount + 1 });
@@ -76,7 +85,13 @@ const NoteDetail = (props) => {
     }
     axios.post(apiUrl3, comment).then((response) => {
       console.log(response.data);
-      setComments(comments.append(response.data));
+
+      // 본인이 한 게시물엔 알람 안가게
+      if (loginUserId != alarm.target_user_id) {
+        axios.post(apiUrl4, alarm).then((response) => {
+          console.log("Alarm", response.data);
+        });
+      }
     });
   };
 
@@ -141,7 +156,7 @@ const NoteDetail = (props) => {
       {/* 댓글 */}
       <div className="card p-2" style={{ marginTop: "10px" }}>
         <div className="card-body">
-          {/* 댓글for문 */}
+          댓글for문
           {comments.map((item, index) => {
             return (
               <React.Fragment key={index}>
@@ -149,7 +164,6 @@ const NoteDetail = (props) => {
               </React.Fragment>
             );
           })}
-
           {/* 댓글쓰기form */}
           <br />
           <form className="chat-form">

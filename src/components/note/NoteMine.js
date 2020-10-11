@@ -169,7 +169,7 @@ const NoteMine = () => {
                       )}
                     </span>
 
-                    <NoteLike noteIDX={item.note_id} />
+                    <NoteLike noteIDX={item.note_id} userIDX={item.user_id} />
 
                     <span
                       className="btn btn-link has-icon btn-xs bigger-130 text-danger"

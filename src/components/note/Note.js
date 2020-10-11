@@ -101,8 +101,8 @@ const Note = (props) => {
                       <RemoveRedEyeOutlinedIcon /> {item.note_viewcount}
                     </span>
 
-                    <NoteLike noteIDX={item.note_id} />
-                    {item.user_id === loginUserId ? (
+                    <NoteLike noteIDX={item.note_id} userIDX={item.user_id} />
+                    {item.user_id == loginUserId ? (
                       <span
                         className="btn btn-link has-icon btn-xs bigger-130 text-danger"
                         onClick={() => onDelete(item.note_id)}
