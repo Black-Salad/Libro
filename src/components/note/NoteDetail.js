@@ -156,7 +156,7 @@ const NoteDetail = (props) => {
       {/* 댓글 */}
       <div className="card p-2" style={{ marginTop: "10px" }}>
         <div className="card-body">
-          댓글for문
+          댓글
           {comments.map((item, index) => {
             return (
               <React.Fragment key={index}>

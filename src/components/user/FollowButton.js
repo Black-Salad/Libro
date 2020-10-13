@@ -41,6 +41,12 @@ const FollowButton = (props) => {
       setFollowCnt(1);
       setFollow(response.data);
 
+      // timeline
+      axios.post(`http://localhost:8000/api/timeline/`, {
+        user_id: loginUserId,
+        tl_kind: "7",
+        follow_id: response.data.follow_id,
+      });
       // 알람
       axios.post(apiUrl4, alarm).then((response) => {
         console.log("Alarm", response.data);

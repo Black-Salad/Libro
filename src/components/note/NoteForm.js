@@ -97,8 +97,16 @@ const NoteForm = (props) => {
     if (window.confirm("등록하시겠습니까?")) {
       axios.post(apiUrl, note).then((response) => {
         console.log(response.data);
-        alert("등록완료");
-        history.push("/viewnotes");
+        axios
+          .post(`http://localhost:8000/api/timeline/`, {
+            user_id: loginUserId,
+            tl_kind: "4",
+            note_id: response.data.note_id,
+          })
+          .then((response) => {
+            alert("등록완료");
+            history.push("/viewnotes");
+          });
       });
     }
   };

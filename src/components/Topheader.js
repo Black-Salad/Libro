@@ -37,10 +37,10 @@ const Topheader = () => {
       setMore({ ...more, show: response.data.length > 3 ? true : false });
       console.log(response);
     });
-    window.addEventListener("click", clickBodyEvent);
-    return () => {
-      window.addEventListener("click", clickBodyEvent);
-    };
+    // window.addEventListener("click", clickBodyEvent);
+    // return () => {
+    //   window.addEventListener("click", clickBodyEvent);
+    // };
   }, []);
 
   // 로그아웃

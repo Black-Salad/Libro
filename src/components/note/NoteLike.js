@@ -54,6 +54,11 @@ const NoteLike = (props) => {
           console.log("Alarm", response.data);
         });
       }
+      axios.post(`http://localhost:8000/api/timeline/`, {
+        user_id: loginUserId,
+        tl_kind: "5",
+        like_id: response.data.like_id,
+      });
     });
   };
 
