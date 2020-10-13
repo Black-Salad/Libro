@@ -26,8 +26,6 @@ const NoteDetail = (props) => {
   const [comment, setComment] = useState({
     note_id: props.noteIDX,
     user_id: loginUserId,
-    user_name: loginUserName,
-    user_img: loginUserImg,
     comment_contents: "",
   });
   const [alarm, setAlarm] = useState({
@@ -116,7 +114,7 @@ const NoteDetail = (props) => {
             </div>
 
             <div className="has-icon">
-              <NoteLike noteIDX={props.noteIDX} />
+              <NoteLike noteIDX={props.noteIDX} userIDX={note.user_id} />
               <RemoveRedEyeOutlinedIcon /> {note.note_viewcount}
             </div>
           </div>
@@ -156,7 +154,7 @@ const NoteDetail = (props) => {
       {/* 댓글 */}
       <div className="card p-2" style={{ marginTop: "10px" }}>
         <div className="card-body">
-          댓글for문
+          {/* 댓글for문 */}
           {comments.map((item, index) => {
             return (
               <React.Fragment key={index}>

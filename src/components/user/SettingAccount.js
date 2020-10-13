@@ -36,6 +36,7 @@ const Account = () => {
   const changeUserName = () => {
     axios.patch(apiUrl1, { user_name: userName }).then((response) => {
       alert("변경완료");
+      cookies.set("loginUserName", userName);
       history.go(0);
     });
   };

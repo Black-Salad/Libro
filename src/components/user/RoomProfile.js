@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
+import { Link } from "react-router-dom";
 
 const RoomProfile = (props) => {
   const apiUrl1 = `http://localhost:8000/api/user/${props.userIDX}/`;
@@ -40,7 +41,8 @@ const RoomProfile = (props) => {
       },
     },
     cardMedia: {
-      maxWidth: 180,
+      width: 180,
+      height: 170,
       borderRadius: "50%!important",
     },
     cardName: {
@@ -74,7 +76,12 @@ const RoomProfile = (props) => {
                 <FollowButton userIDX={props.userIDX} />
               </Grid>
             </Grid>
-            팔로워 <b>{follower}</b> 팔로우 <b>{following}</b>
+            <Link to={`/follower/${props.userIDX}`}>
+              팔로워 <b>{follower}</b>
+            </Link>{" "}
+            <Link to={`/follow/${props.userIDX}`}>
+              팔로우 <b>{following}</b>
+            </Link>
             <hr />
             <Typography variant="subtitle1" color="textSecondary">
               {user.user_email}

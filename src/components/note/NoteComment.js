@@ -34,7 +34,7 @@ const NoteComment = (props) => {
             <div className="popover-body">
               <div className="media">
                 <img
-                  src={props.item.user_img}
+                  src={props.item.user_id.user_img}
                   className="mr-1 rounded-circle"
                   width="50"
                   alt="User"
@@ -44,7 +44,7 @@ const NoteComment = (props) => {
                   }}
                 />
                 <div className="media-body ml-2">
-                  <strong>{props.item.user_name}</strong>
+                  <strong>{props.item.user_id.user_name}</strong>
 
                   <p>{props.item.comment_contents}</p>
                   <time className="chat-time">

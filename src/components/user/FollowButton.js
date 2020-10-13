@@ -20,7 +20,6 @@ const FollowButton = (props) => {
   const [alarm, setAlarm] = useState({
     user_id: loginUserId,
     target_user_id: props.userIDX,
-    note_id: 0,
     alarm_type: 1,
     alarm_status: true,
   });
