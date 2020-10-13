@@ -52,19 +52,20 @@ const Bookshelf = () => {
     <div>
       <BreadCrumbs breads={[<Link to="/">My Bookshelf</Link>]} />
 
-      <div>
-        <div style={{ display: "flex" }}>
-          <span>읽고 있는 책 </span>
-          <span style={{ marginLeft: "auto" }}>
-            <Link to="/bookshelfmore?kind=reading">
-              more
-              <ChevronRight />
-            </Link>
-          </span>
-        </div>
+      <section>
+        {/* <div style={{ display: "flex" }}> */}
+        <p className="font-size-m">읽고 있는 책 </p>
+        <span style={{ marginLeft: "auto" }}>
+          <Link to="/bookshelfmore?kind=reading">
+            more
+            <ChevronRight />
+          </Link>
+        </span>
+        {/* </div> */}
         <Books list={readings} setHasChanged={setHasChanged}></Books>
-      </div>
+      </section>
       <hr />
+
       <div>
         <div style={{ display: "flex" }}>
           <span>읽은 책 </span>
@@ -78,6 +79,7 @@ const Bookshelf = () => {
         </div>
         <Books list={didReads} setHasChanged={setHasChanged}></Books>
       </div>
+
       <hr />
       <div>
         <div style={{ display: "flex" }}>

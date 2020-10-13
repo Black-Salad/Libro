@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import * as Icon from "react-feather";
 import { Link, useHistory } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import axios from "axios";
+// import $ from "jquery";
 
 import HomeIcon from "@material-ui/icons/Home";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -17,8 +18,12 @@ const Topheader = () => {
   let history = useHistory();
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
-  const apiUrl1 = `http://localhost:8000/api/user/alarm/join/?target_user_id=${loginUserId}&alarm_state=true`;
+  const apiUrl1 = `http://localhost:8000/api/user/alarm/`;
+  const apiUrl2 = `http://localhost:8000/api/user/alarm/join/?target_user_id=${loginUserId}`;
+  const apiUrl3 = `http://localhost:8000/api/user/alarm/join/?target_user_id=${loginUserId}&alarm_state=true`;
   const [alarm, setAlarm] = useState([]);
+  const [alarmCnt, setAlarmCnt] = useState();
+  const [cnt, setCnt] = useState(0);
   const [more, setMore] = useState({
     limit: 3,
     show: true,
@@ -32,15 +37,16 @@ const Topheader = () => {
       window.location = "/login";
     }
 
-    axios.get(apiUrl1).then((response) => {
+    axios.get(apiUrl2).then((response) => {
       setAlarm(response.data);
       setMore({ ...more, show: response.data.length > 3 ? true : false });
       console.log(response);
     });
-    // window.addEventListener("click", clickBodyEvent);
-    // return () => {
-    //   window.addEventListener("click", clickBodyEvent);
-    // };
+
+    axios.get(apiUrl3).then((response) => {
+      setAlarmCnt(response.data.length);
+      console.log("cnt", response.data.length);
+    });
   }, []);
 
   // 로그아웃
@@ -83,17 +89,59 @@ const Topheader = () => {
   };
 
   const showBtn = () => {
-    setShow("show");
+    setCnt(cnt + 1);
+    if (cnt % 2 === 0) {
+      setShow("");
+    } else {
+      setShow("show");
+    }
   };
 
-  const alarmMenu = useRef(null);
-  const alarmIcon = useRef(null);
-  const clickBodyEvent = (event) => {
-    if (
-      !alarmMenu.current.contains(event.target) &&
-      !alarmIcon.current.contains(event.target)
-    ) {
-      setShow("");
+  // var $ = require("jquery");
+  // $("body").click(function (e) {
+  //   // if (e.target !== e.currentTarget) return;
+  //   if (e.target.getAttribute("id") === "alarmIcon") {
+  //     if (show === "show") {
+  //       setShow("");
+  //     } else {
+  //       setShow("show");
+  //     }
+  //   }
+
+  // } else if (!$(e.target).hasClass("alarmDropdown")) {
+  //   // } else if (e.target.getAttribute("id") == "alarmDropdown") {
+  //   setShow("show");
+  //   console.log("hasClass", e.target);
+  // } else {
+  //   console.log(e.target);
+  //   setShow("");
+  // }
+
+  // if (!$(e.target).is("#alarmDropdown") || !$(e.target).is("#alarmIcon")) {
+
+  // if (!$(e.target).hasClass("alarmIcon")) {
+  //   console.log(e.target);
+  //   setShow("");
+  // } else {
+  //   setShow("show");
+  // }
+  // });
+
+  // 알람 클릭시 좋아요,댓글은 해당 독서록으로, 팔로우는 룸 이동
+  const viewAlarm = (alarmIDX, alarmType, noteIDX, userIDX) => {
+    if (alarmType !== 1) {
+      axios
+        .patch(apiUrl1 + `${alarmIDX}/`, { alarm_state: false })
+        .then((response) => {
+          console.log("response", response);
+          history.push(`/viewnotedetail/${noteIDX.note_id}`);
+        });
+    } else {
+      axios
+        .patch(apiUrl1 + `${alarmIDX}/`, { alarm_state: false })
+        .then((response) => {
+          history.push(`/room/${userIDX}`);
+        });
     }
   };
 
@@ -111,26 +159,25 @@ const Topheader = () => {
         <span style={{ marginLeft: "7px" }}>Libro</span>
       </div>
 
-      {/* alarm dropdown */}
+      {/* 알람 */}
       <ul className="nav nav-circle ml-auto">
         <li className={`nav-item dropdown nav-notif ${show}`}>
           <Link
             to="#"
-            className="nav-link nav-link-faded nav-icon has-badge dropdown-toggle no-caret"
-            data-toggle="dropdown"
-            data-display="static"
-            // onClick={() => showBtn()}
-            // ref={alarmIcon}
+            className="nav-link nav-link-faded nav-icon has-badge dropdown-toggle no-caret "
+            // data-toggle="dropdown"
+            // data-display="static"
+            onClick={() => showBtn()}
           >
             <Icon.Bell />
             <span className="badge badge-pill badge-danger">
-              {alarm.length > 0 ? alarm.length : null}
+              {alarmCnt > 0 ? alarmCnt : null}
             </span>
           </Link>
 
           <div
             className={`dropdown-menu dropdown-menu-right p-0 ${show}`}
-            // ref={alarmMenu}
+            style={{ maxHeight: "500px", overflowY: "auto" }}
           >
             <div className="card">
               <div className="card-header bg-dark text-white">
@@ -142,20 +189,32 @@ const Topheader = () => {
                   <React.Fragment key={index}>
                     <div className="card-body p-0 pt-1">
                       <div className="list-group list-group-sm list-group-flush">
-                        <Link
-                          to="#"
+                        <div
+                          onClick={() =>
+                            viewAlarm(
+                              item.alarm_id,
+                              item.alarm_type,
+                              item.note_id,
+                              item.user_id.user_id
+                            )
+                          }
                           className="list-group-item list-group-item-action"
+                          style={{
+                            cursor: "pointer",
+                            backgroundColor:
+                              item.alarm_state === true ? "#edf2f7" : null,
+                          }}
                         >
                           <div className="media">
                             {/* alarm type에 따른 로고 변경 */}
                             {(function () {
-                              if (item.alarm_type == 1) {
+                              if (item.alarm_type === 1) {
                                 return (
                                   <span className="bg-primary text-white btn-icon rounded-circle">
                                     <PersonAddIcon />
                                   </span>
                                 );
-                              } else if (item.alarm_type == 2) {
+                              } else if (item.alarm_type === 2) {
                                 return (
                                   <span className="bg-danger text-white btn-icon rounded-circle">
                                     <FavoriteIcon />
@@ -173,14 +232,14 @@ const Topheader = () => {
                               <p className="mb-0">
                                 {/* alarm type에 따른 메세지 변경 */}
                                 {(function () {
-                                  if (item.alarm_type == 1) {
+                                  if (item.alarm_type === 1) {
                                     return (
                                       <>
                                         <b>{item.user_id.user_name}</b>님이{" "}
                                         당신을 팔로우했습니다.
                                       </>
                                     );
-                                  } else if (item.alarm_type == 2) {
+                                  } else if (item.alarm_type === 2) {
                                     return (
                                       <>
                                         <b>{item.user_id.user_name}</b>님이{" "}
@@ -204,31 +263,31 @@ const Topheader = () => {
                               </small>
                             </div>
                           </div>
-                        </Link>
+                        </div>
                       </div>
                     </div>
                   </React.Fragment>
                 );
               })}
 
-              <div className="card-footer justify-content-center">
-                {/* {more.show ? (
+              <div className="card-footer justify-content-center ">
+                {more.show ? (
                   <Button
                     fullWidth
-                    className="text-secondary"
-                    startIcon={<MoreHorizIcon />}
+                    className="text-secondary "
+                    startIcon={<MoreHorizIcon id="" />}
                     onClick={() => moreBtn()}
+                    // id="alarmDropdown"
                   >
                     더보기
                   </Button>
-                ) : null} */}
-                <Link to="#">more &rsaquo;</Link>
+                ) : null}
               </div>
             </div>
           </div>
         </li>
 
-        {/* user dropdown */}
+        {/* 회원 프로필 */}
         <li className="nav-item dropdown ml-2">
           <Link
             to="#"
@@ -246,8 +305,9 @@ const Topheader = () => {
             </span>
           </Link>
 
+          {/* 회원 드롭다운 */}
           <div className="dropdown-menu dropdown-menu-right pt-0 overflow-hidden">
-            <div className="media align-items-center bg-primary text-white px-4 py-3 mb-2">
+            <div className="media align-items-center bg-dark text-white px-4 py-3 mb-2">
               <img
                 src={`${cookies.get("loginUserImg")}`}
                 alt=""

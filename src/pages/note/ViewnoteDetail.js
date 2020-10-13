@@ -7,9 +7,7 @@ import Layout from "../../components/Layout";
 const ViewnoteDetail = ({ match }) => {
   return (
     <Layout>
-      <BreadCrumbs
-        breads={[<Link to="/viewnotes">내 독서록</Link>, "독서록 상세"]}
-      />
+      <BreadCrumbs breads={["독서록 상세"]} />
 
       {/* note contents */}
       <NoteDetail noteIDX={match.params.noteIDX} />
