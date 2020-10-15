@@ -33,18 +33,18 @@ const FollowUser = (props) => {
   };
 
   return (
-    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-3 row-cols-xl-4 gutters-sm">
+    <div className="row row-cols-2 row-cols-sm-3 row-cols-md-3 row-cols-xl-4 gutters-sm">
       {follow.slice(0, more.limit).map((item, index) => {
         return (
           <React.Fragment key={index}>
-            <div class="col mb-3">
-              <div class="card">
+            <div className="col mb-3">
+              <div className="card">
                 <img
                   src="/img/pattern/pattern1-wide.png"
                   alt="Cover"
-                  class="card-img-top"
+                  className="card-img-top"
                 />
-                <div class="card-body text-center">
+                <div className="card-body text-center">
                   <img
                     src={item.target_user_id.user_img}
                     style={{
@@ -53,17 +53,19 @@ const FollowUser = (props) => {
                       marginTop: "-65px",
                     }}
                     alt="User"
-                    class="img-fluid img-thumbnail rounded-circle border-0 mb-3"
+                    className="img-fluid img-thumbnail rounded-circle border-0 mb-3"
                   />
-                  <h5 class="card-title">{item.target_user_id.user_name}</h5>
-                  <p class="text-secondary mb-1">
+                  <h5 className="card-title">
+                    {item.target_user_id.user_name}
+                  </h5>
+                  <p className="text-secondary mb-1">
                     {item.target_user_id.user_email}
                   </p>
-                  <p class="text-muted font-size-sm">
+                  <p className="text-muted font-size-sm">
                     {item.target_user_id.user_introduction}
                   </p>
                 </div>
-                <div class="card-footer" style={{ margin: "auto" }}>
+                <div className="card-footer" style={{ margin: "auto" }}>
                   <FollowButton userIDX={item.target_user_id.user_id} />
                 </div>
               </div>
