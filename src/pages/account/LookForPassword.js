@@ -3,8 +3,6 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
@@ -43,6 +41,7 @@ const LookForPassword = () => {
 
   const [email, setEmail] = useState();
   const [error, setError] = useState(false);
+  const apiUrl = `http://localhost:8000/api/user/`;
 
   // 값이 바뀔 때마다 onchange
   const OnChange = (e) => {
@@ -56,7 +55,59 @@ const LookForPassword = () => {
   };
 
   // 정상값 확인
-  const onkeyup = (e) => {};
+  const onkeyup = () => {
+    if (!isEmail(email)) setError(true);
+    else setError(false);
+  };
+
+  // 비밀번호 랜덤값 만들기
+  const newPW = () => {
+    var newPassword;
+    var randomValue = "abcdefghijklmnopqrstuvwxyz0123456789";
+    for (var i = 1; i <= 8; i++) {
+      var randomPoint = Math.round(Math.random() * 34 + 1);
+      var Pwdchar = randomValue.charAt(randomPoint);
+      if (i === 1) {
+        newPassword = Pwdchar;
+      } else {
+        newPassword += Pwdchar;
+      }
+    }
+    return newPassword;
+  };
+
+  // 비밀번호 이메일로 보내기
+  const passwordFind = () => {
+    axios.get(apiUrl + `?user_email=${email}`).then((response) => {
+      if (error) {
+        alert("이메일 형식을 확인해 주시길 바랍니다.");
+      } else if (response.data.length === 0) {
+        alert("가입 이력이 없는 계정입니다.");
+      } else if (response.data.user_state === false) {
+        alert("탈퇴 계정입니다.");
+      } else {
+        axios
+          .patch(apiUrl + `${response.data[0].user_id}/`, { user_pw: newPW() })
+          .then((response) => {
+            console.log(response.data);
+            axios
+              .post(
+                apiUrl +
+                  `password/?user_email=${response.data.user_email}&user_pw=${response.data.user_pw}`
+              )
+              .then((response) => {
+                console.log(response.data);
+                alert(
+                  "임시 비밀번호가 발급되었습니다. 이메일을 확인해주세요 😊"
+                );
+              });
+          })
+          .catch((response) => {
+            console.log(response);
+          });
+      }
+    });
+  };
 
   return (
     <>
@@ -65,34 +116,31 @@ const LookForPassword = () => {
           <Typography component="h1" variant="h5">
             <Icon.Feather /> Libro
           </Typography>
-          <Box fontSize={14}>
-            비밀번호를 찾고자 하는 계정의 이메일을 입력해 주세요.
-          </Box>
+
           <form className={classes.form} noValidate>
             <TextField
               variant="outlined"
               margin="normal"
               fullWidth
               name="user_name"
-              label="Username"
+              label="Email Address"
               autoFocus
               onChange={(e) => OnChange(e)}
-              onKeyUp={(e) => onkeyup(e)}
-              error={error.user_name}
-              helperText={
-                error.user_name
-                  ? "최소 2글자 이상 또는 사용 중인 이름입니다."
-                  : ""
-              }
+              onKeyUp={() => onkeyup()}
+              error={error}
+              helperText={error ? "이메일을 확인해주시길 바랍니다." : ""}
             />
+            <Box fontSize={11}>
+              임시 비밀번호를 발급하고자 하는 계정의 이메일을 입력해 주세요.
+            </Box>
             <Button
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
-              // onClick={() => register()}
+              onClick={() => passwordFind()}
             >
-              회원가입
+              임시 비밀번호 발급받기
             </Button>
             <Grid container justify="flex-end">
               <Grid item>

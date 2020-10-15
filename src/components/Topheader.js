@@ -3,7 +3,6 @@ import * as Icon from "react-feather";
 import { Link, useHistory } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import axios from "axios";
-// import $ from "jquery";
 
 import HomeIcon from "@material-ui/icons/Home";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -11,23 +10,15 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import Button from "@material-ui/core/Button";
 
 const Topheader = () => {
   let history = useHistory();
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
-  const apiUrl1 = `http://localhost:8000/api/user/alarm/`;
-  const apiUrl2 = `http://localhost:8000/api/user/alarm/join/?target_user_id=${loginUserId}`;
-  const apiUrl3 = `http://localhost:8000/api/user/alarm/join/?target_user_id=${loginUserId}&alarm_state=true`;
+  const apiUrl = `http://localhost:8000/api/user/alarm/`;
   const [alarm, setAlarm] = useState([]);
   const [alarmCnt, setAlarmCnt] = useState();
   const [cnt, setCnt] = useState(0);
-  const [more, setMore] = useState({
-    limit: 3,
-    show: true,
-  });
   const [show, setShow] = useState("");
 
   // 로그인정보가 없으면 로그인화면으로 이동
@@ -37,16 +28,19 @@ const Topheader = () => {
       window.location = "/login";
     }
 
-    axios.get(apiUrl2).then((response) => {
-      setAlarm(response.data);
-      setMore({ ...more, show: response.data.length > 3 ? true : false });
-      console.log(response);
-    });
+    axios
+      .get(apiUrl + `join/?target_user_id=${loginUserId}`)
+      .then((response) => {
+        setAlarm(response.data);
+        console.log(response);
+      });
 
-    axios.get(apiUrl3).then((response) => {
-      setAlarmCnt(response.data.length);
-      console.log("cnt", response.data.length);
-    });
+    axios
+      .get(apiUrl + `join/?target_user_id=${loginUserId}&alarm_state=true`)
+      .then((response) => {
+        setAlarmCnt(response.data.length);
+        console.log("cnt", response.data.length);
+      });
   }, []);
 
   // 로그아웃
@@ -78,16 +72,6 @@ const Topheader = () => {
     return `${Math.floor(betweenTimeDay / 365)}년전`;
   };
 
-  // 더보기 버튼
-  const moreBtn = () => {
-    console.log(alarm.length);
-    console.log(more.limit);
-    setMore({
-      show: alarm.length > more.limit + 3 ? true : false,
-      limit: more.limit + 3,
-    });
-  };
-
   const showBtn = () => {
     setCnt(cnt + 1);
     if (cnt % 2 === 0) {
@@ -97,48 +81,18 @@ const Topheader = () => {
     }
   };
 
-  // var $ = require("jquery");
-  // $("body").click(function (e) {
-  //   // if (e.target !== e.currentTarget) return;
-  //   if (e.target.getAttribute("id") === "alarmIcon") {
-  //     if (show === "show") {
-  //       setShow("");
-  //     } else {
-  //       setShow("show");
-  //     }
-  //   }
-
-  // } else if (!$(e.target).hasClass("alarmDropdown")) {
-  //   // } else if (e.target.getAttribute("id") == "alarmDropdown") {
-  //   setShow("show");
-  //   console.log("hasClass", e.target);
-  // } else {
-  //   console.log(e.target);
-  //   setShow("");
-  // }
-
-  // if (!$(e.target).is("#alarmDropdown") || !$(e.target).is("#alarmIcon")) {
-
-  // if (!$(e.target).hasClass("alarmIcon")) {
-  //   console.log(e.target);
-  //   setShow("");
-  // } else {
-  //   setShow("show");
-  // }
-  // });
-
   // 알람 클릭시 좋아요,댓글은 해당 독서록으로, 팔로우는 룸 이동
   const viewAlarm = (alarmIDX, alarmType, noteIDX, userIDX) => {
     if (alarmType !== 1) {
       axios
-        .patch(apiUrl1 + `${alarmIDX}/`, { alarm_state: false })
+        .patch(apiUrl + `${alarmIDX}/`, { alarm_state: false })
         .then((response) => {
           console.log("response", response);
           history.push(`/viewnotedetail/${noteIDX.note_id}`);
         });
     } else {
       axios
-        .patch(apiUrl1 + `${alarmIDX}/`, { alarm_state: false })
+        .patch(apiUrl + `${alarmIDX}/`, { alarm_state: false })
         .then((response) => {
           history.push(`/room/${userIDX}`);
         });
@@ -175,16 +129,12 @@ const Topheader = () => {
             </span>
           </Link>
 
-          <div
-            className={`dropdown-menu dropdown-menu-right p-0 ${show}`}
-            style={{ maxHeight: "500px", overflowY: "auto" }}
-          >
-            <div className="card">
-              <div className="card-header bg-dark text-white">
-                <Icon.Bell className="mr-2" /> 알람
-              </div>
-
-              {alarm.slice(0, more.limit).map((item, index) => {
+          <div className={`dropdown-menu dropdown-menu-right p-0 ${show}`}>
+            <div className="card-header bg-dark text-white">
+              <Icon.Bell className="mr-2" /> 알람
+            </div>
+            <div style={{ maxHeight: "350px", overflowY: "auto" }}>
+              {alarm.map((item, index) => {
                 return (
                   <React.Fragment key={index}>
                     <div className="card-body p-0 pt-1">
@@ -269,20 +219,6 @@ const Topheader = () => {
                   </React.Fragment>
                 );
               })}
-
-              <div className="card-footer justify-content-center ">
-                {more.show ? (
-                  <Button
-                    fullWidth
-                    className="text-secondary "
-                    startIcon={<MoreHorizIcon id="" />}
-                    onClick={() => moreBtn()}
-                    // id="alarmDropdown"
-                  >
-                    더보기
-                  </Button>
-                ) : null}
-              </div>
             </div>
           </div>
         </li>

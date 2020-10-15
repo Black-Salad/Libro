@@ -16,7 +16,6 @@ import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 
 const NoteSearch = (props) => {
-  let history = useHistory();
   const [notes, setNotes] = useState([]);
   const [modal, setModal] = useState({
     open: false,
@@ -156,7 +155,9 @@ const NoteSearch = (props) => {
       <div className="row gutters-sm">
         {notes.length == 0 ? (
           <div className="col-6 col-sm-6 col-md-3 col-xl-3 mb-3">
-            <p className="text-secondary font-size-sm">독서록이 없습니다 :(</p>
+            <p className="text-secondary font-size-sm">
+              해당 독서록이 없습니다 😥
+            </p>
           </div>
         ) : null}
         {notes.slice(0, more.limit).map((item, index) => {
@@ -171,10 +172,12 @@ const NoteSearch = (props) => {
                     onClick={() => openModal(item.note_id)}
                   />
                   <div className="card-body">
-                    <h6 className="card-title">
-                      <Link to="" onClick={() => openModal(item.note_id)}>
-                        {item.note_title}
-                      </Link>
+                    <h6
+                      className="card-title"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => openModal(item.note_id)}
+                    >
+                      {item.note_title}
                     </h6>
                     <div className="card-subtitle text-muted font-size-sm mb-2">
                       {item.book_title}

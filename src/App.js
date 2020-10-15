@@ -17,7 +17,6 @@ import Setting from "./pages/user/Setting";
 import Bookshelf from "./pages/Bookshelf";
 import Searchbooks from "./pages/Searchbooks";
 import Navigate from "./pages/Navigate";
-import Myprofile from "./pages/Myprofile";
 import BookshelfMore from "./pages/BookshelfMore";
 import Timeline from "./pages/Timeline";
 
@@ -38,7 +37,6 @@ function App() {
       <Route path="/searchnotes/:bookISBN" component={Searchnotes} />
       <Route path="/searchbooks" component={Searchbooks} />
       <Route path="/navigate" component={Navigate} />
-      <Route path="/myprofile" component={Myprofile} />
       <Route path="/setting" component={Setting} />
       <Route path="/bookshelfmore" component={BookshelfMore} />
       <Route path="/timeline" component={Timeline} />

@@ -13,15 +13,15 @@ const Account = () => {
   const loginUserName = cookies.get("loginUserName");
   const [userName, setUserName] = useState();
   const [error, setError] = useState(false);
-  const apiUrl1 = `http://localhost:8000/api/user/${loginUserId}/`;
-  const apiUrl2 = `http://localhost:8000/api/user/?user_name=${userName}`;
+  const apiUrl1 = `http://localhost:8000/api/user/`;
+  const apiUrl2 = `http://localhost:8000/api/note/`;
 
   const userOnChange = (e) => {
     setUserName(e.target.value);
   };
 
   const onkeyup = () => {
-    axios.get(apiUrl2).then((response) => {
+    axios.get(apiUrl1 + `?user_name=${userName}`).then((response) => {
       console.log(response.data);
       if (response.data.length !== 0) {
         if (loginUserName === response.data[0].user_name) setError(false);
@@ -34,26 +34,46 @@ const Account = () => {
   };
 
   const changeUserName = () => {
-    axios.patch(apiUrl1, { user_name: userName }).then((response) => {
-      alert("변경완료");
-      cookies.set("loginUserName", userName);
-      history.go(0);
-    });
+    axios
+      .patch(apiUrl1 + `${loginUserId}/`, { user_name: userName })
+      .then((response) => {
+        alert("변경완료");
+        cookies.set("loginUserName", userName);
+        history.go(0);
+      });
   };
 
   const deleteUser = () => {
     if (window.confirm("정말로 탈퇴하시겠습니까?")) {
-      axios.patch(apiUrl1, { user_state: false }).then(() => {
-        alert("탈퇴완료");
-        cookies.remove("loginUserId");
-        cookies.remove("loginUserName");
-        cookies.remove("loginUserEmail");
-        cookies.remove("loginUserImg");
-        window.location = "/login";
-      });
+      axios
+        .patch(apiUrl1 + `${loginUserId}/`, { user_state: false })
+        .then(() => {
+          axios.get(apiUrl2 + `?user_id=${loginUserId}`).then((response) => {
+            update(response.data);
+          });
+        });
     }
   };
 
+  const update = (notes) => {
+    var num = 0;
+    console.log(notes);
+    for (var i = 0; i < notes.length; i++) {
+      console.log(i);
+      axios.patch(apiUrl2 + `${notes[i].note_id}/`, {
+        note_private: false,
+      });
+      num++;
+    }
+    if (notes.length === 0 || num === notes.length) {
+      alert("탈퇴완료");
+      cookies.remove("loginUserId");
+      cookies.remove("loginUserName");
+      cookies.remove("loginUserEmail");
+      cookies.remove("loginUserImg");
+      window.location = "/login";
+    }
+  };
   return (
     <div className="tab-pane" id="account">
       <h6>계정</h6>

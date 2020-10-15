@@ -224,6 +224,11 @@ const Register = () => {
               회원가입
             </Button>
             <Grid container justify="flex-end">
+              <Grid item xs>
+                <Link href="/lookforpassword" variant="body2">
+                  비밀번호 찾기
+                </Link>
+              </Grid>
               <Grid item>
                 <Link href="/login" variant="body2">
                   로그인

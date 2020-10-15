@@ -103,13 +103,11 @@ const Room = ({ match }) => {
             </Link>
           </span>
         </div>
-        {readings.length == 0 ? (
+        {readings.length === 0 ? (
           <div style={{ height: 80, textAlign: "center" }}>
-            <div style={{ marginTop: 20, color: "grey" }}>
-              읽고 있는 책이 없습니다.
-              <br />
-              <Link to="/searchbooks">책 탐색하러 이동</Link>
-            </div>
+            <p className="text-secondary font-size-sm mt-5">
+              등록된 책이 없습니다 😥
+            </p>
           </div>
         ) : (
           <ul className="list-group list-group-horizontal row">

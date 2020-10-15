@@ -4,8 +4,12 @@ import { Cookies } from "react-cookie";
 import axios from "axios";
 import Moment from "react-moment";
 import NoteComment from "./NoteComment";
-import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
 import NoteLike from "./NoteLike";
+import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
+import Button from "@material-ui/core/Button";
+import HomeIcon from "@material-ui/icons/Home";
+import RefreshIcon from "@material-ui/icons/Refresh";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const NoteDetail = (props) => {
   let history = useHistory();
@@ -14,10 +18,9 @@ const NoteDetail = (props) => {
   const loginUserId = cookies.get("loginUserId");
   const loginUserName = cookies.get("loginUserName");
   const loginUserEmail = cookies.get("loginUserEmail");
-  const loginUserImg = cookies.get("loginUserImg");
 
   const apiUrl = `http://localhost:8000/api/note/${props.noteIDX}/`;
-  const apiUrl2 = `http://localhost:8000/api/note/comment?note_id=${props.noteIDX}`;
+  const apiUrl2 = `http://localhost:8000/api/note/comment/userjoin/?note_id=${props.noteIDX}`;
   const apiUrl3 = `http://localhost:8000/api/note/comment/`;
   const apiUrl4 = `http://localhost:8000/api/user/alarm/`;
 
@@ -77,12 +80,18 @@ const NoteDetail = (props) => {
 
   //댓글 등록
   const commentWrite = () => {
-    if (comment.comment_contents == "") {
+    if (comment.comment_contents === "") {
       alert("내용을 입력해주세요");
       return false;
     }
     axios.post(apiUrl3, comment).then((response) => {
       console.log(response.data);
+
+      axios.post(`http://localhost:8000/api/timeline/`, {
+        user_id: loginUserId,
+        tl_kind: "5",
+        comment_id: response.data.comment_id,
+      });
 
       // 본인이 한 게시물엔 알람 안가게
       if (loginUserId != alarm.target_user_id) {
@@ -124,27 +133,42 @@ const NoteDetail = (props) => {
           <hr />
           <p>{note.note_contents}</p>
           <div className="btn-group-sm pt-3 list-with-gap">
-            <button
-              className="btn btn-outline-primary btn-sm has-icon"
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<HomeIcon />}
+              className="mb-1 mr-2"
+              size="small"
               onClick={() => {
                 history.push(`/room/${note.user_id}`);
               }}
             >
               Room
-            </button>
+            </Button>
             {note.user_id == loginUserId ? (
               <>
-                <Link to={`/modifynote/${note.note_id}`}>
-                  <button className="btn btn-outline-success btn-sm has-icon">
-                    수정
-                  </button>
-                </Link>
-                <button
-                  className="btn btn-outline-danger btn-sm has-icon"
+                <Button
+                  variant="contained"
+                  color="green"
+                  startIcon={<RefreshIcon />}
+                  className="mb-1 mr-2"
+                  size="small"
+                  onClick={() => {
+                    history.push(`/modifynote/${note.note_id}`);
+                  }}
+                >
+                  수정
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  startIcon={<DeleteIcon />}
+                  className="mb-1 mr-2"
+                  size="small"
                   onClick={() => onDelete(note.note_id)}
                 >
                   삭제
-                </button>
+                </Button>
               </>
             ) : null}
           </div>
@@ -154,7 +178,7 @@ const NoteDetail = (props) => {
       {/* 댓글 */}
       <div className="card p-2" style={{ marginTop: "10px" }}>
         <div className="card-body">
-          댓글
+          {/* 댓글 for문 */}
           {comments.map((item, index) => {
             return (
               <React.Fragment key={index}>
@@ -178,12 +202,13 @@ const NoteDetail = (props) => {
                 style={{ border: "1px solid #c2c2c2" }}
               ></textarea>
               <div className="input-group-append">
-                <button
-                  className="btn btn-primary"
+                <Button
+                  variant="contained"
+                  color="primary"
                   onClick={() => commentWrite()}
                 >
                   댓글등록
-                </button>
+                </Button>
               </div>
             </div>
           </form>

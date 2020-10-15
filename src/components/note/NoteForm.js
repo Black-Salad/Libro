@@ -3,6 +3,11 @@ import { Link, useHistory } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import axios from "axios";
 
+import Button from "@material-ui/core/Button";
+import SaveAltIcon from "@material-ui/icons/SaveAlt";
+import CloseIcon from "@material-ui/icons/Close";
+import RefreshIcon from "@material-ui/icons/Refresh";
+
 const NoteForm = (props) => {
   let now = new Date();
   let history = useHistory();
@@ -10,9 +15,8 @@ const NoteForm = (props) => {
   const loginUserId = cookies.get("loginUserId");
 
   const apiUrl = `http://localhost:8000/api/note/`;
-  const apiUrl2 = `http://localhost:8000/api/note/${props.noteIDX}/`;
-  const apiUrl3 = `http://localhost:8000/api/book/shelf/join/?user_id=${loginUserId}&shelf_state=2`;
-  const apiUrl4 = `http://localhost:8000/api/book/`;
+  const apiUrl2 = `http://localhost:8000/api/book/`;
+  const apiUrl3 = `http://localhost:8000/api/timeline/`;
 
   const [note, setNote] = useState({});
   const [notes, setNotes] = useState([]);
@@ -34,15 +38,17 @@ const NoteForm = (props) => {
         note_state: true,
       });
     } else {
-      axios.get(apiUrl2).then((response) => {
+      axios.get(apiUrl + `${props.noteIDX}/`).then((response) => {
         setNote(response.data);
       });
     }
 
-    axios.get(apiUrl3).then((response) => {
-      setShelf(response.data);
-      console.log(response.data);
-    });
+    axios
+      .get(apiUrl2 + `shelf/join/?user_id=${loginUserId}&shelf_state=2`)
+      .then((response) => {
+        setShelf(response.data);
+        console.log(response.data);
+      });
 
     axios.get(apiUrl).then((response) => {
       setNotes(response.data);
@@ -61,7 +67,7 @@ const NoteForm = (props) => {
   };
 
   const selectOnChange = (e) => {
-    axios.get(apiUrl4 + `${e.target.value}/`).then((response) => {
+    axios.get(apiUrl2 + `${e.target.value}/`).then((response) => {
       console.log(response.data);
       console.log(note);
       setNote({
@@ -98,7 +104,7 @@ const NoteForm = (props) => {
       axios.post(apiUrl, note).then((response) => {
         console.log(response.data);
         axios
-          .post(`http://localhost:8000/api/timeline/`, {
+          .post(apiUrl3, {
             user_id: loginUserId,
             tl_kind: "4",
             note_id: response.data.note_id,
@@ -125,7 +131,7 @@ const NoteForm = (props) => {
       return false;
     }
 
-    axios.put(apiUrl2, note).then((response) => {
+    axios.put(apiUrl + `${props.noteIDX}/`, note).then((response) => {
       alert("수정완료");
       console.log(response.data);
       history.push(`/viewnotedetail/${props.noteIDX}`);
@@ -165,7 +171,7 @@ const NoteForm = (props) => {
                   <>
                     <label>책 이름</label>
                     <br />
-                    {note.book_name}
+                    {note.book_title}
                   </>
                 )}
               </div>
@@ -210,43 +216,53 @@ const NoteForm = (props) => {
 
           {props.status == "write" ? (
             <>
-              <button
-                type="button"
-                className="btn btn-btn btn-outline-primary btn-sm has-icon"
-                style={{ margin: "10px auto" }}
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<SaveAltIcon />}
+                className="mb-1 mr-2"
+                size="small"
                 onClick={() => noteSave()}
               >
                 저장
-              </button>
-              <Link to="/viewnotes">
-                <button
-                  type="button"
-                  className="btn btn-outline-danger btn-sm has-icon"
-                  style={{ marginLeft: "10px" }}
-                >
-                  취소
-                </button>
-              </Link>
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                startIcon={<CloseIcon />}
+                className="mb-1 mr-2"
+                size="small"
+                onClick={() => {
+                  history.push(`/viewnotes`);
+                }}
+              >
+                취소
+              </Button>
             </>
           ) : (
             <>
-              <button
-                type="button"
-                className="btn btn btn-outline-primary btn-sm has-icon-primary"
-                style={{ margin: "10px auto" }}
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<RefreshIcon />}
+                className="mb-1 mr-2"
+                size="small"
                 onClick={() => noteModify()}
               >
                 수정완료
-              </button>
-              <Link to={`/viewnotedetail/${note.note_id}`}>
-                <button
-                  type="button"
-                  className="btn btn-outline-danger btn-sm has-icon"
-                  style={{ marginLeft: "10px" }}
-                >
-                  취소
-                </button>
-              </Link>
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                startIcon={<CloseIcon />}
+                className="mb-1 mr-2"
+                size="small"
+                onClick={() => {
+                  history.push(`/viewnotedetail/${note.note_id}`);
+                }}
+              >
+                취소
+              </Button>
             </>
           )}
         </div>

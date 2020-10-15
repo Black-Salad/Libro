@@ -10,24 +10,25 @@ import Grid from "@material-ui/core/Grid";
 import { Link } from "react-router-dom";
 
 const RoomProfile = (props) => {
-  const apiUrl1 = `http://localhost:8000/api/user/${props.userIDX}/`;
-  const apiUrl2 = `http://localhost:8000/api/user/follow/`;
+  const apiUrl = `http://localhost:8000/api/user/`;
   const [user, setUser] = useState({});
   const [follower, setFollower] = useState();
   const [following, setFollowing] = useState();
 
   useEffect(() => {
-    axios.get(apiUrl1).then((response) => {
+    axios.get(apiUrl + `${props.userIDX}/`).then((response) => {
       setUser(response.data);
     });
-    axios.get(apiUrl2 + `?user_id=${props.userIDX}`).then((response) => {
+    axios.get(apiUrl + `follow/?user_id=${props.userIDX}`).then((response) => {
       console.log(response.data);
       setFollowing(response.data.length);
     });
-    axios.get(apiUrl2 + `?target_user_id=${props.userIDX}`).then((response) => {
-      console.log(response.data);
-      setFollower(response.data.length);
-    });
+    axios
+      .get(apiUrl + `follow/?target_user_id=${props.userIDX}`)
+      .then((response) => {
+        console.log(response.data);
+        setFollower(response.data.length);
+      });
   }, []);
 
   const useStyles = makeStyles((theme) => ({

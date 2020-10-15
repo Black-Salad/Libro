@@ -7,7 +7,6 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 
 const NoteLike = (props) => {
   let now = new Date();
-  let history = useHistory();
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
 
@@ -54,6 +53,7 @@ const NoteLike = (props) => {
           console.log("Alarm", response.data);
         });
       }
+
       axios.post(`http://localhost:8000/api/timeline/`, {
         user_id: loginUserId,
         tl_kind: "5",
@@ -71,7 +71,7 @@ const NoteLike = (props) => {
 
   return (
     <>
-      {like.length == 1 ? (
+      {like.length === 1 ? (
         <span
           className="btn has-icon btn-xs  text-danger"
           onClick={onClickNoneLike}
