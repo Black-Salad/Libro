@@ -37,8 +37,9 @@ const NoteComment = (props) => {
                   src={props.item.user_id.user_img}
                   className="mr-1 rounded-circle"
                   width="50"
+                  height="50"
                   alt="User"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", objectFit: "cover" }}
                   onClick={() => {
                     history.push(`/room/${props.item.user_id}`);
                   }}

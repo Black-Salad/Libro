@@ -2,20 +2,24 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import axios from "axios";
+import { TextareaAutosize } from "@material-ui/core";
+import { LIBRO_API_URL } from "../../constants/config";
 
 const NoteForm = (props) => {
-  let now = new Date();
+  // let now = new Date();
   let history = useHistory();
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
+  // 책 상세 페이지에서 독서록 쓰기 버튼 눌러서 이동했을 때 queryString을 통해 bookIdx 받음
+  const { bookIdx } = props;
 
-  const apiUrl = `http://localhost:8000/api/note/`;
-  const apiUrl2 = `http://localhost:8000/api/note/${props.noteIDX}/`;
-  const apiUrl3 = `http://localhost:8000/api/book/shelf/join/?user_id=${loginUserId}&shelf_state=2`;
-  const apiUrl4 = `http://localhost:8000/api/book/`;
+  const apiUrl = `${LIBRO_API_URL}/api/note/`;
+  const apiUrl2 = `${LIBRO_API_URL}/api/note/${props.noteIDX}/`;
+  const apiUrl3 = `${LIBRO_API_URL}/api/book/shelf/join/?user_id=${loginUserId}&shelf_state=2`;
+  const apiUrl4 = `${LIBRO_API_URL}/api/book/`;
 
   const [note, setNote] = useState({});
-  const [notes, setNotes] = useState([]);
+  // const [notes, setNotes] = useState([]);
   const [shelf, setShelf] = useState([]);
 
   //독서록 등록
@@ -30,9 +34,24 @@ const NoteForm = (props) => {
         note_contents: "",
         note_private: true,
         note_viewcount: 0,
-        note_date: now.toISOString(),
-        note_state: true,
+        // note_date: now.toISOString(),
+        // note_state: true,
       });
+      if (bookIdx != ("" || undefined)) {
+        axios.get(apiUrl4 + `${bookIdx}/`).then((response) => {
+          console.log(response);
+          setNote({
+            user_id: loginUserId,
+            book_id: response.data.book_id,
+            book_img: response.data.book_img,
+            book_title: response.data.book_title,
+            note_title: "",
+            note_contents: "",
+            note_private: true,
+            note_viewcount: 0,
+          });
+        });
+      }
     } else {
       axios.get(apiUrl2).then((response) => {
         setNote(response.data);
@@ -44,9 +63,9 @@ const NoteForm = (props) => {
       console.log(response.data);
     });
 
-    axios.get(apiUrl).then((response) => {
-      setNotes(response.data);
-    });
+    // axios.get(apiUrl).then((response) => {
+    //   setNotes(response.data);
+    // });
   }, []);
 
   //ref 설정
@@ -75,8 +94,8 @@ const NoteForm = (props) => {
 
   //독서록 저장
   const noteSave = () => {
-    note.note_id = notes.length + 1;
-    note.note_date = now.toISOString();
+    // note.note_id = notes.length + 1;
+    // note.note_date = now.toISOString();
     if (note.book_id == 0) {
       alert("책을 골라주세요");
       return false;
@@ -95,19 +114,25 @@ const NoteForm = (props) => {
     }
 
     if (window.confirm("등록하시겠습니까?")) {
-      axios.post(apiUrl, note).then((response) => {
-        console.log(response.data);
-        axios
-          .post(`http://localhost:8000/api/timeline/`, {
-            user_id: loginUserId,
-            tl_kind: "4",
-            note_id: response.data.note_id,
-          })
-          .then((response) => {
-            alert("등록완료");
-            history.push("/viewnotes");
-          });
-      });
+      console.log(note);
+      axios
+        .post(apiUrl, note)
+        .then((response) => {
+          console.log(response.data);
+          axios
+            .post(`${LIBRO_API_URL}/api/timeline/`, {
+              user_id: loginUserId,
+              tl_kind: "4",
+              note_id: response.data.note_id,
+            })
+            .then((response) => {
+              alert("등록완료");
+              history.push("/viewnotes");
+            });
+        })
+        .catch((res) => {
+          console.error(res);
+        });
     }
   };
 
@@ -143,23 +168,29 @@ const NoteForm = (props) => {
                   <>
                     <label>책 선택</label>
                     <br />
-                    <select
-                      className="custom-select"
-                      ref={refSelect}
-                      onChange={(e) => selectOnChange(e)}
-                    >
-                      <option value="0">독서록을 쓸 책 선택</option>
+                    {bookIdx != ("" || undefined) ? (
+                      <select className="custom-select" ref={refSelect}>
+                        <option value={bookIdx}>{note.book_title}</option>
+                      </select>
+                    ) : (
+                      <select
+                        className="custom-select"
+                        ref={refSelect}
+                        onChange={(e) => selectOnChange(e)}
+                      >
+                        <option value="0">독서록을 쓸 책 선택</option>
 
-                      {shelf.map((item, index) => {
-                        return (
-                          <React.Fragment key={index}>
-                            <option value={item.book_id.book_id}>
-                              {item.book_id.book_title}
-                            </option>
-                          </React.Fragment>
-                        );
-                      })}
-                    </select>
+                        {shelf.map((item, index) => {
+                          return (
+                            <React.Fragment key={index}>
+                              <option value={item.book_id.book_id}>
+                                {item.book_id.book_title}
+                              </option>
+                            </React.Fragment>
+                          );
+                        })}
+                      </select>
+                    )}
                   </>
                 ) : (
                   <>
@@ -198,13 +229,14 @@ const NoteForm = (props) => {
 
             <div className="form-group">
               <label>내용</label>
-              <textarea
+              <TextareaAutosize
                 className="form-control"
                 name="note_contents"
                 value={note.note_contents}
                 ref={refContents}
                 onChange={(e) => noteOnChange(e)}
-              ></textarea>
+                rowsMin={7}
+              ></TextareaAutosize>
             </div>
           </form>
 
