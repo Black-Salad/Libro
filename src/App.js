@@ -14,7 +14,6 @@ import Follow from "./pages/user/Follow";
 import Follower from "./pages/user/Follower";
 
 import Setting from "./pages/user/Setting";
-import Bookshelf from "./pages/Bookshelf";
 import Searchbooks from "./pages/Searchbooks";
 import Navigate from "./pages/Navigate";
 import BookshelfMore from "./pages/BookshelfMore";
@@ -24,6 +23,7 @@ function App() {
   return (
     <>
       <Route exact path="/" component={BookshelfPage} />
+      <Route path="/bookshelf/:userIDX" component={BookshelfPage} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       <Route path="/lookforpassword" component={LookForPassword} />

@@ -235,6 +235,9 @@ const Topheader = () => {
               src={`${cookies.get("loginUserImg")}`}
               alt=""
               className="rounded-circle mr-2"
+              style={{
+                objectFit: "cover",
+              }}
             />
             <span className="d-none d-sm-block">
               {cookies.get("loginUserName")}
@@ -250,6 +253,7 @@ const Topheader = () => {
                 className="rounded-circle"
                 width="50"
                 height="50"
+                style={{ objectFit: "cover" }}
               />
               <div className="media-body ml-2 text-nowrap">
                 <h6 className="mb-0">{cookies.get("loginUserName")}</h6>

@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { ChevronRight } from "react-feather";
 import BreadCrumbs from "../components/common/BreadCrumbs";
 import { Link } from "react-router-dom";
 import { Cookies } from "react-cookie";
-import axios from "axios";
 import Bookprofile from "../components/common/Bookprofile";
 import Layout from "../components/Layout";
+import Books from "../components/common/Books";
+import axios from "axios";
+import { LIBRO_API_URL } from "../constants/config";
 
-const BookshelfPage = () => {
+const BookshelfPage = ({ match }) => {
   // 임시 데이터
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
-  const shelfUser = loginUserId;
+  const shelfUser =
+    match.params.userIDX == undefined ? loginUserId : match.params.userIDX;
 
-  // 보여줄 책 목록 저장 스테이트 * 3 (읽은 책, 읽는 중, 관심)
-  const [didReads, setDidReads] = useState([]);
-  const [readings, setReadings] = useState([]);
-  const [stars, setStars] = useState([]);
   // 모달 팝업 스테이트
-  const [modalState, setModalState] = useState({ open: false });
+  const [modalState, setModalState] = useState(false);
   // 현재 선택한 책 정보 저장하는 스테이트
   const [currentBook, setCurrentBook] = useState({
     idx: 0,
@@ -34,7 +32,7 @@ const BookshelfPage = () => {
 
   // 모달 팝업 오픈 이벤트
   const onOpenModal = (book) => {
-    setModalState({ open: true });
+    setModalState(true);
     setCurrentBook({
       idx: book.book_id.book_id,
       title: book.book_id.book_title,
@@ -47,195 +45,44 @@ const BookshelfPage = () => {
     });
   };
 
-  // AJAX
+  const apiUrl1 = `${LIBRO_API_URL}/api/user/${shelfUser}/`;
+  const [userInfo, setUserInfo] = useState({});
   useEffect(() => {
-    const apiUrl1 = `http://localhost:8000/api/book/shelf/join/?user_id=${shelfUser}&shelf_state=1`;
-    const apiUrl2 = `http://localhost:8000/api/book/shelf/join/?user_id=${shelfUser}&shelf_state=2`;
-    const apiUrl3 = `http://localhost:8000/api/book/star/join/?user_id=${shelfUser}`;
-
-    axios
-      .get(apiUrl1)
-      .then((response) => {
-        setReadings(response.data);
-      })
-      .catch((response) => {
-        console.error(response);
-      });
-    axios
-      .get(apiUrl2)
-      .then((response) => {
-        setDidReads(response.data);
-      })
-      .catch((response) => {
-        console.error(response);
-      });
-    axios
-      .get(apiUrl3)
-      .then((response) => {
-        setStars(response.data);
-      })
-      .catch((response) => {
-        console.error(response);
-      });
-  }, [modalState.open]);
+    axios.get(apiUrl1).then((response) => {
+      setUserInfo(response.data);
+    });
+  }, []);
 
   return (
     <Layout>
-      <BreadCrumbs breads={[<Link to="/">My Bookshelf</Link>]} />
-
-      <div>
-        <div style={{ display: "flex" }}>
-          <span>읽고 있는 책 </span>
-          <span style={{ marginLeft: "auto" }}>
-            <Link to="/bookshelfmore?kind=reading">
-              more
-              <ChevronRight />
-            </Link>
-          </span>
-        </div>
-        {readings.length == 0 ? (
-          <div style={{ height: 80, textAlign: "center" }}>
-            <div style={{ marginTop: 20, color: "grey" }}>
-              읽고 있는 책이 없습니다.
-              <br />
-              <Link to="/searchbooks">책 탐색하러 이동</Link>
-            </div>
-          </div>
-        ) : (
-          <ul className="list-group list-group-horizontal row">
-            {readings.map((book, index) => (
-              <li
-                key={index}
-                className="list-group-item col-4 col-xs-4 col-sm-3 col-md-2 col-xl-2"
-                style={{
-                  textAlign: "center",
-                  padding: "3%",
-                  background: "none",
-                  border: "none",
-                }}
-                // style={{ textAlign: "center", background: "none", border: "none" }}
-              >
-                <img
-                  src={book.book_id.book_img}
-                  style={{
-                    maxWidth: "100%",
-                    boxShadow: "1px 1px 1px 1px grey",
-                  }}
-                  onClick={() => onOpenModal(book)}
-                />
-                <br />
-                <div className="text-secondary" style={{ marginTop: "10px" }}>
-                  {book.book_id.book_title}
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      <BreadCrumbs
+        breads={[<Link to="/"> {userInfo.user_name}의 책꽂이</Link>]}
+      />
+      <Books
+        bKind="reading"
+        shelfUser={shelfUser}
+        onOpenModal={onOpenModal}
+        modalState={modalState}
+        profile={false}
+      />
       <hr />
-      <div>
-        <div style={{ display: "flex" }}>
-          <span>읽은 책 </span>
-          <span style={{ marginLeft: "auto" }}>
-            <Link to="/bookshelfmore?kind=finished">
-              {/* <Link to="/bookshelfmore/finished"> */}
-              more
-              <ChevronRight />
-            </Link>
-          </span>
-        </div>
-        {didReads.length == 0 ? (
-          <div style={{ height: 80, textAlign: "center" }}>
-            <div style={{ marginTop: 20, color: "grey" }}>
-              읽은 책이 없습니다.
-              <br />
-              <Link to="/search">책 탐색하러 이동</Link>
-            </div>
-          </div>
-        ) : (
-          <ul className="list-group list-group-horizontal row">
-            {didReads.map((book, index) => (
-              <li
-                key={index}
-                className="list-group-item col-4 col-xs-4 col-sm-3 col-md-2 col-xl-2"
-                style={{
-                  textAlign: "center",
-                  padding: "3%",
-                  background: "none",
-                  border: "none",
-                }}
-                // style={{ textAlign: "center", background: "none", border: "none" }}
-              >
-                <img
-                  src={book.book_id.book_img}
-                  style={{
-                    maxWidth: "100%",
-                    boxShadow: "1px 1px 1px 1px grey",
-                  }}
-                  onClick={() => onOpenModal(book)}
-                />
-                <br />
-                <div className="text-secondary" style={{ marginTop: "10px" }}>
-                  {book.book_id.book_title}
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      <Books
+        bKind="didRead"
+        shelfUser={shelfUser}
+        onOpenModal={onOpenModal}
+        modalState={modalState}
+        profile={false}
+      />
       <hr />
-      <div>
-        <div style={{ display: "flex" }}>
-          <span>관심 책 </span>
-          <span style={{ marginLeft: "auto" }}>
-            <Link to="/bookshelfmore?kind=interested">
-              {/* <Link to="/bookshelfmore/interested"> */}
-              more
-              <ChevronRight />
-            </Link>
-          </span>
-        </div>
-        {stars.length == 0 ? (
-          <div style={{ height: 80, textAlign: "center" }}>
-            <div style={{ marginTop: 20, color: "grey" }}>
-              관심있는 책이 없습니다.
-              <br />
-              <Link to="/search">책 탐색하러 이동</Link>
-            </div>
-          </div>
-        ) : (
-          <ul className="list-group list-group-horizontal row">
-            {stars.map((book, index) => (
-              <li
-                key={index}
-                className="list-group-item col-4 col-xs-4 col-sm-3 col-md-2 col-xl-2"
-                style={{
-                  textAlign: "center",
-                  padding: "3%",
-                  background: "none",
-                  border: "none",
-                }}
-                // style={{ textAlign: "center", background: "none", border: "none" }}
-              >
-                <img
-                  src={book.book_id.book_img}
-                  style={{
-                    maxWidth: "100%",
-                    boxShadow: "1px 1px 1px 1px grey",
-                  }}
-                  onClick={() => onOpenModal(book)}
-                />
-                <br />
-                <div className="text-secondary" style={{ marginTop: "10px" }}>
-                  {book.book_id.book_title}
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      <Books
+        bKind="star"
+        shelfUser={shelfUser}
+        onOpenModal={onOpenModal}
+        modalState={modalState}
+        profile={false}
+      />
       <Bookprofile
-        open={modalState.open}
+        open={modalState}
         setModalState={setModalState}
         currentBook={currentBook}
       />

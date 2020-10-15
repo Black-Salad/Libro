@@ -10,8 +10,50 @@ import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import Button from "@material-ui/core/Button";
 import VisibilityOffOutlinedIcon from "@material-ui/icons/VisibilityOffOutlined";
+import { makeStyles } from "@material-ui/core/styles";
 
+const useStyles = makeStyles((theme) => ({
+  contentBox: {
+    color: "#585858",
+    border: "1px solid lightgrey",
+    boxShadow: "2px 2px 4px #BDBDBD",
+  },
+  bImage: {
+    width: "100%",
+    height: "80px",
+    objectFit: "cover",
+    cursor: "pointer",
+  },
+  titleArea: {
+    padding: 10,
+    paddingBottom: 0,
+    fontSize: "14px",
+  },
+  rTitleArea: {
+    width: "100%",
+    display: "block",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    margin: 0,
+  },
+  subTitleArea: {
+    marginTop: 3,
+    color: "#A4A4A4",
+    fontSize: "12px",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
+  date: {
+    paddingRight: "5px",
+    fontSize: "10px",
+    color: "#A4A4A4",
+    textAlign: "right",
+  },
+}));
 const NoteMine = () => {
+  const classes = useStyles();
   let history = useHistory();
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
@@ -24,7 +66,7 @@ const NoteMine = () => {
 
   //값 가져와서 setNotes
   useEffect(() => {
-    const apiUrl = `http://localhost:8000/api/note/?user_id=${loginUserId}`;
+    const apiUrl = `http://localhost:8000/api/note/list/?user_id=${loginUserId}`;
     axios
       .get(apiUrl)
       .then((response) => {
@@ -129,31 +171,38 @@ const NoteMine = () => {
 
       <div className="row gutters-sm">
         {notes.slice(0, more.limit).map((item, index) => {
+          console.log(item);
           return (
             <React.Fragment key={index}>
-              <div className="col-6 col-sm-6 col-md-3 col-xl-3 mb-3">
-                <div className="card h-100">
+              <div className={`col-6 col-sm-4 col-md-3 col-xl-3 mb-3`}>
+                <div className={`${classes.contentBox} card h-100`}>
                   <img
                     src={item.book_img}
                     alt="..."
-                    style={{ width: "60%", margin: "auto", cursor: "pointer" }}
+                    className={classes.bImage}
                     onClick={() => {
                       history.push(`/viewnotedetail/${item.note_id}`);
                     }}
                   />
-                  <div className="card-body">
-                    <h6 className="card-title">
+                  <div className={classes.titleArea}>
+                    <b className={`${classes.rTitleArea} card-title`}>
                       <Link to={`/viewnotedetail/${item.note_id}`}>
                         {item.note_title}
                       </Link>
-                    </h6>
-                    <div className="card-subtitle text-muted font-size-sm mb-2">
+                    </b>
+                    <div
+                      className={`${classes.subTitleArea} card-subtitle font-size-xs mb-2`}
+                    >
                       {item.book_title}
                     </div>
                   </div>
-                  <div className="card-footer font-size-sm text-muted">
+                  <div className={`${classes.date}`}>
                     <span className="ml-1 mr-auto">
-                      <Moment format={"YYYY/MM/DD"}>{item.note_date}</Moment>
+                      <Moment format={"YYYY년 MM월 DD일"}>
+                        {item.note_date}
+                      </Moment>
+                      <br />
+                      by {item.user_id.user_name}
                     </span>
                   </div>
                   <div className="card-footer justify-content-between">
@@ -164,7 +213,7 @@ const NoteMine = () => {
                         </>
                       ) : (
                         <>
-                          <VisibilityOffOutlinedIcon /> PVT
+                          <VisibilityOffOutlinedIcon />
                         </>
                       )}
                     </span>

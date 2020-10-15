@@ -54,6 +54,7 @@ const FollowUser = (props) => {
                       width: "100px",
                       height: "100px",
                       marginTop: "-65px",
+                      objectFit: "cover",
                     }}
                     alt="User"
                     className="img-fluid img-thumbnail rounded-circle border-0 mb-3"

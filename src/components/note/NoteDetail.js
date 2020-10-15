@@ -131,7 +131,7 @@ const NoteDetail = (props) => {
             <strong>{note.note_title}</strong>
           </h5>
           <hr />
-          <p>{note.note_contents}</p>
+          <p style={{ whiteSpace: "pre-line" }}>{note.note_contents}</p>
           <div className="btn-group-sm pt-3 list-with-gap">
             <Button
               variant="contained"

@@ -1,16 +1,48 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import { Cookies } from "react-cookie";
 import BookButtons from "./BookButtons";
+import { makeStyles } from "@material-ui/core/styles";
+import { LIBRO_API_URL } from "../../constants/config";
+
+const useStyles = makeStyles((theme) => ({
+  bImage: {
+    width: "100%",
+    border: "1px solid lightgrey",
+    boxShadow: "2px 2px 4px #999",
+    padding: "0px",
+    // maxWidth: "120px",
+  },
+  bTitle: {
+    fontSize: "85%",
+    fontWeight: 600,
+  },
+  bAuthor: {
+    fontSize: "70%",
+    marginBottom: "10px",
+  },
+  bContent: {
+    fontSize: "60%",
+    overflow: "auto",
+    maxHeight: "150px",
+    whiteSpace: "pre-line",
+  },
+  modalBody: {
+    fontSize: "120%",
+    padding: 0,
+  },
+  modalDiv: {
+    padding: "0px 10px",
+  },
+}));
 
 const Bookprofile = (props) => {
-  const cookies = new Cookies();
-  const LoginUser = cookies.get("loginUserId");
+  const classes = useStyles();
   const { open, setModalState, currentBook } = props;
 
   const onCloseModal = () => {
-    setModalState({ open: false });
+    setModalState(false);
   };
 
   return (
@@ -21,56 +53,43 @@ const Bookprofile = (props) => {
         center
         classNames={{ modal: "modal-content" }}
         styles={{ overlay: { zIndex: 1050 } }}
+        showCloseIcon={false}
+        blockScroll={false}
       >
-        <div
-          className="inner-main-body"
-          style={{ fontSize: "120%", paddingBottom: 0 }}
-        >
-          <div className="row">
-            <div className="col-lg-3 col-md-3 col-sm-3 col-4 mb-1">
+        <div className={`${classes.modalBody} inner-main-body`}>
+          <div className="media">
+            <div
+              className={`${classes.modalDiv} col-lg-2 col-md-2 col-sm-2 col-3 mb-1`}
+            >
               <img
-                src={currentBook.thumbnail}
-                style={{
-                  maxWidth: "100px",
-                  width: "100%",
-                  height: "auto",
-                  border: "1px solid lightgrey",
-                  boxShadow: "1px 1px 1px 1px grey",
-                }}
+                className={classes.bImage}
+                alt=""
+                src={
+                  currentBook.thumbnail == ""
+                    ? LIBRO_API_URL + "/img/unnamed.png"
+                    : currentBook.thumbnail
+                }
               />
             </div>
-            <div className="col-lg-9 col-md-9 col-sm-9 col-8 mb-3">
-              <h6 style={{ fontSize: "85%", fontWeight: 600 }}>
-                {currentBook.title}
-              </h6>
-              <div style={{ fontSize: "70%", marginBottom: "10px" }}>
+            <div className={`col-lg-10 col-md-10 col-sm-10 col-9 mb-3`}>
+              <h6 className={classes.bTitle}>{currentBook.title}</h6>
+              <div className={classes.bAuthor}>
                 {currentBook.authors.join(", ") +
                   " 저 / " +
                   currentBook.publisher}
               </div>
               {currentBook.contents !== undefined ? (
-                <div
-                  style={{
-                    fontSize: "60%",
-                    textOverflow: "ellipsis",
-                    overflow: "auto",
-                    maxHeight: "150px",
-                  }}
-                >
+                <div className={classes.bContent}>
                   {currentBook.contents}
                   <a href={currentBook.url} target="_blank">
-                    ...더보기
+                    ...상세보기
                   </a>
                 </div>
               ) : null}
             </div>
           </div>
         </div>
-        <BookButtons
-          loginUser={LoginUser}
-          currentBook={currentBook}
-          setModalState={setModalState}
-        />
+        <BookButtons currentBook={currentBook} setModalState={setModalState} />
       </Modal>
     </div>
   );

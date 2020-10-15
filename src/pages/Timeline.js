@@ -8,6 +8,14 @@ import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 import { Cookies } from "react-cookie";
 import Bookprofile from "../components/common/Bookprofile";
+import UserButton from "../components/common/UserButton";
+import TimelinePiece1 from "../components/common/TimelinePiece1";
+import TimelinePiece2 from "../components/common/TimelinePiece2";
+import TimelinePiece3 from "../components/common/TimelinePiece3";
+import TimelinePiece4 from "../components/common/TimelinePiece4";
+import TimelinePiece5 from "../components/common/TimelinePiece5";
+import TimelinePiece6 from "../components/common/TimelinePiece6";
+import TimelinePiece7 from "../components/common/TimelinePiece7";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     marginBottom: theme.spacing(2),
+    color: "#585858",
   },
   content: {
     margin: theme.spacing(1),
@@ -23,13 +32,14 @@ const useStyles = makeStyles((theme) => ({
   image: {
     width: "100%",
   },
-  profile: {
-    width: "40px",
-  },
   btitle: {
     "&:hover": {
       textDecoration: "underline",
     },
+  },
+  topic: {
+    padding: 0,
+    marginBottom: 15,
   },
 }));
 
@@ -82,155 +92,56 @@ const Timeline = () => {
         console.error(response);
       });
   }, [LoginUser]);
+
   return (
     <Layout>
       <BreadCrumbs breads={[<Link to="/timeline">타임라인</Link>]} />
       <Grid container spacing={3}>
         <Grid item xs={12}>
           {timelineList.map((timeline, index) => {
-            const userProfile = (
-              <Link to={`/room/${timeline.user_id.user_id}`}>
-                <img
-                  alt=""
-                  src={timeline.user_id.user_img}
-                  className={`${classes.profile} rounded-circle mr-2`}
-                />
-                {timeline.user_id.user_name}
-              </Link>
-            );
             switch (timeline.tl_kind) {
-              case "1":
+              case "1": // 책꽂이 담음
                 return (
-                  <Paper className={classes.paper} key={index}>
-                    <p>
-                      {userProfile}
-                      님이{" "}
-                      <b
-                        className={classes.btitle}
-                        onClick={() => onOpenModal(timeline.shelf_id.book_id)}
-                      >
-                        {timeline.shelf_id.book_id.book_title}
-                      </b>{" "}
-                      책을 책꽂이에 담았습니다.📚
-                    </p>
-                    <Grid className={classes.content} container spacing={3}>
-                      <Grid item xs={2}>
-                        <img
-                          alt=""
-                          className={classes.image}
-                          src={timeline.shelf_id.book_id.book_img}
-                          onClick={() => onOpenModal(timeline.shelf_id.book_id)}
-                        />
-                      </Grid>
-                      <Grid item xs={10}>
-                        {timeline.shelf_id.start_date}부터 읽는 중 🏃‍♀️
-                      </Grid>
-                    </Grid>
-                  </Paper>
+                  <TimelinePiece1
+                    timeline={timeline}
+                    onOpenModal={onOpenModal}
+                    key={index}
+                  />
                 );
-              case "2":
+              case "2": // 완독
                 return (
-                  <Paper className={classes.paper} key={index}>
-                    <p>
-                      {userProfile}님이{" "}
-                      <b
-                        className={classes.btitle}
-                        onClick={() => onOpenModal(timeline.shelf_id.book_id)}
-                      >
-                        {timeline.shelf_id.book_id.book_title}
-                      </b>{" "}
-                      책을 완독했습니다! 👏👏👏
-                    </p>
-                    <Grid className={classes.content} container spacing={3}>
-                      <Grid item xs={2}>
-                        <img
-                          className={classes.image}
-                          src={timeline.shelf_id.book_id.book_img}
-                          onClick={() => onOpenModal(timeline.shelf_id.book_id)}
-                        />
-                      </Grid>
-                      <Grid item xs={10}>
-                        {timeline.shelf_id.start_date} ~{" "}
-                        {timeline.shelf_id.end_date} 완독 👍
-                      </Grid>
-                    </Grid>
-                  </Paper>
+                  <TimelinePiece2
+                    timeline={timeline}
+                    onOpenModal={onOpenModal}
+                    key={index}
+                  />
                 );
-              case "3":
+              case "3": // 관심
                 return (
-                  <Paper className={classes.paper} key={index}>
-                    <p>
-                      {userProfile}님이{" "}
-                      <b
-                        className={classes.btitle}
-                        onClick={() => onOpenModal(timeline.star_id.book_id)}
-                      >
-                        {timeline.star_id.book_id.book_title}
-                      </b>{" "}
-                      책에 관심을 표시했습니다.💕
-                    </p>
-                    <Grid className={classes.content} container spacing={3}>
-                      <Grid item xs={2}>
-                        <img
-                          alt=""
-                          className={classes.image}
-                          src={timeline.star_id.book_id.book_img}
-                          onClick={() => onOpenModal(timeline.star_id.book_id)}
-                        />
-                      </Grid>
-                    </Grid>
-                  </Paper>
+                  <TimelinePiece3
+                    timeline={timeline}
+                    onOpenModal={onOpenModal}
+                    key={index}
+                  />
                 );
-              case "4":
+              case "4": // 독서록 등록
                 return (
-                  <Paper className={classes.paper} key={index}>
-                    <p>
-                      {userProfile}님이{" "}
-                      <b
-                      // className={classes.btitle}
-                      // onClick={() => onOpenModal(timeline.shelf_id.book_id)}
-                      >
-                        {timeline.note_id.book_title}
-                      </b>
-                      를 읽고 독서록을 등록했습니다.✍
-                    </p>
-                    <Grid className={classes.content} container spacing={3}>
-                      <Grid item xs={2}>
-                        <img
-                          className={classes.image}
-                          src={timeline.note_id.book_img}
-                          // onClick={() => onOpenModal(timeline.star_id.book_id)}
-                        />
-                      </Grid>
-                      <Grid item xs={10}>
-                        <b>
-                          <Link
-                            to={`/viewnotedetail/${timeline.note_id.note_id}`}
-                          >
-                            {timeline.note_id.note_title}
-                          </Link>{" "}
-                        </b>
-                        <p>{timeline.note_id.note_contents}</p>
-                      </Grid>
-                    </Grid>
-                  </Paper>
+                  <TimelinePiece4
+                    timeline={timeline}
+                    onOpenModal={onOpenModal}
+                    key={index}
+                  />
                 );
               case "5": // 독서록 좋아요
+                return <TimelinePiece5 timeline={timeline} key={index} />;
               case "6": // 독서록 댓글 등록
+                return <TimelinePiece6 timeline={timeline} key={index} />;
               case "7": // 팔로우
-                return (
-                  <Paper className={classes.paper} key={index}>
-                    <p>{userProfile}님이 </p>
-                  </Paper>
-                );
+                return <TimelinePiece7 timeline={timeline} key={index} />;
               default:
                 break;
             }
           })}
-
-          <Paper className={classes.paper}>
-            jade님이 test1님을 팔로우합니다.
-          </Paper>
         </Grid>
       </Grid>
       <Bookprofile

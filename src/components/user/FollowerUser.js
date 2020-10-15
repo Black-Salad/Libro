@@ -53,6 +53,7 @@ const FollowUser = (props) => {
                     style={{
                       width: "100px",
                       height: "100px",
+                      objectFit: "cover",
                       marginTop: "-65px",
                     }}
                     alt="User"

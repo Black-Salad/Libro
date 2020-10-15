@@ -3,8 +3,11 @@ import BreadCrumbs from "../../components/common/BreadCrumbs";
 import NoteForm from "../../components/note/NoteForm";
 import { Link } from "react-router-dom";
 import Layout from "../../components/Layout";
+import queryString from "query-string";
 
-const Writenote = () => {
+const Writenote = ({ location }) => {
+  const query = queryString.parse(location.search);
+  const { bookIdx } = query;
   return (
     <Layout>
       <BreadCrumbs
@@ -13,7 +16,7 @@ const Writenote = () => {
           <Link to="/writenote">독서록 쓰기</Link>,
         ]}
       />
-      <NoteForm status={"write"} />
+      <NoteForm status={"write"} bookIdx={bookIdx} />
     </Layout>
   );
 };

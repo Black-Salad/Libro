@@ -16,6 +16,8 @@ import DateFnsUtils from "@date-io/date-fns";
 import { format } from "date-fns";
 import Grid from "@material-ui/core/Grid";
 import { Link, useHistory } from "react-router-dom";
+import { LIBRO_API_URL } from "../../constants/config";
+import { Cookies } from "react-cookie";
 
 const useStyles = makeStyles((theme) => ({
   gridRoot: {
@@ -28,6 +30,10 @@ const useStyles = makeStyles((theme) => ({
   noteBtns: {
     textAlign: "right",
   },
+  fab: {
+    margin: "0px 2%",
+    maxWidth: "45%",
+  },
 }));
 
 // String to Date Method
@@ -38,9 +44,18 @@ const dateParse = (dateStr) => {
   return new Date(y, m - 1, d);
 };
 
+const convDateStr = (dateStr) => {
+  var y = dateStr.substr(0, 4);
+  var m = dateStr.substr(5, 2);
+  var d = dateStr.substr(8, 2);
+  return y + "년 " + m + "월 " + d + "일";
+};
+
 const BookButtons = (props) => {
+  const cookies = new Cookies();
+  const loginUser = cookies.get("loginUserId");
   const history = useHistory();
-  const { loginUser, currentBook, setModalState } = props;
+  const { currentBook, setModalState } = props;
   const [starBtn, setStarBtn] = useState({ exist: false });
   const [shelfStatus, setShelfStatus] = useState({
     exist: false,
@@ -68,8 +83,8 @@ const BookButtons = (props) => {
 
   // 버튼 세팅하기 위한 Ajax
   useEffect(() => {
-    const starApiUrl = `http://localhost:8000/api/book/star/count/?user_id=${loginUser}&book_isbn=${currentBook.isbn}`;
-    const shelfApiUrl = `http://localhost:8000/api/book/shelf/count/?user_id=${loginUser}&book_isbn=${currentBook.isbn}`;
+    const starApiUrl = `${LIBRO_API_URL}/api/book/star/count/?user_id=${loginUser}&book_isbn=${currentBook.isbn}`;
+    const shelfApiUrl = `${LIBRO_API_URL}/api/book/shelf/count/?user_id=${loginUser}&book_isbn=${currentBook.isbn}`;
     // star btn
     axios
       .get(starApiUrl)
@@ -112,7 +127,7 @@ const BookButtons = (props) => {
 
   // 관심 버튼 클릭 이벤트
   const onClickStar = () => {
-    const starApiUrl = `http://localhost:8000/api/book/star/count/?user_id=${loginUser}&book_isbn=${currentBook.isbn}`;
+    const starApiUrl = `${LIBRO_API_URL}/api/book/star/count/?user_id=${loginUser}&book_isbn=${currentBook.isbn}`;
     axios
       .get(starApiUrl)
       .then((response) => {
@@ -120,7 +135,7 @@ const BookButtons = (props) => {
         if (response.data.length > 0) {
           axios
             .delete(
-              `http://localhost:8000/api/book/star/${response.data[0].star_id}/`
+              `${LIBRO_API_URL}/api/book/star/${response.data[0].star_id}/`
             )
             .then((response) => {
               setStarBtn({ exist: false });
@@ -133,15 +148,13 @@ const BookButtons = (props) => {
         else {
           // book db 확인
           axios
-            .get(
-              `http://localhost:8000/api/book/?book_isbn=${currentBook.isbn}`
-            )
+            .get(`${LIBRO_API_URL}/api/book/?book_isbn=${currentBook.isbn}`)
             .then((response) => {
               // book db에 책이 존재하면
               if (response.data.length > 0) {
                 //관심 책에 추가
                 axios
-                  .post(`http://localhost:8000/api/book/star/`, {
+                  .post(`${LIBRO_API_URL}/api/book/star/`, {
                     book_isbn: currentBook.isbn,
                     user_id: loginUser,
                     book_id: response.data[0].book_id,
@@ -150,7 +163,7 @@ const BookButtons = (props) => {
                     setStarBtn({ exist: true });
                     console.log(response);
                     axios
-                      .post(`http://localhost:8000/api/timeline/`, {
+                      .post(`${LIBRO_API_URL}/api/timeline/`, {
                         user_id: loginUser,
                         tl_kind: "3",
                         star_id: response.data.star_id,
@@ -168,7 +181,7 @@ const BookButtons = (props) => {
               } else {
                 // book db에 없으면 추가.
                 axios
-                  .post(`http://localhost:8000/api/book/`, {
+                  .post(`${LIBRO_API_URL}/api/book/`, {
                     book_title: currentBook.title,
                     book_author: currentBook.authors.join(", "),
                     book_publisher: currentBook.publisher,
@@ -181,7 +194,7 @@ const BookButtons = (props) => {
                     console.log(response.data);
                     // 관심 책에 추가
                     axios
-                      .post(`http://localhost:8000/api/book/star/`, {
+                      .post(`${LIBRO_API_URL}/api/book/star/`, {
                         book_isbn: response.data.book_isbn,
                         user_id: loginUser,
                         book_id: response.data.book_id,
@@ -190,7 +203,7 @@ const BookButtons = (props) => {
                         setStarBtn({ exist: true });
                         console.log(response);
                         axios
-                          .post(`http://localhost:8000/api/timeline/`, {
+                          .post(`${LIBRO_API_URL}/api/timeline/`, {
                             user_id: loginUser,
                             tl_kind: "3",
                             star_id: response.data.star_id,
@@ -225,13 +238,13 @@ const BookButtons = (props) => {
     // setAnchorEl(e.currentTarget);
     //  book db 확인
     axios
-      .get(`http://localhost:8000/api/book/?book_isbn=${currentBook.isbn}`)
+      .get(`${LIBRO_API_URL}/api/book/?book_isbn=${currentBook.isbn}`)
       .then((response) => {
         // book db에 책이 존재하면
         if (response.data.length > 0) {
           //읽는 중인 책에 추가
           axios
-            .post(`http://localhost:8000/api/book/shelf/`, {
+            .post(`${LIBRO_API_URL}/api/book/shelf/`, {
               book_isbn: currentBook.isbn,
               shelf_state: 1,
               start_date: format(startDate, "yyyy-MM-dd"), // 수정 필요
@@ -248,7 +261,7 @@ const BookButtons = (props) => {
                 end_date: response.data.end_date,
               });
               axios
-                .post(`http://localhost:8000/api/timeline/`, {
+                .post(`${LIBRO_API_URL}/api/timeline/`, {
                   user_id: loginUser,
                   tl_kind: "1",
                   shelf_id: response.data.shelf_id,
@@ -267,7 +280,7 @@ const BookButtons = (props) => {
         } else {
           // book db에 없으면 추가.
           axios
-            .post(`http://localhost:8000/api/book/`, {
+            .post(`${LIBRO_API_URL}/api/book/`, {
               book_title: currentBook.title,
               book_author: currentBook.authors.join(", "),
               book_publisher: currentBook.publisher,
@@ -280,7 +293,7 @@ const BookButtons = (props) => {
               //읽는 중인 책에 추가
               console.log(response.data);
               axios
-                .post(`http://localhost:8000/api/book/shelf/`, {
+                .post(`${LIBRO_API_URL}/api/book/shelf/`, {
                   book_isbn: currentBook.isbn,
                   shelf_state: 1,
                   start_date: format(startDate, "yyyy-MM-dd"), // 수정 필요
@@ -297,7 +310,7 @@ const BookButtons = (props) => {
                     end_date: response.data.end_date,
                   });
                   axios
-                    .post(`http://localhost:8000/api/timeline/`, {
+                    .post(`${LIBRO_API_URL}/api/timeline/`, {
                       user_id: loginUser,
                       tl_kind: "1",
                       shelf_id: response.data.shelf_id,
@@ -328,13 +341,10 @@ const BookButtons = (props) => {
     // setAnchorEl(e.currentTarget);
     if (shelfStatus.shelf_id !== null) {
       axios
-        .patch(
-          `http://localhost:8000/api/book/shelf/${shelfStatus.shelf_id}/`,
-          {
-            shelf_state: 2,
-            end_date: format(endDate, "yyyy-MM-dd"),
-          }
-        )
+        .patch(`${LIBRO_API_URL}/api/book/shelf/${shelfStatus.shelf_id}/`, {
+          shelf_state: 2,
+          end_date: format(endDate, "yyyy-MM-dd"),
+        })
         .then((response) => {
           setShelfStatus({
             ...shelfStatus,
@@ -343,7 +353,7 @@ const BookButtons = (props) => {
             end_date: response.data.end_date,
           });
           axios
-            .post(`http://localhost:8000/api/timeline/`, {
+            .post(`${LIBRO_API_URL}/api/timeline/`, {
               user_id: loginUser,
               tl_kind: "2",
               shelf_id: response.data.shelf_id,
@@ -372,9 +382,7 @@ const BookButtons = (props) => {
     ) {
       if (shelfStatus.shelf_id !== null) {
         axios
-          .delete(
-            `http://localhost:8000/api/book/shelf/${shelfStatus.shelf_id}/`
-          )
+          .delete(`${LIBRO_API_URL}/api/book/shelf/${shelfStatus.shelf_id}/`)
           .then((response) => {
             setShelfStatus({
               exist: false,
@@ -392,8 +400,38 @@ const BookButtons = (props) => {
   };
 
   const onClickWrite = () => {
-    setModalState({ open: false });
-    history.push("/writenote");
+    setModalState(false);
+    axios
+      .get(`${LIBRO_API_URL}/api/book/?book_isbn=${currentBook.isbn}`)
+      .then((response) => {
+        // book db에 책이 존재하면
+        if (response.data.length > 0) {
+          //response.data[0].book_id로 이동
+          history.push(`/writenote/?bookIdx=${response.data[0].book_id}`);
+        } else {
+          // book db에 없으면 추가.
+          axios
+            .post(`${LIBRO_API_URL}/api/book/`, {
+              book_title: currentBook.title,
+              book_author: currentBook.authors.join(", "),
+              book_publisher: currentBook.publisher,
+              book_img: currentBook.thumbnail,
+              book_desc: currentBook.contents,
+              book_url: currentBook.url,
+              book_isbn: currentBook.isbn,
+            })
+            .then((response) => {
+              // response.data.book_id로 이동
+              history.push(`/writenote/?bookIdx=${response.data.book_id}`);
+            })
+            .catch((response) => {
+              console.error(response);
+            });
+        }
+      })
+      .catch((response) => {
+        console.error(response);
+      });
   };
 
   return (
@@ -413,8 +451,10 @@ const BookButtons = (props) => {
                   size="small"
                   label={
                     shelfStatus.status == 1
-                      ? `${shelfStatus.start_date} 부터 읽는 중 🏃‍♀️`
-                      : `${shelfStatus.start_date} ~ ${shelfStatus.end_date} 완독👍`
+                      ? `${convDateStr(shelfStatus.start_date)} 부터 읽는 중 🏃‍♀️`
+                      : `${convDateStr(shelfStatus.start_date)} ~ ${convDateStr(
+                          shelfStatus.end_date
+                        )} 완독👍`
                   }
                   color={shelfStatus.status == 1 ? "secondary" : "primary"}
                   // onClick={shelfStatus.status == 1 ? onC}
@@ -422,8 +462,9 @@ const BookButtons = (props) => {
               )}
             </div>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item className="col-4 col-xs-4 col-sm-4 col-md-4">
             <Fab
+              className={classes.fab}
               size="small"
               color="default"
               title={starBtn.exist ? "관심 책에서 삭제" : "관심 책에 추가"}
@@ -432,9 +473,13 @@ const BookButtons = (props) => {
               <StarIcon style={starBtn.exist ? { color: yellow[300] } : {}} />
             </Fab>
           </Grid>
-          <Grid item xs={4} className={classes.shelfBtns}>
+          <Grid
+            item
+            className={`${classes.shelfBtns} col-4 col-xs-4 col-sm-4 col-md-4`}
+          >
             {shelfStatus.status == 1 ? (
               <Fab
+                className={classes.fab}
                 aria-describedby="FinishPopover"
                 size="small"
                 color="primary"
@@ -446,6 +491,7 @@ const BookButtons = (props) => {
             ) : null}
             {shelfStatus.exist ? (
               <Fab
+                className={classes.fab}
                 size="small"
                 color="default"
                 title="책꽂이에서 삭제"
@@ -456,6 +502,7 @@ const BookButtons = (props) => {
             ) : (
               <>
                 <Fab
+                  className={classes.fab}
                   aria-describedby="startPopover"
                   size="small"
                   color="secondary"
@@ -467,8 +514,12 @@ const BookButtons = (props) => {
               </>
             )}
           </Grid>
-          <Grid item xs={4} className={classes.noteBtns}>
+          <Grid
+            item
+            className={`${classes.noteBtns} col-4 col-xs-4 col-sm-4 col-md-4`}
+          >
             <Fab
+              className={classes.fab}
               size="small"
               color="default"
               title="독서록 쓰기"
@@ -478,6 +529,7 @@ const BookButtons = (props) => {
             </Fab>
             <Link to={`/searchnotes/${currentBook.isbn}`}>
               <Fab
+                className={classes.fab}
                 size="small"
                 color="default"
                 title="이 책에 대한 독서록 탐색"
