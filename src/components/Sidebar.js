@@ -88,16 +88,18 @@ const Sidebar = () => {
           </li>
 
           <li className="nav-item">
-            <Link to="/navigate">
-              <span
-                className={`nav-link has-icon show ${
-                  selectedMenu === "navigate" ? "active" : null
-                }`}
-              >
-                <Icon.Compass />
-                둘러보기
-              </span>
-            </Link>
+            <span
+              className={`nav-link has-icon show ${
+                selectedMenu === "navigate" ? "active" : null
+              }`}
+              onClick={() => {
+                window.location = "/navigate";
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              <Icon.Compass />
+              둘러보기
+            </span>
           </li>
 
           <li className="nav-item">

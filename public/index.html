@@ -35,6 +35,8 @@
       href="%PUBLIC_URL%/css/sidebar-gray.min.css"
       id="theme-css"
     />
+
+    <link rel="stylesheet" href="%PUBLIC_URL%/css/jquery.bxslider.css" />
     <title>Libro</title>
   </head>
   <body>
@@ -43,6 +45,14 @@
     <script src="%PUBLIC_URL%/js/bootstrap.bundle.min.js"></script>
     <script src="%PUBLIC_URL%/js/simplebar.js"></script>
     <script src="%PUBLIC_URL%/js/script.js"></script>
+    <script src="%PUBLIC_URL%/js/jquery.bxslider.min.js"></script>
+    <script>
+      $(document).ready(() => {
+        $(".bxslider").bxSlider({
+          speed: 500,
+        });
+      });
+    </script>
     <div id="root"></div>
   </body>
 </html>
