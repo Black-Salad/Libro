@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { Link } from "react-router-dom";
 import FollowButton from "./FollowButton";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import Button from "@material-ui/core/Button";
@@ -44,13 +44,17 @@ const FollowUser = (props) => {
                   alt="Cover"
                   className="card-img-top"
                 />
-                <div className="card-body text-center">
+                <Link
+                  to={`/room/${item.target_user_id.user_id}`}
+                  className="card-body text-center"
+                >
                   <img
                     src={item.target_user_id.user_img}
                     style={{
                       width: "100px",
                       height: "100px",
                       marginTop: "-65px",
+                      objectFit: "cover",
                     }}
                     alt="User"
                     className="img-fluid img-thumbnail rounded-circle border-0 mb-3"
@@ -64,7 +68,7 @@ const FollowUser = (props) => {
                   <p className="text-muted font-size-sm">
                     {item.target_user_id.user_introduction}
                   </p>
-                </div>
+                </Link>
                 <div className="card-footer" style={{ margin: "auto" }}>
                   <FollowButton userIDX={item.target_user_id.user_id} />
                 </div>

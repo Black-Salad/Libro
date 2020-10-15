@@ -63,7 +63,7 @@ const FollowButton = (props) => {
   return (
     <>
       {(function () {
-        if (props.userIDX === loginUserId) {
+        if (props.userIDX == loginUserId) {
           return null;
         } else if (followCnt === 0) {
           return (

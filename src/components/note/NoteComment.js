@@ -26,7 +26,7 @@ const NoteComment = (props) => {
   };
   return (
     <>
-      {loginUserId != props.item.user_id ? (
+      {loginUserId != props.item.user_id.user_id ? (
         <div className="chat-msg">
           <div className="popover popover-static bs-popover-right">
             <div className="arrow"></div>
@@ -41,7 +41,7 @@ const NoteComment = (props) => {
                   alt="User"
                   style={{ cursor: "pointer", objectFit: "cover" }}
                   onClick={() => {
-                    history.push(`/room/${props.item.user_id}`);
+                    history.push(`/room/${props.item.user_id.user_id}`);
                   }}
                 />
                 <div className="media-body ml-2">

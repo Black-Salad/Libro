@@ -42,8 +42,7 @@ const LoginTest = () => {
   const classes = useStyles();
 
   const [user, setUser] = useState({ user_email: "", user_pw: "" });
-  const apiUrl1 = `http://localhost:8000/api/user/?user_email=${user.user_email}&user_state=true`;
-  const apiUrl2 = `http://localhost:8000/api/user/?user_email=${user.user_email}&user_state=flase`;
+  const apiUrl = `http://localhost:8000/api/user/`;
   let history = useHistory();
   let cookies = new Cookies();
   const now = new Date();
@@ -74,6 +73,29 @@ const LoginTest = () => {
     }
   };
 
+  // 탈퇴 계정 로그인시 한달 이내 복구가능
+  const restore = (res) => {
+    let date = new Date(res[0].user_crea_date);
+    let monthMore = new Date(res[0].user_crea_date);
+    monthMore.setMonth(date.getMonth() + 1);
+    if (monthMore >= new Date()) {
+      if (
+        window.confirm(
+          "계정 탈퇴를 신청하셨습니다. 한달 이내로 복구가 가능합니다. 복구하시겠습니까?"
+        )
+      ) {
+        axios
+          .patch(apiUrl + `${res[0].user_id}/`, { user_state: true })
+          .then(() => {
+            alert("복구가 완료되었습니다.😊");
+          });
+      }
+    } else {
+      alert("탈퇴한 계정입니다.😯");
+      axios.delete(apiUrl + `${res[0].user_id}/`);
+    }
+  };
+
   // 로그인
   const login = () => {
     // 체크박스 유무로 저장
@@ -85,28 +107,37 @@ const LoginTest = () => {
     }
 
     // email,pw 확인 후 쿠키저장 후 index화면으로 이동
-    axios.get(apiUrl1).then((response) => {
-      if (response.data.length == 0) {
-        axios.get(apiUrl1).then((response) => {
-          if (response.data.length == 0) alert("계정 정보가 없습니다.");
-          else alert("탈퇴한 계정 정보입니다.");
-        });
-      } else if (response.data[0].user_pw == user.user_pw) {
-        cookies.set("loginUserId", response.data[0].user_id, { maxAge: 3600 });
-        cookies.set("loginUserName", response.data[0].user_name, {
-          maxAge: 3600,
-        });
-        cookies.set("loginUserEmail", response.data[0].user_email, {
-          maxAge: 3600,
-        });
-        cookies.set("loginUserImg", response.data[0].user_img, {
-          maxAge: 3600,
-        });
-        history.push("/");
-      } else {
-        alert("비밀번호를 확인바랍니다.");
-      }
-    });
+    axios
+      .get(apiUrl + `?user_email=${user.user_email}&user_state=true`)
+      .then((response) => {
+        if (response.data.length === 0) {
+          axios
+            .get(apiUrl + `?user_email=${user.user_email}&user_state=flase`)
+            .then((response) => {
+              if (response.data.length === 0) {
+                alert("계정 정보가 없습니다.😥");
+              } else {
+                restore(response.data);
+              }
+            });
+        } else if (response.data[0].user_pw == user.user_pw) {
+          cookies.set("loginUserId", response.data[0].user_id, {
+            maxAge: 86400,
+          });
+          cookies.set("loginUserName", response.data[0].user_name, {
+            maxAge: 86400,
+          });
+          cookies.set("loginUserEmail", response.data[0].user_email, {
+            maxAge: 86400,
+          });
+          cookies.set("loginUserImg", response.data[0].user_img, {
+            maxAge: 86400,
+          });
+          history.push("/");
+        } else {
+          alert("비밀번호를 확인바랍니다.");
+        }
+      });
   };
 
   return (
@@ -165,7 +196,7 @@ const LoginTest = () => {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="/lookforpassword" variant="body2">
                   비밀번호 찾기
                 </Link>
               </Grid>

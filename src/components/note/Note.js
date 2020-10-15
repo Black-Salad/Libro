@@ -64,9 +64,12 @@ const Note = (props) => {
     <>
       <div className="row gutters-sm">
         {notes.length === 0 ? (
-          <div className="col-6 col-sm-6 col-md-3 col-xl-3 mb-3">
-            <p className="text-secondary font-size-sm">등록된 책이 없습니다</p>
-          </div>
+          <p
+            className="text-secondary font-size-sm mt-5"
+            style={{ height: 80, width: "100%", textAlign: "center" }}
+          >
+            등록된 책이 없습니다 😥
+          </p>
         ) : null}
         {notes.slice(0, more.limit).map((item, index) => {
           return (

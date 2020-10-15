@@ -66,7 +66,7 @@ const NoteMine = () => {
 
   //값 가져와서 setNotes
   useEffect(() => {
-    const apiUrl = `http://localhost:8000/api/note/?user_id=${loginUserId}`;
+    const apiUrl = `http://localhost:8000/api/note/list/?user_id=${loginUserId}`;
     axios
       .get(apiUrl)
       .then((response) => {

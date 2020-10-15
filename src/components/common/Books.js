@@ -108,9 +108,9 @@ const Books = ({
       <Paper className={classes.paper}>
         {bookList.length == 0 ? (
           <div style={{ color: "grey", margin: "20px auto" }}>
-            책이 없습니다.
+            책이 없습니다.😞
             <br />
-            <Link to="/searchbooks">책 탐색하러 이동</Link>
+            {profile ? null : <Link to="/searchbooks">책 탐색하러 이동</Link>}
           </div>
         ) : (
           <ul
