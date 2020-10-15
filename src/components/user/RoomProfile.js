@@ -42,8 +42,9 @@ const RoomProfile = (props) => {
     },
     cardMedia: {
       width: 180,
-      height: 170,
+      height: 180,
       borderRadius: "50%!important",
+      objectFit: "cover",
     },
     cardName: {
       "@media (max-width: 599px)": {
@@ -80,7 +81,7 @@ const RoomProfile = (props) => {
               팔로워 <b>{follower}</b>
             </Link>{" "}
             <Link to={`/follow/${props.userIDX}`}>
-              팔로우 <b>{following}</b>
+              팔로잉 <b>{following}</b>
             </Link>
             <hr />
             <Typography variant="subtitle1" color="textSecondary">
