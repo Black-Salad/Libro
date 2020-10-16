@@ -5,6 +5,7 @@ import axios from "axios";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import { LIBRO_API_URL } from "../../constants/config";
+import { Cookies } from "react-cookie";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -69,6 +70,9 @@ const Books = ({
       break;
   }
 
+  const cookies = new Cookies();
+  const loginUser = cookies.get("loginUserId");
+
   useEffect(() => {
     axios
       .get(apiUrl)
@@ -81,7 +85,7 @@ const Books = ({
       .catch((res) => {
         console.error(res);
       });
-  }, [modalState]);
+  }, [modalState, shelfUser]);
 
   return (
     <div>
@@ -110,7 +114,11 @@ const Books = ({
           <div style={{ color: "grey", margin: "20px auto" }}>
             책이 없습니다.😞
             <br />
-            {profile ? null : <Link to="/searchbooks">책 탐색하러 이동</Link>}
+            {profile || shelfUser !== loginUser ? null : bKind === "didRead" ? (
+              <>어서 완독해보세요.🏃‍♀️</>
+            ) : (
+              <Link to="/searchbooks">책 탐색하러 이동</Link>
+            )}
           </div>
         ) : (
           <ul

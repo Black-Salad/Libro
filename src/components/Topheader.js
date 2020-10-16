@@ -50,9 +50,12 @@ const Topheader = () => {
     cookies.remove("loginUserEmail");
     cookies.remove("loginUserImg");
     cookies.remove("loginUserId");
-    window.location = "/login";
+    out();
   };
 
+  const out = () => {
+    window.location = "/login";
+  };
   // 알람 시간 나타내기
   const timeForToday = (value) => {
     const today = new Date();
@@ -73,14 +76,14 @@ const Topheader = () => {
     return `${Math.floor(betweenTimeDay / 365)}년전`;
   };
 
-  const showBtn = () => {
-    setCnt(cnt + 1);
-    if (cnt % 2 === 0) {
-      setShow("");
-    } else {
-      setShow("show");
-    }
-  };
+  // const showBtn = () => {
+  //   setCnt(cnt + 1);
+  //   if (cnt % 2 === 0) {
+  //     setShow("");
+  //   } else {
+  //     setShow("show");
+  //   }
+  // };
 
   // 알람 클릭시 좋아요,댓글은 해당 독서록으로, 팔로우는 룸 이동
   const viewAlarm = (alarmIDX, alarmType, noteIDX, userIDX) => {
@@ -120,9 +123,9 @@ const Topheader = () => {
           <Link
             to="#"
             className="nav-link nav-link-faded nav-icon has-badge dropdown-toggle no-caret "
-            // data-toggle="dropdown"
-            // data-display="static"
-            onClick={() => showBtn()}
+            data-toggle="dropdown"
+            data-display="static"
+            // onClick={() => showBtn()}
           >
             <Icon.Bell />
             <span className="badge badge-pill badge-danger">

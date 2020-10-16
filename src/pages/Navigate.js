@@ -4,7 +4,8 @@ import Layout from "../components/Layout";
 import { Cookies } from "react-cookie";
 import FollowUser from "../components/user/FollowUser";
 import BestNote from "../components/note/BestNote";
-
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 const Navigate = () => {
   const divStyle = {
     width: "100%",
@@ -25,7 +26,7 @@ const Navigate = () => {
   return (
     <Layout>
       <BreadCrumbs breads={["둘러보기"]} />
-      <div className="bxslider">
+      <Carousel showArrows={false} showThumbs={false}>
         <div style={divStyle}>
           <img src="/img/ad1.jpg" alt="" style={imgStyle} />
         </div>
@@ -38,13 +39,13 @@ const Navigate = () => {
         <div style={divStyle}>
           <img src="/img/ad4.jpg" alt="" style={imgStyle} />
         </div>
-      </div>
-      <h4 className="mb-3 mt-5" style={bestStyle}>
+      </Carousel>
+      <h4 className="mb-4 mt-5 text-secondary" style={bestStyle}>
         베스트 독서록
       </h4>
       <BestNote />
       <hr />
-      <h4 className="mb-3 mt-4" style={bestStyle}>
+      <h4 className="mb-4 mt-4 text-secondary" style={bestStyle}>
         내가 팔로우한 친구들
       </h4>
       <FollowUser userIDX={cookies.get("loginUserId")} />

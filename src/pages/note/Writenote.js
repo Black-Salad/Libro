@@ -12,7 +12,7 @@ const Writenote = ({ location }) => {
     <Layout>
       <BreadCrumbs
         breads={[
-          <Link to="/viewnotes">내 독서록</Link>,
+          // <Link to="/viewnotes">내 독서록</Link>,
           <Link to="/writenote">독서록 쓰기</Link>,
         ]}
       />

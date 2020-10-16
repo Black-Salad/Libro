@@ -55,12 +55,17 @@ const LoginTest = () => {
   useEffect(() => {
     if (cookies.get("saveId") != null) {
       setCheck(true);
+      setUser({ ...user, user_email: cookies.get("saveId") });
     }
-  }, [user]);
+    if (cookies.get("loginUserId") != null) {
+      history.push(`/bookshelf/${cookies.get("loginUserId")}`);
+    }
+  }, []);
 
   // 값이 바뀔 때마다 onchange
   const userOnChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
+    console.log(user);
   };
 
   // 체크박스

@@ -9,8 +9,63 @@ import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+import UserButton from "../common/UserButton";
+import { Grid } from "@material-ui/core";
+const useStyles = makeStyles((theme) => ({
+  gridRoot: {
+    flexGrow: 1,
+    width: "100%",
+    position: "relative",
+    margin: "5px 0px",
+  },
+  viewBtn: {
+    textAlign: "center",
+    maxHeight: "100%",
+  },
+  contentBox: {
+    color: "#585858",
+    border: "1px solid lightgrey",
+    boxShadow: "2px 2px 4px #BDBDBD",
+  },
+  bImage: {
+    width: "100%",
+    height: "100px",
+    borderRadius: "3px",
+    objectFit: "cover",
+    cursor: "pointer",
+  },
+  titleArea: {
+    padding: 10,
+    paddingBottom: 0,
+    fontSize: "14px",
+  },
+  rTitleArea: {
+    width: "100%",
+    display: "block",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    margin: 0,
+  },
+  subTitleArea: {
+    marginTop: 3,
+    color: "#A4A4A4",
+    fontSize: "12px",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
+  date: {
+    paddingRight: "5px",
+    fontSize: "12px",
+    color: "#A4A4A4",
+    textAlign: "right",
+  },
+}));
 
 const Note = (props) => {
+  const classes = useStyles();
   let history = useHistory();
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
@@ -69,52 +124,83 @@ const Note = (props) => {
             className="text-secondary font-size-sm mt-5"
             style={{ height: 80, width: "100%", textAlign: "center" }}
           >
-            등록된 책이 없습니다 😥
+            등록된 독서록이 없습니다 😥
           </p>
         ) : null}
         {notes.slice(0, more.limit).map((item, index) => {
+          console.log(item);
           return (
             <React.Fragment key={index}>
-              <div className="col-6 col-sm-6 col-md-3 col-xl-3 mb-3">
-                <div className="card h-100">
+              <div className={`col-6 col-sm-4 col-md-3 col-xl-2 mb-3`}>
+                <div className={`${classes.contentBox} card h-100`}>
                   <img
                     src={item.book_img}
                     alt="..."
-                    style={{ width: "60%", margin: "auto", cursor: "pointer" }}
+                    className={classes.bImage}
                     onClick={() => {
                       history.push(`/viewnotedetail/${item.note_id}`);
                     }}
                   />
-                  <div className="card-body">
-                    <h6 className="card-title">
+                  <div className={classes.titleArea}>
+                    <b className={`${classes.rTitleArea} card-title`}>
                       <Link to={`/viewnotedetail/${item.note_id}`}>
                         {item.note_title}
                       </Link>
-                    </h6>
-                    <div className="card-subtitle text-muted font-size-sm mb-2">
+                    </b>
+                    <div
+                      className={`${classes.subTitleArea} card-subtitle font-size-xs mb-2`}
+                    >
                       {item.book_title}
                     </div>
                   </div>
-                  <div className="card-footer font-size-sm text-muted">
-                    <span className="ml-1 mr-auto">
-                      <Moment format={"YYYY/MM/DD"}>{item.note_date}</Moment>
-                    </span>
+                  <div className={`${classes.date}`}>
+                    <div className="ml-1 mr-auto" style={{ marginBottom: 3 }}>
+                      <Moment format={"YYYY-MM-DD"}>{item.note_date}</Moment>
+                      <br />
+                    </div>
+                    <UserButton userId={item.user_id} />
                   </div>
-                  <div className="card-footer justify-content-between">
-                    <span className="has-icon btn-xs">
-                      <RemoveRedEyeOutlinedIcon /> {item.note_viewcount}
-                    </span>
-
-                    <NoteLike noteIDX={item.note_id} userIDX={item.user_id} />
-                    {item.user_id == loginUserId ? (
-                      <span
-                        className="btn btn-link has-icon btn-xs bigger-130 text-danger"
-                        onClick={() => onDelete(item.note_id)}
-                        title="삭제"
+                  <div>
+                    <Grid container className={classes.gridRoot} spacing={1}>
+                      <Grid
+                        item
+                        className={
+                          `${classes.viewBtn}` +
+                          (item.user_id == loginUserId
+                            ? " col-4 col-xs-4 col-sm-4 col-md-4"
+                            : " col-6 col-xs-6 col-sm-6 col-md-6")
+                        }
                       >
-                        <DeleteOutlinedIcon color="secondary" />
-                      </span>
-                    ) : null}
+                        <RemoveRedEyeOutlinedIcon />
+                        <span style={{ fontSize: 7 }}>
+                          {item.note_viewcount}
+                        </span>
+                      </Grid>
+                      <Grid
+                        item
+                        className={
+                          `${classes.viewBtn}` +
+                          (item.user_id == loginUserId
+                            ? " col-4 col-xs-4 col-sm-4 col-md-4"
+                            : " col-6 col-xs-6 col-sm-6 col-md-6")
+                        }
+                      >
+                        <NoteLike
+                          noteIDX={item.note_id}
+                          userIDX={item.user_id}
+                        />
+                      </Grid>
+                      {item.user_id == loginUserId ? (
+                        <Grid
+                          item
+                          className={`${classes.viewBtn} col-4 col-xs-4 col-sm-4 col-md-4`}
+                          onClick={() => onDelete(item.note_id)}
+                          title="삭제"
+                        >
+                          <DeleteOutlinedIcon color="secondary" />
+                        </Grid>
+                      ) : null}
+                    </Grid>
                   </div>
                 </div>
               </div>

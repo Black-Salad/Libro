@@ -5,6 +5,7 @@ import axios from "axios";
 import Moment from "react-moment";
 import { LIBRO_API_URL } from "../../constants/config";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
+
 const NoteComment = (props) => {
   let history = useHistory();
   const cookies = new Cookies();
@@ -17,7 +18,9 @@ const NoteComment = (props) => {
         .patch(apiUrl, { comment_state: false })
         .then(() => {
           alert("삭제완료");
-          history.go(0);
+
+          props.setCommented(!props.commented);
+          // history.go(0);
         })
         .catch((response) => {
           console.error(response);

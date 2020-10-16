@@ -17,11 +17,11 @@ const UserButton = (props) => {
   const classes = useStyles();
   const [user, setUser] = useState({});
   useEffect(() => {
-    console.log("userButton", props.userId);
+    // console.log("userButton", props.userId);
     axios.get(`${LIBRO_API_URL}/api/user/${props.userId}/`).then((response) => {
       setUser(response.data);
     });
-  }, []);
+  }, [props]);
   return (
     <Link to={`/room/${props.userId}`}>
       <img

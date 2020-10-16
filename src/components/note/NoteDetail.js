@@ -45,6 +45,7 @@ const NoteDetail = (props) => {
     alarm_type: 3,
     alarm_status: true,
   });
+  const [commented, setCommented] = useState(false);
   const useStyles = makeStyles(() => ({
     profile: {
       width: 30,
@@ -78,7 +79,7 @@ const NoteDetail = (props) => {
       console.log("comment", response);
       setComments(response.data);
     });
-  }, []);
+  }, [props, commented]);
 
   //독서록 삭제
   const onDelete = () => {
@@ -110,6 +111,8 @@ const NoteDetail = (props) => {
     }
     axios.post(apiUrl3, comment).then((response) => {
       console.log(response.data);
+      setCommented(!commented);
+      document.getElementById("textarea").value = "";
 
       axios.post(`${LIBRO_API_URL}/api/timeline/`, {
         user_id: loginUserId,
@@ -123,7 +126,7 @@ const NoteDetail = (props) => {
           console.log("Alarm", response.data);
         });
       }
-      history.go(0);
+      // history.go(0);
     });
   };
 
@@ -217,7 +220,11 @@ const NoteDetail = (props) => {
           {comments.map((item, index) => {
             return (
               <React.Fragment key={index}>
-                <NoteComment item={item} />
+                <NoteComment
+                  item={item}
+                  setCommented={setCommented}
+                  commented={commented}
+                />
               </React.Fragment>
             );
           })}
@@ -235,6 +242,7 @@ const NoteDetail = (props) => {
                 onChange={(e) => commentOnChange(e)}
                 placeholder="댓글 내용"
                 style={{ border: "1px solid #c2c2c2" }}
+                id="textarea"
               ></textarea>
               <div className="input-group-append">
                 <Button

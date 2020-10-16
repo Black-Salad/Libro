@@ -7,6 +7,70 @@ import { LIBRO_API_URL } from "../../constants/config";
 import NoteLike from "./NoteLike";
 import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
+import { makeStyles } from "@material-ui/core/styles";
+import UserButton from "../common/UserButton";
+
+const useStyles = makeStyles((theme) => ({
+  gridRoot: {
+    flexGrow: 1,
+    width: "100%",
+    position: "relative",
+    margin: "5px 0px",
+  },
+  viewBtn: {
+    textAlign: "center",
+    maxHeight: "100%",
+  },
+  contentBox: {
+    color: "#585858",
+    border: "1px solid lightgrey",
+    boxShadow: "2px 2px 4px #BDBDBD",
+  },
+  bImage: {
+    boxShadow: "2px 2px 5px #999",
+  },
+  titleArea: {
+    padding: 10,
+    paddingBottom: 0,
+    fontSize: "14px",
+  },
+  rTitleArea: {
+    width: "100%",
+    display: "block",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    margin: 0,
+  },
+  subTitleArea: {
+    marginTop: 3,
+    color: "#A4A4A4",
+    fontSize: "12px",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
+  date: {
+    paddingRight: "5px",
+    fontSize: "12px",
+    color: "#A4A4A4",
+    textAlign: "right",
+  },
+  root: {
+    padding: "2px 4px",
+    display: "flex",
+    alignItems: "center",
+    marginBottom: "1rem",
+    width: "100%",
+  },
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
+  },
+  iconButton: {
+    padding: 10,
+  },
+}));
 
 const BestNote = (props) => {
   let history = useHistory();
@@ -14,6 +78,7 @@ const BestNote = (props) => {
   const loginUserId = cookies.get("loginUserId");
   const apiUrl = `${LIBRO_API_URL}/api/note/`;
   const [notes, setNotes] = useState([]);
+  const classes = useStyles();
 
   //useEffect
   useEffect(() => {
@@ -79,24 +144,29 @@ const BestNote = (props) => {
                     src={item.book_img}
                     alt="..."
                     style={{ width: "60%", margin: "auto", cursor: "pointer" }}
+                    className={classes.bImage}
                     onClick={() => {
                       history.push(`/viewnotedetail/${item.note_id}`);
                     }}
                   />
-                  <div className="card-body">
-                    <h6 className="card-title">
+                  <div className={classes.titleArea}>
+                    <b className={`${classes.rTitleArea} card-title`}>
                       <Link to={`/viewnotedetail/${item.note_id}`}>
                         {item.note_title}
                       </Link>
-                    </h6>
-                    <div className="card-subtitle text-muted font-size-sm mb-2">
+                    </b>
+                    <div
+                      className={`${classes.subTitleArea} card-subtitle font-size-xs mb-2`}
+                    >
                       {item.book_title}
                     </div>
                   </div>
-                  <div className="card-footer font-size-sm text-muted">
-                    <span className="ml-1 mr-auto">
-                      <Moment format={"YYYY/MM/DD"}>{item.note_date}</Moment>
-                    </span>
+                  <div className={`${classes.date}`}>
+                    <div className="ml-1 mr-auto" style={{ marginBottom: 3 }}>
+                      <Moment format={"YYYY-MM-DD"}>{item.note_date}</Moment>
+                      <br />
+                    </div>
+                    <UserButton userId={item.user_id} />
                   </div>
                   <div className="card-footer justify-content-between">
                     <span className="has-icon btn-xs">
