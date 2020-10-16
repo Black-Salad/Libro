@@ -15,12 +15,10 @@ const NoteComment = (props) => {
     const apiUrl = `${LIBRO_API_URL}/api/note/comment/${comment_id}/`;
     if (window.confirm("해당 댓글을 삭제하시겠습니까?")) {
       axios
-        .patch(apiUrl, { comment_state: false })
+        .delete(apiUrl)
         .then(() => {
           alert("삭제완료");
-
           props.setCommented(!props.commented);
-          // history.go(0);
         })
         .catch((response) => {
           console.error(response);
