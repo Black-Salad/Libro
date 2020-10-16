@@ -10,6 +10,7 @@ import { useHistory } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import axios from "axios";
 import Books from "../../components/common/Books";
+import { LIBRO_API_URL } from "../../constants/config";
 
 const Room = ({ match }) => {
   let history = useHistory();
@@ -50,7 +51,7 @@ const Room = ({ match }) => {
 
   // AJAX
   useEffect(() => {
-    const apiUrl4 = `http://localhost:8000/api/user/${shelfUser}/`;
+    const apiUrl4 = `${LIBRO_API_URL}/api/user/${shelfUser}/`;
 
     axios
       .get(apiUrl4)

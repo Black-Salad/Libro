@@ -10,12 +10,13 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
+import { LIBRO_API_URL } from "../constants/config";
 
 const Topheader = () => {
   let history = useHistory();
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
-  const apiUrl = `http://localhost:8000/api/user/alarm/`;
+  const apiUrl = `${LIBRO_API_URL}/api/user/alarm/`;
   const [alarm, setAlarm] = useState([]);
   const [alarmCnt, setAlarmCnt] = useState();
   const [cnt, setCnt] = useState(0);

@@ -5,13 +5,14 @@ import axios from "axios";
 import Button from "@material-ui/core/Button";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PersonAddDisabledIcon from "@material-ui/icons/PersonAddDisabled";
+import { LIBRO_API_URL } from "../../constants/config";
 
 const FollowButton = (props) => {
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
 
-  const apiUrl1 = `http://localhost:8000/api/user/follow/`;
-  const apiUrl4 = `http://localhost:8000/api/user/alarm/`;
+  const apiUrl1 = `${LIBRO_API_URL}/api/user/follow/`;
+  const apiUrl4 = `${LIBRO_API_URL}/api/user/alarm/`;
   const [followCnt, setFollowCnt] = useState();
   const [follow, setFollow] = useState({
     user_id: loginUserId,
@@ -41,7 +42,7 @@ const FollowButton = (props) => {
       setFollow(response.data);
 
       // timeline
-      axios.post(`http://localhost:8000/api/timeline/`, {
+      axios.post(`${LIBRO_API_URL}/api/timeline/`, {
         user_id: loginUserId,
         tl_kind: "7",
         follow_id: response.data.follow_id,

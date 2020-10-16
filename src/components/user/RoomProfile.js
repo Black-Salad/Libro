@@ -8,9 +8,10 @@ import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import { Link } from "react-router-dom";
+import { LIBRO_API_URL } from "../../constants/config";
 
 const RoomProfile = (props) => {
-  const apiUrl = `http://localhost:8000/api/user/`;
+  const apiUrl = `${LIBRO_API_URL}/api/user/`;
   const [user, setUser] = useState({});
   const [follower, setFollower] = useState();
   const [following, setFollowing] = useState();

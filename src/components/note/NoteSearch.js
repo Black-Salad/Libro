@@ -14,6 +14,75 @@ import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
+import UserButton from "../common/UserButton";
+import { Grid } from "@material-ui/core";
+import { LIBRO_API_URL } from "../../constants/config";
+
+const useStyles = makeStyles((theme) => ({
+  gridRoot: {
+    flexGrow: 1,
+    width: "100%",
+    position: "relative",
+    margin: "5px 0px",
+  },
+  viewBtn: {
+    textAlign: "center",
+    maxHeight: "100%",
+  },
+  contentBox: {
+    color: "#585858",
+    border: "1px solid lightgrey",
+    boxShadow: "2px 2px 4px #BDBDBD",
+  },
+  bImage: {
+    width: "100%",
+    height: "100px",
+    borderRadius: "3px",
+    objectFit: "cover",
+    cursor: "pointer",
+  },
+  titleArea: {
+    padding: 10,
+    paddingBottom: 0,
+    fontSize: "14px",
+  },
+  rTitleArea: {
+    width: "100%",
+    display: "block",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    margin: 0,
+  },
+  subTitleArea: {
+    marginTop: 3,
+    color: "#A4A4A4",
+    fontSize: "12px",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
+  date: {
+    paddingRight: "5px",
+    fontSize: "12px",
+    color: "#A4A4A4",
+    textAlign: "right",
+  },
+  root: {
+    padding: "2px 4px",
+    display: "flex",
+    alignItems: "center",
+    marginBottom: "1rem",
+    width: "100%",
+  },
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
+  },
+  iconButton: {
+    padding: 10,
+  },
+}));
 
 const NoteSearch = (props) => {
   const [notes, setNotes] = useState([]);
@@ -22,14 +91,14 @@ const NoteSearch = (props) => {
     note_id: 0,
   });
   const [more, setMore] = useState({
-    limit: 8,
+    limit: 12,
     show: false,
   });
   const refSearch = useRef(null);
 
-  const apiUrl = `http://localhost:8000/api/book/?book_isbn=${props.bookISBN}`;
-  const apiUrl1 = `http://localhost:8000/api/note/`;
-  const apiUrl2 = `http://localhost:8000/api/note/search/?note_private=true&search=`;
+  const apiUrl = `${LIBRO_API_URL}/api/book/?book_isbn=${props.bookISBN}`;
+  const apiUrl1 = `${LIBRO_API_URL}/api/note/`;
+  const apiUrl2 = `${LIBRO_API_URL}/api/note/search/?note_private=true&search=`;
 
   //값 가져와서 setNotes
   useEffect(() => {
@@ -42,18 +111,18 @@ const NoteSearch = (props) => {
             setNotes(response.data);
             setMore({
               ...more,
-              show: response.data.length > 8 ? true : false,
+              show: response.data.length > 12 ? true : false,
             });
           });
       } else {
         setNotes(response.data);
-        // axios.get(apiUrl1).then((response) => {
-        //   setNotes(response.data);
-        //   setMore({
-        //     ...more,
-        //     show: response.data.length > 8 ? true : false,
-        //   });
-        // });
+        axios.get(apiUrl1).then((response) => {
+          setNotes(response.data);
+          setMore({
+            ...more,
+            show: response.data.length > 12 ? true : false,
+          });
+        });
       }
     });
   }, []);
@@ -67,7 +136,7 @@ const NoteSearch = (props) => {
         .get(apiUrl2 + search)
         .then((response) => {
           setNotes(response.data);
-          setMore({ ...more, show: response.data.length > 8 ? true : false });
+          setMore({ ...more, show: response.data.length > 12 ? true : false });
         })
         .catch((response) => {
           console.error(response);
@@ -82,7 +151,7 @@ const NoteSearch = (props) => {
       .get(apiUrl2 + search)
       .then((response) => {
         setNotes(response.data);
-        setMore({ ...more, show: response.data.length > 8 ? true : false });
+        setMore({ ...more, show: response.data.length > 12 ? true : false });
       })
       .catch((response) => {
         console.error(response);
@@ -94,8 +163,8 @@ const NoteSearch = (props) => {
     console.log(notes.length);
     console.log(more.limit);
     setMore({
-      show: notes.length > more.limit + 8 ? true : false,
-      limit: more.limit + 8,
+      show: notes.length > more.limit + 6 ? true : false,
+      limit: more.limit + 6,
     });
   };
 
@@ -116,22 +185,6 @@ const NoteSearch = (props) => {
     setModal({ ...modal, open: false });
   };
 
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      padding: "2px 4px",
-      display: "flex",
-      alignItems: "center",
-      marginBottom: "1rem",
-      width: "100%",
-    },
-    input: {
-      marginLeft: theme.spacing(1),
-      flex: 1,
-    },
-    iconButton: {
-      padding: 10,
-    },
-  }));
   const classes = useStyles();
 
   return (
@@ -161,39 +214,60 @@ const NoteSearch = (props) => {
           </div>
         ) : null}
         {notes.slice(0, more.limit).map((item, index) => {
+          console.log(item);
           return (
             <React.Fragment key={index}>
-              <div className="col-6 col-sm-6 col-md-3 col-xl-3 mb-3">
-                <div className="card h-100">
+              <div className={`col-6 col-sm-4 col-md-3 col-xl-2 mb-3`}>
+                <div className={`${classes.contentBox} card h-100`}>
                   <img
                     src={item.book_img}
                     alt="..."
-                    style={{ width: "60%", margin: "auto", cursor: "pointer" }}
+                    className={classes.bImage}
                     onClick={() => openModal(item.note_id)}
                   />
-                  <div className="card-body">
-                    <h6
-                      className="card-title"
-                      style={{ cursor: "pointer" }}
+                  <div className={classes.titleArea}>
+                    <b
+                      className={`${classes.rTitleArea} card-title`}
                       onClick={() => openModal(item.note_id)}
                     >
                       {item.note_title}
-                    </h6>
-                    <div className="card-subtitle text-muted font-size-sm mb-2">
+                    </b>
+                    <div
+                      className={`${classes.subTitleArea} card-subtitle font-size-xs mb-2`}
+                    >
                       {item.book_title}
                     </div>
                   </div>
-                  <div className="card-footer font-size-sm text-muted">
-                    <span className="ml-1 mr-auto">
-                      <Moment format={"YYYY/MM/DD"}>{item.note_date}</Moment>
-                    </span>
+                  <div className={`${classes.date}`}>
+                    <div className="ml-1 mr-auto" style={{ marginBottom: 3 }}>
+                      <Moment format={"YYYY-MM-DD"}>{item.note_date}</Moment>
+                      <br />
+                    </div>
+                    <UserButton userId={item.user_id} />
                   </div>
-                  <div className="card-footer justify-content-between">
-                    <span className="has-icon btn-xs">
-                      <RemoveRedEyeOutlinedIcon /> {item.note_viewcount}
-                    </span>
-
-                    <NoteLike noteIDX={item.note_id} userIDX={item.user_id} />
+                  <div>
+                    <Grid container className={classes.gridRoot} spacing={1}>
+                      {/* <div className="justify-content-between"> */}
+                      {/* <div className="has-icon btn-xs col-4"> */}
+                      <Grid
+                        item
+                        className={`${classes.viewBtn} col-6 col-xs-6 col-sm-6 col-md-6`}
+                      >
+                        <RemoveRedEyeOutlinedIcon />
+                        <span style={{ fontSize: 7 }}>
+                          {item.note_viewcount}
+                        </span>
+                      </Grid>
+                      <Grid
+                        item
+                        className={`${classes.viewBtn} col-6 col-xs-6 col-sm-6 col-md-6`}
+                      >
+                        <NoteLike
+                          noteIDX={item.note_id}
+                          userIDX={item.user_id}
+                        />
+                      </Grid>
+                    </Grid>
                   </div>
                 </div>
               </div>

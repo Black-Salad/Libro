@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
+import { LIBRO_API_URL } from "../../constants/config";
 
 const useStyles = makeStyles(() => ({
   profile: {
@@ -11,16 +13,23 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const UserButton = ({ img, name, userId }) => {
+const UserButton = (props) => {
   const classes = useStyles();
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    console.log("userButton", props.userId);
+    axios.get(`${LIBRO_API_URL}/api/user/${props.userId}/`).then((response) => {
+      setUser(response.data);
+    });
+  }, []);
   return (
-    <Link to={`/room/${userId}`}>
+    <Link to={`/room/${props.userId}`}>
       <img
         alt=""
-        src={img}
+        src={user.user_img}
         className={`${classes.profile} rounded-circle mr-2`}
       />
-      {name}
+      {user.user_name}
     </Link>
   );
 };

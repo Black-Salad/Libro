@@ -4,6 +4,7 @@ import { Cookies } from "react-cookie";
 
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import { LIBRO_API_URL } from "../../constants/config";
 
 const SettingPassword = () => {
   const cookies = new Cookies();
@@ -16,7 +17,7 @@ const SettingPassword = () => {
   const [user, setUser] = useState({});
   const [newPw, setNewPw] = useState();
   const [pwConfirm, setPwConfirm] = useState("");
-  const apiUrl1 = `http://localhost:8000/api/user/${loginUserId}/`;
+  const apiUrl1 = `${LIBRO_API_URL}/api/user/${loginUserId}/`;
 
   // useEffect
   useEffect(() => {

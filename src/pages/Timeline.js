@@ -16,6 +16,7 @@ import TimelinePiece4 from "../components/common/TimelinePiece4";
 import TimelinePiece5 from "../components/common/TimelinePiece5";
 import TimelinePiece6 from "../components/common/TimelinePiece6";
 import TimelinePiece7 from "../components/common/TimelinePiece7";
+import { LIBRO_API_URL } from "../constants/config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     marginBottom: theme.spacing(2),
     color: "#585858",
+    fontSize: "90%",
+    textAlign: "center",
   },
   content: {
     margin: theme.spacing(1),
@@ -80,7 +83,7 @@ const Timeline = () => {
   };
 
   useEffect(() => {
-    const apiUrl = `http://localhost:8000/api/timeline/join/?user=${LoginUser}`;
+    const apiUrl = `${LIBRO_API_URL}/api/timeline/join/?user=${LoginUser}`;
 
     axios
       .get(apiUrl)
@@ -142,6 +145,11 @@ const Timeline = () => {
                 break;
             }
           })}
+          {timelineList.length === 0 ? (
+            <Paper className={classes.paper}>
+              소식이 없습니다. 리브로어들을 팔로우해보세요!😁
+            </Paper>
+          ) : null}
         </Grid>
       </Grid>
       <Bookprofile

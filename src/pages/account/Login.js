@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import * as Icon from "react-feather";
+import { LIBRO_API_URL } from "../../constants/config";
 
 const LoginTest = () => {
   const useStyles = makeStyles((theme) => ({
@@ -42,7 +43,7 @@ const LoginTest = () => {
   const classes = useStyles();
 
   const [user, setUser] = useState({ user_email: "", user_pw: "" });
-  const apiUrl = `http://localhost:8000/api/user/`;
+  const apiUrl = `${LIBRO_API_URL}/api/user/`;
   let history = useHistory();
   let cookies = new Cookies();
   const now = new Date();

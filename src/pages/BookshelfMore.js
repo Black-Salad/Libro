@@ -9,6 +9,7 @@ import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import Paper from "@material-ui/core/Paper";
 import Layout from "../components/Layout";
+import { LIBRO_API_URL } from "../constants/config";
 
 const BookshelfMore = ({ location, match }) => {
   // 임시 데이터
@@ -25,15 +26,15 @@ const BookshelfMore = ({ location, match }) => {
   switch (kind) {
     case "reading":
       kindDisplayStr = "읽고 있는 책";
-      apiUrl = `http://localhost:8000/api/book/shelf/join/?user_id=${shelfUser}&shelf_state=1`;
+      apiUrl = `${LIBRO_API_URL}/api/book/shelf/join/?user_id=${shelfUser}&shelf_state=1`;
       break;
     case "finished":
       kindDisplayStr = "읽은 책";
-      apiUrl = `http://localhost:8000/api/book/shelf/join/?user_id=${shelfUser}&shelf_state=2`;
+      apiUrl = `${LIBRO_API_URL}/api/book/shelf/join/?user_id=${shelfUser}&shelf_state=2`;
       break;
     case "interested":
       kindDisplayStr = "관심 책";
-      apiUrl = `http://localhost:8000/api/book/star/join/?user_id=${shelfUser}`;
+      apiUrl = `${LIBRO_API_URL}/api/book/star/join/?user_id=${shelfUser}`;
       break;
     default:
       kindDisplayStr = "";

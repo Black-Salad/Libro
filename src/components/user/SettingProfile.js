@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { Cookies } from "react-cookie";
 
 import Button from "@material-ui/core/Button";
+import { LIBRO_API_URL } from "../../constants/config";
 
 const SettingProfile = () => {
   let history = useHistory();
@@ -12,7 +13,7 @@ const SettingProfile = () => {
   const loginUserId = cookies.get("loginUserId");
   const loginUserEmail = cookies.get("loginUserEmail");
 
-  const apiUrl1 = `http://localhost:8000/api/user/${loginUserId}/`;
+  const apiUrl1 = `${LIBRO_API_URL}/api/user/${loginUserId}/`;
   const [user, setUser] = useState({
     user_img: "",
   });

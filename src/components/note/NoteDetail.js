@@ -10,6 +10,8 @@ import Button from "@material-ui/core/Button";
 import HomeIcon from "@material-ui/icons/Home";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import DeleteIcon from "@material-ui/icons/Delete";
+import UserButton from "../common/UserButton";
+import { LIBRO_API_URL } from "../../constants/config";
 
 const NoteDetail = (props) => {
   let history = useHistory();
@@ -19,10 +21,10 @@ const NoteDetail = (props) => {
   const loginUserName = cookies.get("loginUserName");
   const loginUserEmail = cookies.get("loginUserEmail");
 
-  const apiUrl = `http://localhost:8000/api/note/${props.noteIDX}/`;
-  const apiUrl2 = `http://localhost:8000/api/note/comment/userjoin/?note_id=${props.noteIDX}`;
-  const apiUrl3 = `http://localhost:8000/api/note/comment/`;
-  const apiUrl4 = `http://localhost:8000/api/user/alarm/`;
+  const apiUrl = `${LIBRO_API_URL}/api/note/${props.noteIDX}/`;
+  const apiUrl2 = `${LIBRO_API_URL}/api/note/comment/userjoin/?note_id=${props.noteIDX}`;
+  const apiUrl3 = `${LIBRO_API_URL}/api/note/comment/`;
+  const apiUrl4 = `${LIBRO_API_URL}/api/user/alarm/`;
 
   const [note, setNote] = useState({});
   const [comments, setComments] = useState([]);
@@ -87,9 +89,9 @@ const NoteDetail = (props) => {
     axios.post(apiUrl3, comment).then((response) => {
       console.log(response.data);
 
-      axios.post(`http://localhost:8000/api/timeline/`, {
+      axios.post(`${LIBRO_API_URL}/api/timeline/`, {
         user_id: loginUserId,
-        tl_kind: "5",
+        tl_kind: "6",
         comment_id: response.data.comment_id,
       });
 
@@ -133,7 +135,7 @@ const NoteDetail = (props) => {
           <hr />
           <p style={{ whiteSpace: "pre-line" }}>{note.note_contents}</p>
           <div className="btn-group-sm pt-3 list-with-gap">
-            <Button
+            {/* <Button
               variant="contained"
               color="primary"
               startIcon={<HomeIcon />}
@@ -144,12 +146,13 @@ const NoteDetail = (props) => {
               }}
             >
               Room
-            </Button>
+            </Button> */}
+            {/* <UserButton userId={note.user_id} /> */}
             {note.user_id == loginUserId ? (
               <>
                 <Button
                   variant="contained"
-                  color="green"
+                  // color="green"
                   startIcon={<RefreshIcon />}
                   className="mb-1 mr-2"
                   size="small"

@@ -8,12 +8,13 @@ import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import Button from "@material-ui/core/Button";
+import { LIBRO_API_URL } from "../../constants/config";
 
 const Note = (props) => {
   let history = useHistory();
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
-  const apiUrl1 = `http://localhost:8000/api/note/?user_id=${props.userIDX}&note_private=true`;
+  const apiUrl1 = `${LIBRO_API_URL}/api/note/?user_id=${props.userIDX}&note_private=true`;
 
   const [notes, setNotes] = useState([]);
   const [more, setMore] = useState({
@@ -36,7 +37,7 @@ const Note = (props) => {
 
   //삭제
   const onDelete = (noteIDX) => {
-    const apiUrl2 = `http://localhost:8000/api/note/${noteIDX}/`;
+    const apiUrl2 = `${LIBRO_API_URL}/api/note/${noteIDX}/`;
     if (window.confirm("해당 독서록을 삭제하시겠습니까?")) {
       axios
         .patch(apiUrl2, { note_state: false })

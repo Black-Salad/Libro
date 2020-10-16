@@ -10,6 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import * as Icon from "react-feather";
+import { LIBRO_API_URL } from "../../constants/config";
 
 const LookForPassword = () => {
   // style
@@ -41,7 +42,7 @@ const LookForPassword = () => {
 
   const [email, setEmail] = useState();
   const [error, setError] = useState(false);
-  const apiUrl = `http://localhost:8000/api/user/`;
+  const apiUrl = `${LIBRO_API_URL}/api/user/`;
 
   // 값이 바뀔 때마다 onchange
   const OnChange = (e) => {

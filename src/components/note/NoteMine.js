@@ -11,8 +11,21 @@ import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import Button from "@material-ui/core/Button";
 import VisibilityOffOutlinedIcon from "@material-ui/icons/VisibilityOffOutlined";
 import { makeStyles } from "@material-ui/core/styles";
+import UserButton from "../common/UserButton";
+import { Grid } from "@material-ui/core";
+import { LIBRO_API_URL } from "../../constants/config";
 
 const useStyles = makeStyles((theme) => ({
+  gridRoot: {
+    flexGrow: 1,
+    width: "100%",
+    position: "relative",
+    margin: "5px 0px",
+  },
+  viewBtn: {
+    textAlign: "center",
+    maxHeight: "100%",
+  },
   contentBox: {
     color: "#585858",
     border: "1px solid lightgrey",
@@ -20,7 +33,8 @@ const useStyles = makeStyles((theme) => ({
   },
   bImage: {
     width: "100%",
-    height: "80px",
+    height: "100px",
+    borderRadius: "3px",
     objectFit: "cover",
     cursor: "pointer",
   },
@@ -47,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
   date: {
     paddingRight: "5px",
-    fontSize: "10px",
+    fontSize: "12px",
     color: "#A4A4A4",
     textAlign: "right",
   },
@@ -66,7 +80,7 @@ const NoteMine = () => {
 
   //값 가져와서 setNotes
   useEffect(() => {
-    const apiUrl = `http://localhost:8000/api/note/list/?user_id=${loginUserId}`;
+    const apiUrl = `${LIBRO_API_URL}/api/note/list/?user_id=${loginUserId}`;
     axios
       .get(apiUrl)
       .then((response) => {
@@ -80,7 +94,7 @@ const NoteMine = () => {
 
   //삭제
   const onDelete = (noteIDX) => {
-    const apiUrl = `http://localhost:8000/api/note/${noteIDX}/`;
+    const apiUrl = `${LIBRO_API_URL}/api/note/${noteIDX}/`;
     if (window.confirm("해당 독서록을 삭제하시겠습니까?")) {
       axios
         .patch(apiUrl, { note_state: false })
@@ -99,7 +113,7 @@ const NoteMine = () => {
     if (e.key === "Enter") {
       // e.chardCode === 13
       const search = e.target.value;
-      const apiUrl = `http://localhost:8000/api/note/search/?search=${search}&user_id=${loginUserId}`;
+      const apiUrl = `${LIBRO_API_URL}/api/note/search/?search=${search}&user_id=${loginUserId}`;
       axios
         .get(apiUrl)
         .then((response) => {
@@ -174,7 +188,7 @@ const NoteMine = () => {
           console.log(item);
           return (
             <React.Fragment key={index}>
-              <div className={`col-6 col-sm-4 col-md-3 col-xl-3 mb-3`}>
+              <div className={`col-6 col-sm-4 col-md-3 col-xl-2 mb-3`}>
                 <div className={`${classes.contentBox} card h-100`}>
                   <img
                     src={item.book_img}
@@ -197,36 +211,61 @@ const NoteMine = () => {
                     </div>
                   </div>
                   <div className={`${classes.date}`}>
-                    <span className="ml-1 mr-auto">
-                      <Moment format={"YYYY년 MM월 DD일"}>
-                        {item.note_date}
-                      </Moment>
+                    <div className="ml-1 mr-auto" style={{ marginBottom: 3 }}>
+                      <Moment format={"YYYY-MM-DD"}>{item.note_date}</Moment>
                       <br />
-                      by {item.user_id.user_name}
-                    </span>
+                    </div>
+                    <UserButton userId={item.user_id.user_id} />
                   </div>
-                  <div className="card-footer justify-content-between">
-                    <span className="has-icon btn-xs">
-                      {item.note_private == true ? (
-                        <>
-                          <RemoveRedEyeOutlinedIcon /> {item.note_viewcount}
-                        </>
-                      ) : (
-                        <>
-                          <VisibilityOffOutlinedIcon />
-                        </>
-                      )}
-                    </span>
-
-                    <NoteLike noteIDX={item.note_id} userIDX={item.user_id} />
-
-                    <span
-                      className="btn btn-link has-icon btn-xs bigger-130 text-danger"
-                      onClick={() => onDelete(item.note_id)}
-                      title="삭제"
-                    >
-                      <DeleteOutlinedIcon color="secondary" />
-                    </span>
+                  <div>
+                    <Grid container className={classes.gridRoot} spacing={1}>
+                      {/* <div className="justify-content-between"> */}
+                      {/* <div className="has-icon btn-xs col-4"> */}
+                      <Grid
+                        item
+                        className={`${classes.viewBtn} col-4 col-xs-4 col-sm-4 col-md-4`}
+                      >
+                        {item.note_private == true ? (
+                          <>
+                            <RemoveRedEyeOutlinedIcon />
+                            <span style={{ fontSize: 7 }}>
+                              {item.note_viewcount}
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <VisibilityOffOutlinedIcon />
+                          </>
+                        )}
+                        {/* </div> */}
+                      </Grid>
+                      {/* <div className="col-4"> */}
+                      <Grid
+                        item
+                        className={`${classes.viewBtn} col-4 col-xs-4 col-sm-4 col-md-4`}
+                      >
+                        <NoteLike
+                          noteIDX={item.note_id}
+                          userIDX={item.user_id}
+                        />
+                      </Grid>
+                      {/* </div> */}
+                      <Grid
+                        item
+                        className={`${classes.viewBtn} col-4 col-xs-4 col-sm-4 col-md-4`}
+                        onClick={() => onDelete(item.note_id)}
+                        title="삭제"
+                      >
+                        {/* <div
+                          className="btn btn-link has-icon btn-xs bigger-130 text-danger col-4"
+                          onClick={() => onDelete(item.note_id)}
+                          title="삭제"
+                        > */}
+                        <DeleteOutlinedIcon color="secondary" />
+                        {/* </div> */}
+                      </Grid>
+                      {/* </div> */}
+                    </Grid>
                   </div>
                 </div>
               </div>

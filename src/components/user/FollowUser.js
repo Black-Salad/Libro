@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 import FollowButton from "./FollowButton";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import Button from "@material-ui/core/Button";
+import { LIBRO_API_URL } from "../../constants/config";
 
 const FollowUser = (props) => {
-  const apiUrl1 = `http://localhost:8000/api/user/follow/join/`;
+  const apiUrl1 = `${LIBRO_API_URL}/api/user/follow/join/`;
   const [follow, setFollow] = useState([]);
   const [more, setMore] = useState({
     limit: 6,

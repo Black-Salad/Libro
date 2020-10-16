@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import * as Icon from "react-feather";
+import { LIBRO_API_URL } from "../../constants/config";
 
 const Register = () => {
   // style
@@ -47,9 +48,9 @@ const Register = () => {
     user_name: "",
   });
   const [pwConfirm, setPwConfirm] = useState("");
-  const apiUrl1 = `http://localhost:8000/api/user/`;
-  const apiUrl2 = `http://localhost:8000/api/user/?user_email=${user.user_email}`;
-  const apiUrl3 = `http://localhost:8000/api/user/?user_name=${user.user_name}`;
+  const apiUrl1 = `${LIBRO_API_URL}/api/user/`;
+  const apiUrl2 = `${LIBRO_API_URL}/api/user/?user_email=${user.user_email}`;
+  const apiUrl3 = `${LIBRO_API_URL}/api/user/?user_name=${user.user_name}`;
   const checkbox = useRef(null);
   let history = useHistory();
 

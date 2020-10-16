@@ -94,7 +94,7 @@ const TimelinePiece6 = ({ timeline }) => {
       <div className={`media`}>
         <p className={classes.noteContent}>
           <Link to={`/viewnotedetail/${timeline.comment_id.note_id.note_id}`}>
-            {timeline.comment_id.comment_contents}
+            " {timeline.comment_id.comment_contents} "
           </Link>
         </p>
       </div>
