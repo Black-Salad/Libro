@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { Cookies } from "react-cookie";
+import { LIBRO_API_URL } from "../../constants/config";
 
 import Button from "@material-ui/core/Button";
 
@@ -12,7 +13,7 @@ const SettingProfile = () => {
   const loginUserId = cookies.get("loginUserId");
   const loginUserEmail = cookies.get("loginUserEmail");
 
-  const apiUrl1 = `http://localhost:8000/api/user/${loginUserId}/`;
+  const apiUrl1 = `${LIBRO_API_URL}/api/user/${loginUserId}/`;
   const [user, setUser] = useState({
     user_img: "",
   });
@@ -59,9 +60,9 @@ const SettingProfile = () => {
     axios
       .patch(apiUrl1, { user_introduction: user.user_introduction })
       .then((response) => {
-        alert("프로필변경 완료");
-        setUser(response.data);
         cookies.set("loginUserImg", response.data.user_img);
+        setUser(response.data);
+        alert("프로필변경 완료");
         history.go(0);
       })
       .catch((response) => {

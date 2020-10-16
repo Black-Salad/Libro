@@ -3,46 +3,42 @@ import { Link, useHistory } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import axios from "axios";
 import Moment from "react-moment";
+import { LIBRO_API_URL } from "../../constants/config";
 import NoteLike from "./NoteLike";
 import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import Button from "@material-ui/core/Button";
 
 const BestNote = (props) => {
   let history = useHistory();
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
-  const apiUrl = `http://localhost:8000/api/note/`;
-  // const [note, setNote] = useState({});
+  const apiUrl = `${LIBRO_API_URL}/api/note/`;
   const [notes, setNotes] = useState([]);
-  // const [more, setMore] = useState({
-  //   limit: 4,
-  //   show: true,
-  // });
 
   //useEffect
   useEffect(() => {
     axios.get(apiUrl + `like/count/`).then((response) => {
       let bestNotes = response.data;
       console.log("bestNotes", bestNotes);
-      for (var i = 0; i < 4; i++) {
+      for (var i = 0; i < bestNotes.length; i++) {
         axios.get(apiUrl + `${bestNotes[i].note_id}/`).then((res) => {
-          setNotes((notes) => [
-            ...notes,
-            {
-              note_id: res.data.note_id,
-              user_id: res.data.user_id,
-              book_id: res.data.book_id,
-              book_title: res.data.book_title,
-              book_img: res.data.book_img,
-              note_title: res.data.note_title,
-              note_date: res.data.note_date,
-              note_viewcount: res.data.note_viewcount,
-              note_private: res.data.note_private,
-              note_state: res.data.note_state,
-            },
-          ]);
+          if (res.data.note_state === true) {
+            setNotes((notes) => [
+              ...notes,
+              {
+                note_id: res.data.note_id,
+                user_id: res.data.user_id,
+                book_id: res.data.book_id,
+                book_title: res.data.book_title,
+                book_img: res.data.book_img,
+                note_title: res.data.note_title,
+                note_date: res.data.note_date,
+                note_viewcount: res.data.note_viewcount,
+                note_private: res.data.note_private,
+                note_state: res.data.note_state,
+              },
+            ]);
+          }
         });
       }
     });
@@ -62,16 +58,6 @@ const BestNote = (props) => {
         });
     }
   };
-
-  // 더보기 버튼
-  // const moreBtn = () => {
-  //   console.log(notes.length);
-  //   console.log(more.limit);
-  //   setMore({
-  //     show: notes.length > more.limit + 4 ? true : false,
-  //     limit: more.limit + 4,
-  //   });
-  // };
 
   return (
     <>
@@ -134,16 +120,6 @@ const BestNote = (props) => {
           );
         })}
       </div>
-      {/* {more.show ? (
-        <Button
-          fullWidth
-          className="text-secondary"
-          startIcon={<MoreHorizIcon />}
-          onClick={() => moreBtn()}
-        >
-          더보기
-        </Button>
-      ) : null} */}
     </>
   );
 };

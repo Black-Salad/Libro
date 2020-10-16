@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Cookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
+import { LIBRO_API_URL } from "../../constants/config";
 
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -13,8 +14,8 @@ const Account = () => {
   const loginUserName = cookies.get("loginUserName");
   const [userName, setUserName] = useState();
   const [error, setError] = useState(false);
-  const apiUrl1 = `http://localhost:8000/api/user/`;
-  const apiUrl2 = `http://localhost:8000/api/note/`;
+  const apiUrl1 = `${LIBRO_API_URL}/api/user/`;
+  const apiUrl2 = `${LIBRO_API_URL}/api/note/`;
 
   const userOnChange = (e) => {
     setUserName(e.target.value);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Cookies } from "react-cookie";
+import { LIBRO_API_URL } from "../../constants/config";
 import axios from "axios";
 import Moment from "react-moment";
 import NoteLike from "./NoteLike";
@@ -13,7 +14,7 @@ const Note = (props) => {
   let history = useHistory();
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
-  const apiUrl1 = `http://localhost:8000/api/note/?user_id=${props.userIDX}&note_private=true`;
+  const apiUrl1 = `${LIBRO_API_URL}/api/note/?user_id=${props.userIDX}&note_private=true`;
 
   const [notes, setNotes] = useState([]);
   const [more, setMore] = useState({
@@ -32,11 +33,11 @@ const Note = (props) => {
       .catch((response) => {
         console.error(response);
       });
-  }, []);
+  }, [props]);
 
   //삭제
   const onDelete = (noteIDX) => {
-    const apiUrl2 = `http://localhost:8000/api/note/${noteIDX}/`;
+    const apiUrl2 = `${LIBRO_API_URL}/api/note/${noteIDX}/`;
     if (window.confirm("해당 독서록을 삭제하시겠습니까?")) {
       axios
         .patch(apiUrl2, { note_state: false })

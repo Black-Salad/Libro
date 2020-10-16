@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import axios from "axios";
+import { LIBRO_API_URL } from "../../constants/config";
+
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 
@@ -10,10 +12,10 @@ const NoteLike = (props) => {
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
 
-  const apiUrl1 = `http://localhost:8000/api/note/like?note_id=${props.noteIDX}`;
-  const apiUrl2 = `http://localhost:8000/api/note/like?note_id=${props.noteIDX}&user_id=${loginUserId}`;
-  const apiUrl3 = `http://localhost:8000/api/note/like/`;
-  const apiUrl4 = `http://localhost:8000/api/user/alarm/`;
+  const apiUrl1 = `${LIBRO_API_URL}/api/note/like?note_id=${props.noteIDX}`;
+  const apiUrl2 = `${LIBRO_API_URL}/api/note/like?note_id=${props.noteIDX}&user_id=${loginUserId}`;
+  const apiUrl3 = `${LIBRO_API_URL}/api/note/like/`;
+  const apiUrl4 = `${LIBRO_API_URL}/api/user/alarm/`;
 
   const [like, setLike] = useState({});
   const [likeUser, setLikeUser] = useState({
@@ -54,7 +56,7 @@ const NoteLike = (props) => {
         });
       }
 
-      axios.post(`http://localhost:8000/api/timeline/`, {
+      axios.post(`${LIBRO_API_URL}/api/timeline/`, {
         user_id: loginUserId,
         tl_kind: "5",
         like_id: response.data.like_id,

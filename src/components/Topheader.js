@@ -3,6 +3,7 @@ import * as Icon from "react-feather";
 import { Link, useHistory } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import axios from "axios";
+import { LIBRO_API_URL } from "./../constants/config";
 
 import HomeIcon from "@material-ui/icons/Home";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -15,7 +16,7 @@ const Topheader = () => {
   let history = useHistory();
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
-  const apiUrl = `http://localhost:8000/api/user/alarm/`;
+  const apiUrl = `${LIBRO_API_URL}/api/user/alarm/`;
   const [alarm, setAlarm] = useState([]);
   const [alarmCnt, setAlarmCnt] = useState();
   const [cnt, setCnt] = useState(0);

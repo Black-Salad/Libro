@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import FollowButton from "./FollowButton";
+import { LIBRO_API_URL } from "../../constants/config";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import { Link } from "react-router-dom";
 
 const RoomProfile = (props) => {
-  const apiUrl = `http://localhost:8000/api/user/`;
+  const apiUrl = `${LIBRO_API_URL}/api/user/`;
   const [user, setUser] = useState({});
   const [follower, setFollower] = useState();
   const [following, setFollowing] = useState();
@@ -29,7 +30,7 @@ const RoomProfile = (props) => {
         console.log(response.data);
         setFollower(response.data.length);
       });
-  }, []);
+  }, [props]);
 
   const useStyles = makeStyles((theme) => ({
     card: {

@@ -3,8 +3,12 @@ import { Link, useHistory } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import axios from "axios";
 import Moment from "react-moment";
+import { LIBRO_API_URL } from "../../constants/config";
+import { makeStyles } from "@material-ui/core/styles";
+
 import NoteComment from "./NoteComment";
 import NoteLike from "./NoteLike";
+
 import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
 import Button from "@material-ui/core/Button";
 import HomeIcon from "@material-ui/icons/Home";
@@ -19,11 +23,13 @@ const NoteDetail = (props) => {
   const loginUserName = cookies.get("loginUserName");
   const loginUserEmail = cookies.get("loginUserEmail");
 
-  const apiUrl = `http://localhost:8000/api/note/${props.noteIDX}/`;
-  const apiUrl2 = `http://localhost:8000/api/note/comment/userjoin/?note_id=${props.noteIDX}`;
-  const apiUrl3 = `http://localhost:8000/api/note/comment/`;
-  const apiUrl4 = `http://localhost:8000/api/user/alarm/`;
+  const apiUrl = `${LIBRO_API_URL}/api/note/${props.noteIDX}/`;
+  const apiUrl2 = `${LIBRO_API_URL}/api/note/comment/userjoin/?note_id=${props.noteIDX}`;
+  const apiUrl3 = `${LIBRO_API_URL}/api/note/comment/`;
+  const apiUrl4 = `${LIBRO_API_URL}/api/user/alarm/`;
+  // const apiUrl5 = `${LIBRO_API_URL}/api/user/${note.user_id}/`;
 
+  const [user, setUser] = useState({});
   const [note, setNote] = useState({});
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState({
@@ -38,6 +44,16 @@ const NoteDetail = (props) => {
     alarm_type: 3,
     alarm_status: true,
   });
+  const useStyles = makeStyles(() => ({
+    profile: {
+      width: 30,
+      height: 30,
+      borderRadius: "50%",
+      objectFit: "cover",
+    },
+  }));
+
+  const classes = useStyles();
 
   //useEffect
   useEffect(() => {
@@ -48,6 +64,13 @@ const NoteDetail = (props) => {
 
       //조회수 추후 cookie로 조건문
       axios.patch(apiUrl, { note_viewcount: response.data.note_viewcount + 1 });
+
+      axios
+        .get(`${LIBRO_API_URL}/api/user/${response.data.user_id}/`)
+        .then((response) => {
+          console.log("response", response);
+          setUser(response.data);
+        });
     });
 
     axios.get(apiUrl2).then((response) => {
@@ -87,9 +110,9 @@ const NoteDetail = (props) => {
     axios.post(apiUrl3, comment).then((response) => {
       console.log(response.data);
 
-      axios.post(`http://localhost:8000/api/timeline/`, {
+      axios.post(`${LIBRO_API_URL}/api/timeline/`, {
         user_id: loginUserId,
-        tl_kind: "5",
+        tl_kind: "6",
         comment_id: response.data.comment_id,
       });
 
@@ -99,6 +122,7 @@ const NoteDetail = (props) => {
           console.log("Alarm", response.data);
         });
       }
+      history.go(0);
     });
   };
 
@@ -133,6 +157,16 @@ const NoteDetail = (props) => {
           <hr />
           <p style={{ whiteSpace: "pre-line" }}>{note.note_contents}</p>
           <div className="btn-group-sm pt-3 list-with-gap">
+            {/* <UserButton userId={note.user_id} /> */}
+            <Link to={`/room/${user.user_id}`}>
+              <img
+                alt=""
+                src={user.user_img}
+                className={`${classes.profile} rounded-circle mr-2`}
+              />
+              {user.user_name}
+            </Link>
+
             <Button
               variant="contained"
               color="primary"
@@ -149,7 +183,6 @@ const NoteDetail = (props) => {
               <>
                 <Button
                   variant="contained"
-                  color="green"
                   startIcon={<RefreshIcon />}
                   className="mb-1 mr-2"
                   size="small"

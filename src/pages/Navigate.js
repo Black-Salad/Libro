@@ -45,7 +45,7 @@ const Navigate = () => {
       <BestNote />
       <hr />
       <h4 className="mb-3 mt-4" style={bestStyle}>
-        나의 팔로우
+        내가 팔로우한 친구들
       </h4>
       <FollowUser userIDX={cookies.get("loginUserId")} />
     </Layout>

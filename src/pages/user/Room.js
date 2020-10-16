@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import axios from "axios";
+import { LIBRO_API_URL } from "../../constants/config";
 import Books from "../../components/common/Books";
 
 const Room = ({ match }) => {
@@ -50,7 +51,7 @@ const Room = ({ match }) => {
 
   // AJAX
   useEffect(() => {
-    const apiUrl4 = `http://localhost:8000/api/user/${shelfUser}/`;
+    const apiUrl4 = `${LIBRO_API_URL}/api/user/${shelfUser}/`;
 
     axios
       .get(apiUrl4)
@@ -66,7 +67,7 @@ const Room = ({ match }) => {
         alert("잘못된 접근입니다.");
         history.go(-1);
       });
-  }, []);
+  }, [shelfUser]);
 
   return (
     <Layout>

@@ -4,6 +4,8 @@ import { Link, useHistory } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import axios from "axios";
 import Moment from "react-moment";
+import { LIBRO_API_URL } from "../../constants/config";
+
 import NoteLike from "./NoteLike";
 import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
@@ -66,7 +68,7 @@ const NoteMine = () => {
 
   //값 가져와서 setNotes
   useEffect(() => {
-    const apiUrl = `http://localhost:8000/api/note/list/?user_id=${loginUserId}`;
+    const apiUrl = `${LIBRO_API_URL}/api/note/list/?user_id=${loginUserId}`;
     axios
       .get(apiUrl)
       .then((response) => {
@@ -80,7 +82,7 @@ const NoteMine = () => {
 
   //삭제
   const onDelete = (noteIDX) => {
-    const apiUrl = `http://localhost:8000/api/note/${noteIDX}/`;
+    const apiUrl = `${LIBRO_API_URL}/api/note/${noteIDX}/`;
     if (window.confirm("해당 독서록을 삭제하시겠습니까?")) {
       axios
         .patch(apiUrl, { note_state: false })
@@ -99,7 +101,9 @@ const NoteMine = () => {
     if (e.key === "Enter") {
       // e.chardCode === 13
       const search = e.target.value;
-      const apiUrl = `http://localhost:8000/api/note/search/?search=${search}&user_id=${loginUserId}`;
+      const apiUrl = `${LIBRO_API_URL}/api/note/search/?search=${encodeURIComponent(
+        search
+      )}&user_id=${loginUserId}`;
       axios
         .get(apiUrl)
         .then((response) => {
@@ -207,7 +211,7 @@ const NoteMine = () => {
                   </div>
                   <div className="card-footer justify-content-between">
                     <span className="has-icon btn-xs">
-                      {item.note_private == true ? (
+                      {item.note_private === true ? (
                         <>
                           <RemoveRedEyeOutlinedIcon /> {item.note_viewcount}
                         </>

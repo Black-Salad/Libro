@@ -4,6 +4,8 @@ import axios from "axios";
 import Moment from "react-moment";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
+import { LIBRO_API_URL } from "../../constants/config";
+
 import NoteLike from "./NoteLike";
 import NoteDetail from "./NoteDetail";
 import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
@@ -16,6 +18,7 @@ import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 
 const NoteSearch = (props) => {
+  let history = useHistory();
   const [notes, setNotes] = useState([]);
   const [modal, setModal] = useState({
     open: false,
@@ -27,9 +30,9 @@ const NoteSearch = (props) => {
   });
   const refSearch = useRef(null);
 
-  const apiUrl = `http://localhost:8000/api/book/?book_isbn=${props.bookISBN}`;
-  const apiUrl1 = `http://localhost:8000/api/note/`;
-  const apiUrl2 = `http://localhost:8000/api/note/search/?note_private=true&search=`;
+  const apiUrl = `${LIBRO_API_URL}/api/book/?book_isbn=${props.bookISBN}`;
+  const apiUrl1 = `${LIBRO_API_URL}/api/note/`;
+  const apiUrl2 = `${LIBRO_API_URL}/api/note/search/?note_private=true&search=`;
 
   //값 가져와서 setNotes
   useEffect(() => {
@@ -47,13 +50,13 @@ const NoteSearch = (props) => {
           });
       } else {
         setNotes(response.data);
-        // axios.get(apiUrl1).then((response) => {
-        //   setNotes(response.data);
-        //   setMore({
-        //     ...more,
-        //     show: response.data.length > 8 ? true : false,
-        //   });
-        // });
+        axios.get(apiUrl1).then((response) => {
+          setNotes(response.data);
+          setMore({
+            ...more,
+            show: response.data.length > 8 ? true : false,
+          });
+        });
       }
     });
   }, []);
@@ -77,7 +80,7 @@ const NoteSearch = (props) => {
 
   // 클릭 검색
   const onClickSearch = () => {
-    const search = refSearch.current.value;
+    const search = encodeURIComponent(refSearch.current.value);
     axios
       .get(apiUrl2 + search)
       .then((response) => {
@@ -169,13 +172,19 @@ const NoteSearch = (props) => {
                     src={item.book_img}
                     alt="..."
                     style={{ width: "60%", margin: "auto", cursor: "pointer" }}
-                    onClick={() => openModal(item.note_id)}
+                    // onClick={() => openModal(item.note_id)}
+                    onClick={() => {
+                      history.push(`/viewnotedetail/${item.note_id}`);
+                    }}
                   />
                   <div className="card-body">
                     <h6
                       className="card-title"
                       style={{ cursor: "pointer" }}
-                      onClick={() => openModal(item.note_id)}
+                      // onClick={() => openModal(item.note_id)}
+                      onClick={() => {
+                        history.push(`/viewnotedetail/${item.note_id}`);
+                      }}
                     >
                       {item.note_title}
                     </h6>

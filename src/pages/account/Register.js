@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { LIBRO_API_URL } from "../../constants/config";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -47,9 +48,13 @@ const Register = () => {
     user_name: "",
   });
   const [pwConfirm, setPwConfirm] = useState("");
-  const apiUrl1 = `http://localhost:8000/api/user/`;
-  const apiUrl2 = `http://localhost:8000/api/user/?user_email=${user.user_email}`;
-  const apiUrl3 = `http://localhost:8000/api/user/?user_name=${user.user_name}`;
+  const apiUrl1 = `${LIBRO_API_URL}/api/user/`;
+  const apiUrl2 = `${LIBRO_API_URL}/api/user/?user_email=${encodeURIComponent(
+    user.user_email
+  )}`;
+  const apiUrl3 = `${LIBRO_API_URL}/api/user/?user_name=${encodeURIComponent(
+    user.user_name
+  )}`;
   const checkbox = useRef(null);
   let history = useHistory();
 
@@ -62,6 +67,8 @@ const Register = () => {
   // 값이 바뀔 때마다 onchange
   const userOnChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
+    console.log(user.user_name);
+    // confirm(e);
   };
 
   const pwConfirmOnChange = (e) => {
@@ -69,10 +76,11 @@ const Register = () => {
   };
 
   // 정상값 확인
-  const onkeyup = (e) => {
+  const confirm = (e) => {
     switch (e.target.name) {
       case "user_name":
         axios.get(apiUrl3).then((response) => {
+          console.log(user.user_name);
           console.log(response.data);
           if (response.data.length !== 0) {
             setError({ ...error, user_name: true });
@@ -83,6 +91,38 @@ const Register = () => {
           }
         });
 
+        break;
+      case "user_email":
+        if (!isEmail(user.user_email)) setError({ ...error, user_email: true });
+        else setError({ ...error, user_email: false });
+        break;
+      case "user_pw":
+        if (user.user_pw !== pwConfirm) setError({ ...error, user_pw: true });
+        else setError({ ...error, user_pw: false });
+        break;
+      case "user_pw_confirm":
+        if (user.user_pw !== pwConfirm) setError({ ...error, user_pw: true });
+        else setError({ ...error, user_pw: false });
+        break;
+      default:
+    }
+  };
+
+  // 정상값 확인
+  const onkeyup = (e) => {
+    switch (e.target.name) {
+      case "user_name":
+        axios.get(apiUrl3).then((response) => {
+          console.log(user.user_name);
+          console.log(response.data);
+          if (response.data.length !== 0) {
+            setError({ ...error, user_name: true });
+          } else {
+            if (user.user_name.length <= 1)
+              setError({ ...error, user_name: true });
+            else setError({ ...error, user_name: false });
+          }
+        });
         break;
       case "user_email":
         if (!isEmail(user.user_email)) setError({ ...error, user_email: true });

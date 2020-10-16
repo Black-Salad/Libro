@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { LIBRO_API_URL } from "../../constants/config";
+
 import FollowButton from "./FollowButton";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import Button from "@material-ui/core/Button";
 
 const FollowUser = (props) => {
-  const apiUrl1 = `http://localhost:8000/api/user/follow/join/`;
+  const apiUrl1 = `${LIBRO_API_URL}/api/user/follow/join/`;
   const [follow, setFollow] = useState([]);
   const [more, setMore] = useState({
     limit: 6,
