@@ -11,7 +11,6 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
-import { LIBRO_API_URL } from "../constants/config";
 
 const Topheader = () => {
   let history = useHistory();

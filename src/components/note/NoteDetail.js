@@ -159,7 +159,7 @@ const NoteDetail = (props) => {
           <p style={{ whiteSpace: "pre-line" }}>{note.note_contents}</p>
           <div className="btn-group-sm pt-3 list-with-gap">
             {/* <UserButton userId={note.user_id} /> */}
-            <Link to={`/room/${user.user_id}`}>
+            <Link to={`/room/${user.user_id}`} className="mr-2">
               <img
                 alt=""
                 src={user.user_img}
@@ -167,7 +167,7 @@ const NoteDetail = (props) => {
               />
               {user.user_name}
             </Link>
-            <Button
+            {/* <Button
               variant="contained"
               color="primary"
               startIcon={<HomeIcon />}
@@ -178,8 +178,8 @@ const NoteDetail = (props) => {
               }}
             >
               Room
-            </Button>{" "}
-            */}
+            </Button>{" "} */}
+
             {/* <UserButton userId={note.user_id} /> */}
             {note.user_id == loginUserId ? (
               <>

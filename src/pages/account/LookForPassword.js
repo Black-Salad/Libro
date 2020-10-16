@@ -10,7 +10,6 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import * as Icon from "react-feather";
-import { LIBRO_API_URL } from "../../constants/config";
 
 const LookForPassword = () => {
   // style

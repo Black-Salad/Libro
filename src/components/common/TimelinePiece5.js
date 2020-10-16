@@ -76,12 +76,7 @@ const TimelinePiece5 = ({ timeline }) => {
           name={timeline.user_id.user_name}
           userId={timeline.user_id.user_id}
         />
-        님이{" "}
-        <UserButton
-          img={timeline.like_id.note_id.user_id.user_img}
-          name={timeline.like_id.note_id.user_id.user_name}
-          userId={timeline.like_id.note_id.user_id.user_id}
-        />
+        님이 <UserButton userId={timeline.like_id.note_id.user_id} />
         님의{" "}
         <Link to={`/viewnotedetail/${timeline.like_id.note_id.note_id}`}>
           <u>독서록</u>

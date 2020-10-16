@@ -9,7 +9,6 @@ import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import Button from "@material-ui/core/Button";
-import { LIBRO_API_URL } from "../../constants/config";
 
 const Note = (props) => {
   let history = useHistory();

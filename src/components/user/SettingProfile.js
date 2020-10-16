@@ -5,7 +5,6 @@ import { Cookies } from "react-cookie";
 import { LIBRO_API_URL } from "../../constants/config";
 
 import Button from "@material-ui/core/Button";
-import { LIBRO_API_URL } from "../../constants/config";
 
 const SettingProfile = () => {
   let history = useHistory();

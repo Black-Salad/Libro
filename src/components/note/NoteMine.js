@@ -15,7 +15,6 @@ import VisibilityOffOutlinedIcon from "@material-ui/icons/VisibilityOffOutlined"
 import { makeStyles } from "@material-ui/core/styles";
 import UserButton from "../common/UserButton";
 import { Grid } from "@material-ui/core";
-import { LIBRO_API_URL } from "../../constants/config";
 
 const useStyles = makeStyles((theme) => ({
   gridRoot: {

@@ -6,7 +6,6 @@ import { LIBRO_API_URL } from "../../constants/config";
 
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import { LIBRO_API_URL } from "../../constants/config";
 
 const NoteLike = (props) => {
   let now = new Date();

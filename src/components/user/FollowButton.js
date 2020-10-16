@@ -6,7 +6,6 @@ import { LIBRO_API_URL } from "../../constants/config";
 import Button from "@material-ui/core/Button";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PersonAddDisabledIcon from "@material-ui/icons/PersonAddDisabled";
-import { LIBRO_API_URL } from "../../constants/config";
 
 const FollowButton = (props) => {
   const cookies = new Cookies();

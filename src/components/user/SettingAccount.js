@@ -6,7 +6,6 @@ import { LIBRO_API_URL } from "../../constants/config";
 
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import { LIBRO_API_URL } from "../../constants/config";
 
 const Account = () => {
   let history = useHistory();
