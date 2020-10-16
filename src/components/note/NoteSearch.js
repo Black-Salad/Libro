@@ -4,6 +4,8 @@ import axios from "axios";
 import Moment from "react-moment";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
+import { LIBRO_API_URL } from "../../constants/config";
+
 import NoteLike from "./NoteLike";
 import NoteDetail from "./NoteDetail";
 import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
@@ -16,7 +18,6 @@ import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import UserButton from "../common/UserButton";
 import { Grid } from "@material-ui/core";
-import { LIBRO_API_URL } from "../../constants/config";
 
 const useStyles = makeStyles((theme) => ({
   gridRoot: {
@@ -85,6 +86,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NoteSearch = (props) => {
+  let history = useHistory();
   const [notes, setNotes] = useState([]);
   const [modal, setModal] = useState({
     open: false,
@@ -146,7 +148,7 @@ const NoteSearch = (props) => {
 
   // 클릭 검색
   const onClickSearch = () => {
-    const search = refSearch.current.value;
+    const search = encodeURIComponent(refSearch.current.value);
     axios
       .get(apiUrl2 + search)
       .then((response) => {
@@ -223,12 +225,16 @@ const NoteSearch = (props) => {
                     src={item.book_img}
                     alt="..."
                     className={classes.bImage}
-                    onClick={() => openModal(item.note_id)}
+                    onClick={() => {
+                      history.push(`/viewnotedetail/${item.note_id}`);
+                    }}
                   />
                   <div className={classes.titleArea}>
                     <b
                       className={`${classes.rTitleArea} card-title`}
-                      onClick={() => openModal(item.note_id)}
+                      onClick={() => {
+                        history.push(`/viewnotedetail/${item.note_id}`);
+                      }}
                     >
                       {item.note_title}
                     </b>

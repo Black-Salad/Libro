@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { LIBRO_API_URL } from "../../constants/config";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Link from "@material-ui/core/Link";
@@ -79,35 +79,41 @@ const LookForPassword = () => {
 
   // 비밀번호 이메일로 보내기
   const passwordFind = () => {
-    axios.get(apiUrl + `?user_email=${email}`).then((response) => {
-      if (error) {
-        alert("이메일 형식을 확인해 주시길 바랍니다.");
-      } else if (response.data.length === 0) {
-        alert("가입 이력이 없는 계정입니다.");
-      } else if (response.data.user_state === false) {
-        alert("탈퇴 계정입니다.");
-      } else {
-        axios
-          .patch(apiUrl + `${response.data[0].user_id}/`, { user_pw: newPW() })
-          .then((response) => {
-            console.log(response.data);
-            axios
-              .post(
-                apiUrl +
-                  `password/?user_email=${response.data.user_email}&user_pw=${response.data.user_pw}`
-              )
-              .then((response) => {
-                console.log(response.data);
-                alert(
-                  "임시 비밀번호가 발급되었습니다. 이메일을 확인해주세요 😊"
-                );
-              });
-          })
-          .catch((response) => {
-            console.log(response);
-          });
-      }
-    });
+    axios
+      .get(apiUrl + `?user_email=${encodeURIComponent(email)}`)
+      .then((response) => {
+        if (error) {
+          alert("이메일 형식을 확인해 주시길 바랍니다.");
+        } else if (response.data.length === 0) {
+          alert("가입 이력이 없는 계정입니다.");
+        } else if (response.data.user_state === false) {
+          alert("탈퇴 계정입니다.");
+        } else {
+          axios
+            .patch(apiUrl + `${response.data[0].user_id}/`, {
+              user_pw: newPW(),
+            })
+            .then((response) => {
+              console.log(response.data);
+              axios
+                .post(
+                  apiUrl +
+                    `password/?user_email=${encodeURIComponent(
+                      response.data.user_email
+                    )}&user_pw=${encodeURIComponent(response.data.user_pw)}`
+                )
+                .then((response) => {
+                  console.log(response.data);
+                  alert(
+                    "임시 비밀번호가 발급되었습니다. 이메일을 확인해주세요 😊"
+                  );
+                });
+            })
+            .catch((response) => {
+              console.log(response);
+            });
+        }
+      });
   };
 
   return (

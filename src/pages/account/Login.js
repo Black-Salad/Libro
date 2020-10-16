@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { Cookies } from "react-cookie";
+import { LIBRO_API_URL } from "../../constants/config";
+
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -55,7 +57,7 @@ const LoginTest = () => {
     if (cookies.get("saveId") != null) {
       setCheck(true);
     }
-  }, []);
+  }, [user]);
 
   // 값이 바뀔 때마다 onchange
   const userOnChange = (e) => {
@@ -109,11 +111,19 @@ const LoginTest = () => {
 
     // email,pw 확인 후 쿠키저장 후 index화면으로 이동
     axios
-      .get(apiUrl + `?user_email=${user.user_email}&user_state=true`)
+      .get(
+        apiUrl +
+          `?user_email=${encodeURIComponent(user.user_email)}&user_state=true`
+      )
       .then((response) => {
         if (response.data.length === 0) {
           axios
-            .get(apiUrl + `?user_email=${user.user_email}&user_state=flase`)
+            .get(
+              apiUrl +
+                `?user_email=${encodeURIComponent(
+                  user.user_email
+                )}&user_state=flase`
+            )
             .then((response) => {
               if (response.data.length === 0) {
                 alert("계정 정보가 없습니다.😥");

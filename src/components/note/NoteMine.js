@@ -4,6 +4,8 @@ import { Link, useHistory } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import axios from "axios";
 import Moment from "react-moment";
+import { LIBRO_API_URL } from "../../constants/config";
+
 import NoteLike from "./NoteLike";
 import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
@@ -113,7 +115,9 @@ const NoteMine = () => {
     if (e.key === "Enter") {
       // e.chardCode === 13
       const search = e.target.value;
-      const apiUrl = `${LIBRO_API_URL}/api/note/search/?search=${search}&user_id=${loginUserId}`;
+      const apiUrl = `${LIBRO_API_URL}/api/note/search/?search=${encodeURIComponent(
+        search
+      )}&user_id=${loginUserId}`;
       axios
         .get(apiUrl)
         .then((response) => {
@@ -225,7 +229,7 @@ const NoteMine = () => {
                         item
                         className={`${classes.viewBtn} col-4 col-xs-4 col-sm-4 col-md-4`}
                       >
-                        {item.note_private == true ? (
+                        {item.note_private === true ? (
                           <>
                             <RemoveRedEyeOutlinedIcon />
                             <span style={{ fontSize: 7 }}>

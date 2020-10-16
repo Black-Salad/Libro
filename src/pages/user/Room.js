@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import axios from "axios";
+import { LIBRO_API_URL } from "../../constants/config";
 import Books from "../../components/common/Books";
 import { LIBRO_API_URL } from "../../constants/config";
 
@@ -67,7 +68,7 @@ const Room = ({ match }) => {
         alert("잘못된 접근입니다.");
         history.go(-1);
       });
-  }, []);
+  }, [shelfUser]);
 
   return (
     <Layout>
