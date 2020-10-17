@@ -66,11 +66,12 @@ const NoteDetail = (props) => {
         setNote(response.data);
         setAlarm({ ...alarm, target_user_id: response.data.user_id });
 
-        //조회수 추후 cookie로 조건문
-        axios.patch(apiUrl, {
-          note_viewcount: response.data.note_viewcount + 1,
-        });
-
+        // 본인글엔 조회수 X
+        if (loginUserId != response.data.user_id) {
+          axios.patch(apiUrl, {
+            note_viewcount: response.data.note_viewcount + 1,
+          });
+        }
         axios
           .get(`${LIBRO_API_URL}/api/user/${response.data.user_id}/`)
           .then((response) => {

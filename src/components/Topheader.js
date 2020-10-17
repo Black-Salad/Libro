@@ -141,12 +141,12 @@ const Topheader = () => {
               {(function () {
                 if (alarm.length === 0) {
                   return (
-                    <div class="card-body p-0 pt-1">
-                      <div class="list-group list-group-sm list-group-flush">
-                        <div class="list-group-item">
-                          <div class="media">
-                            <div class="media-body ml-2">
-                              <p class="mb-0">알람이 없습니다.</p>
+                    <div className="card-body p-0 pt-1">
+                      <div className="list-group list-group-sm list-group-flush">
+                        <div className="list-group-item">
+                          <div className="media">
+                            <div className="media-body ml-2">
+                              <p className="mb-0">알람이 없습니다.</p>
                             </div>
                           </div>
                         </div>
