@@ -18,9 +18,7 @@ const NoteComment = (props) => {
         .delete(apiUrl)
         .then(() => {
           alert("삭제완료");
-
           props.setCommented(!props.commented);
-          // history.go(0);
         })
         .catch((response) => {
           console.error(response);
