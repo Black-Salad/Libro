@@ -99,7 +99,7 @@ const NoteSearch = (props) => {
   const refSearch = useRef(null);
 
   const apiUrl = `${LIBRO_API_URL}/api/book/?book_isbn=${props.bookISBN}`;
-  const apiUrl1 = `${LIBRO_API_URL}/api/note/`;
+  const apiUrl1 = `${LIBRO_API_URL}/api/note/?note_private=true`;
   const apiUrl2 = `${LIBRO_API_URL}/api/note/search/?note_private=true&search=`;
 
   //값 가져와서 setNotes
@@ -108,7 +108,7 @@ const NoteSearch = (props) => {
       console.log(response.data);
       if (response.data.length !== 0) {
         axios
-          .get(apiUrl1 + `?book_id=${response.data[0].book_id}`)
+          .get(apiUrl1 + `&book_id=${response.data[0].book_id}`)
           .then((response) => {
             setNotes(response.data);
             setMore({

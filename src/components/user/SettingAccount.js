@@ -120,7 +120,8 @@ const Account = () => {
             계정 탈퇴
           </Button>
           <small className="d-block text-danger">
-            탈퇴 시 리브로 사용이 불가합니다.
+            탈퇴 시 리브로 사용이 불가합니다. 탈퇴 후 한 달 이내로 복구가
+            가능합니다.
           </small>
         </div>
       </form>

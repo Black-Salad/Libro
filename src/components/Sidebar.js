@@ -45,6 +45,20 @@ const Sidebar = () => {
               </span>
             </Link>
           </li>
+
+          <li className="nav-item">
+            <Link to="/searchnotes/all">
+              <span
+                className={`nav-link has-ico ${
+                  selectedMenu === "searchnotes" ? "active" : null
+                }`}
+              >
+                <Icon.Layers />
+                독서록 탐색
+              </span>
+            </Link>
+          </li>
+
           <li className="nav-label" style={{ marginTop: "1rem" }}>
             My Room
           </li>
@@ -110,19 +124,6 @@ const Sidebar = () => {
               >
                 <Icon.Clock />
                 타임라인
-              </span>
-            </Link>
-          </li>
-
-          <li className="nav-item">
-            <Link to="/searchnotes/all">
-              <span
-                className={`nav-link has-ico ${
-                  selectedMenu === "searchnotes" ? "active" : null
-                }`}
-              >
-                <Icon.Layers />
-                독서록 탐색
               </span>
             </Link>
           </li>
