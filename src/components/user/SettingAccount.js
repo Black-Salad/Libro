@@ -12,7 +12,7 @@ const Account = () => {
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
   const loginUserName = cookies.get("loginUserName");
-  const [userName, setUserName] = useState();
+  const [userName, setUserName] = useState(loginUserName);
   const [error, setError] = useState(false);
   const apiUrl1 = `${LIBRO_API_URL}/api/user/`;
   const apiUrl2 = `${LIBRO_API_URL}/api/note/`;
@@ -35,13 +35,15 @@ const Account = () => {
   };
 
   const changeUserName = () => {
-    axios
-      .patch(apiUrl1 + `${loginUserId}/`, { user_name: userName })
-      .then((response) => {
-        alert("변경완료");
-        cookies.set("loginUserName", userName);
-        history.go(0);
-      });
+    if (error === false) {
+      axios
+        .patch(apiUrl1 + `${loginUserId}/`, { user_name: userName })
+        .then((response) => {
+          alert("변경완료");
+          cookies.set("loginUserName", userName);
+          history.go(0);
+        });
+    }
   };
 
   const deleteUser = () => {
