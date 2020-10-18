@@ -9,6 +9,7 @@ import TextField from "@material-ui/core/TextField";
 const SettingPassword = () => {
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
+  const passwordHash = require("password-hash");
 
   const [error, setError] = useState({
     user_pw: false,
@@ -44,7 +45,8 @@ const SettingPassword = () => {
     switch (e.target.name) {
       case "user_pw":
         axios.get(apiUrl1).then((response) => {
-          if (response.data.user_pw !== user.user_pw)
+          if (!passwordHash.verify(user.user_pw, response.data.user_pw))
+            //response.data.user_pw !== user.user_pw
             setError({ ...error, user_pw: true });
           else setError({ ...error, user_pw: false });
         });
@@ -68,9 +70,10 @@ const SettingPassword = () => {
       alert("정확히 입력바랍니다");
       return false;
     }
+    const hashedPassword = passwordHash.generate(newPw);
 
-    axios.patch(apiUrl1, { user_pw: newPw }).then(() => {
-      alert("비밀번호 변경 완료, 재로그인 부탁드립니다.");
+    axios.patch(apiUrl1, { user_pw: hashedPassword }).then(() => {
+      alert("비밀번호 변경 완료, 다시 로그인 해주세요.");
       cookies.remove("loginUserId");
       cookies.remove("loginUserName");
       cookies.remove("loginUserEmail");

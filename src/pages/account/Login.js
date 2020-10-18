@@ -88,7 +88,7 @@ const LoginTest = () => {
     if (monthMore >= new Date()) {
       if (
         window.confirm(
-          "계정 탈퇴를 신청하셨습니다. 한달 이내로 복구가 가능합니다. 복구하시겠습니까?"
+          "계정 탈퇴를 신청하셨습니다. 한 달 이내로 복구가 가능합니다. 복구하시겠습니까?"
         )
       ) {
         axios
@@ -113,6 +113,9 @@ const LoginTest = () => {
       cookies.remove("saveId");
     }
 
+    const passwordHash = require("password-hash");
+    // const hashedPassword = passwordHash.generate(user.user_pw);
+
     // email,pw 확인 후 쿠키저장 후 index화면으로 이동
     axios
       .get(
@@ -135,7 +138,10 @@ const LoginTest = () => {
                 restore(response.data);
               }
             });
-        } else if (response.data[0].user_pw == user.user_pw) {
+        } else if (
+          passwordHash.verify(user.user_pw, response.data[0].user_pw)
+        ) {
+          //response.data[0].user_pw == user.user_pw
           cookies.set("loginUserId", response.data[0].user_id, {
             maxAge: 86400,
           });
@@ -150,7 +156,7 @@ const LoginTest = () => {
           });
           history.push("/");
         } else {
-          alert("비밀번호를 확인바랍니다.");
+          alert("비밀번호를 확인해주세요.");
         }
       });
   };

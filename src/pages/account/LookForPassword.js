@@ -78,6 +78,10 @@ const LookForPassword = () => {
 
   // 비밀번호 이메일로 보내기
   const passwordFind = () => {
+    const passwordHash = require("password-hash");
+    const newPassWord = newPW();
+    const hashedPassword = passwordHash.generate(newPassWord);
+
     axios
       .get(apiUrl + `?user_email=${encodeURIComponent(email)}`)
       .then((response) => {
@@ -90,7 +94,7 @@ const LookForPassword = () => {
         } else {
           axios
             .patch(apiUrl + `${response.data[0].user_id}/`, {
-              user_pw: newPW(),
+              user_pw: hashedPassword,
             })
             .then((response) => {
               console.log(response.data);
@@ -99,7 +103,7 @@ const LookForPassword = () => {
                   apiUrl +
                     `password/?user_email=${encodeURIComponent(
                       response.data.user_email
-                    )}&user_pw=${encodeURIComponent(response.data.user_pw)}`
+                    )}&user_pw=${encodeURIComponent(newPassWord)}`
                 )
                 .then((response) => {
                   console.log(response.data);

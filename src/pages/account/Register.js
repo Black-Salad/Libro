@@ -154,25 +154,31 @@ const Register = () => {
       user.user_email.length === 0 ||
       user.user_pw.length === 0
     ) {
-      alert("공란을 입력바랍니다.");
+      alert("공란을 입력해주세요.");
       return false;
     }
 
     if (error.user_name && error.user_email && error.user_pw) {
-      alert("정확히 입력바랍니다");
+      alert("정확히 입력해주세요.");
       return false;
     }
 
     if (!checkbox.current.checked) {
-      alert("개인 정보 정책에 동의바랍니다.");
+      alert("개인 정보 정책에 동의해주세요.");
       return false;
     }
+
+    const passwordHash = require("password-hash");
+    const hashedPassword = passwordHash.generate(user.user_pw);
 
     axios.get(apiUrl2).then((response) => {
       console.log(response);
       if (response.data.length === 0) {
         axios
-          .post(apiUrl1, user)
+          .post(apiUrl1, {
+            ...user,
+            user_pw: hashedPassword,
+          })
           .then(() => {
             alert("회원가입이 완료되었습니다.");
             history.push("/login");
