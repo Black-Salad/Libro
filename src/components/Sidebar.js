@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import * as Icon from "react-feather";
 import { Link } from "react-router-dom";
+import { Cookies } from "react-cookie";
 
 const Sidebar = () => {
   const locationArr = window.location.pathname.split("/");
   const [selectedMenu, setSelectedMenu] = useState();
+  const cookies = new Cookies();
+  const loginUserId = cookies.get("loginUserId");
 
   useEffect(() => {
     document.querySelector("body").className = "";
@@ -124,6 +127,18 @@ const Sidebar = () => {
               >
                 <Icon.Clock />
                 타임라인
+              </span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to={`/follow/${loginUserId}`}>
+              <span
+                className={`nav-link has-icon show ${
+                  selectedMenu === "follow" ? "active" : null
+                }`}
+              >
+                <Icon.Users />
+                팔로잉
               </span>
             </Link>
           </li>
