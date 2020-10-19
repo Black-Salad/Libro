@@ -46,10 +46,15 @@ const Topheader = () => {
 
   // 로그아웃
   const logout = () => {
+    // while (cookies.get("loginUserId") !== null) {
+    cookies.remove("loginUserId");
     cookies.remove("loginUserName");
     cookies.remove("loginUserEmail");
     cookies.remove("loginUserImg");
-    cookies.remove("loginUserId");
+    //   if (cookies.get("loginUserId") == null) {
+    //     break;
+    //   }
+    // }
     out();
   };
 
@@ -299,7 +304,7 @@ const Topheader = () => {
             </Link>
             <button
               className="dropdown-item has-icon text-danger"
-              onClick={() => logout()}
+              onClick={logout}
             >
               <ExitToAppIcon /> &nbsp; 로그아웃
             </button>

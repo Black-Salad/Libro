@@ -58,7 +58,7 @@ const LoginTest = () => {
       setUser({ ...user, user_email: cookies.get("saveId") });
     }
     if (cookies.get("loginUserId") != null) {
-      history.push(`/bookshelf/${cookies.get("loginUserId")}`);
+      history.push(`/`);
     }
   }, []);
 
