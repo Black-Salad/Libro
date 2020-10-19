@@ -15,6 +15,7 @@ const BookshelfPage = ({ match }) => {
   const shelfUser =
     match.params.userIDX == undefined ? loginUserId : match.params.userIDX;
 
+  const [changed, setChanged] = useState(false);
   // 모달 팝업 스테이트
   const [modalState, setModalState] = useState(false);
   // 현재 선택한 책 정보 저장하는 스테이트
@@ -56,7 +57,7 @@ const BookshelfPage = ({ match }) => {
   return (
     <Layout>
       <BreadCrumbs
-        breads={[<Link to="/"> {userInfo.user_name}의 책꽂이</Link>]}
+        breads={[<Link to="/"> {userInfo.user_name} 님의 책꽂이</Link>]}
       />
       <Books
         bKind="reading"
@@ -64,6 +65,7 @@ const BookshelfPage = ({ match }) => {
         onOpenModal={onOpenModal}
         modalState={modalState}
         profile={false}
+        changed={changed}
       />
       <hr />
       <Books
@@ -72,6 +74,7 @@ const BookshelfPage = ({ match }) => {
         onOpenModal={onOpenModal}
         modalState={modalState}
         profile={false}
+        changed={changed}
       />
       <hr />
       <Books
@@ -80,11 +83,14 @@ const BookshelfPage = ({ match }) => {
         onOpenModal={onOpenModal}
         modalState={modalState}
         profile={false}
+        changed={changed}
       />
       <Bookprofile
         open={modalState}
         setModalState={setModalState}
         currentBook={currentBook}
+        changed={changed}
+        setChanged={setChanged}
       />
     </Layout>
   );

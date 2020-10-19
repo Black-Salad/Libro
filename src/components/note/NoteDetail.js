@@ -11,7 +11,6 @@ import NoteLike from "./NoteLike";
 
 import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
 import Button from "@material-ui/core/Button";
-import HomeIcon from "@material-ui/icons/Home";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import DeleteIcon from "@material-ui/icons/Delete";
 // import UserButton from "../common/UserButton";
@@ -88,7 +87,7 @@ const NoteDetail = (props) => {
         .patch(apiUrl, { note_state: false })
         .then((response) => {
           console.log("note delete Data", response);
-          alert("삭제완료");
+          // alert("삭제완료");
           history.push("/viewnotes");
         })
         .catch((response) => {

@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Bookprofile = (props) => {
   const classes = useStyles();
-  const { open, setModalState, currentBook } = props;
+  const { open, setModalState, currentBook, changed, setChanged } = props;
 
   const onCloseModal = () => {
     setModalState(false);
@@ -89,7 +89,12 @@ const Bookprofile = (props) => {
             </div>
           </div>
         </div>
-        <BookButtons currentBook={currentBook} setModalState={setModalState} />
+        <BookButtons
+          currentBook={currentBook}
+          setModalState={setModalState}
+          setChanged={setChanged}
+          changed={changed}
+        />
       </Modal>
     </div>
   );

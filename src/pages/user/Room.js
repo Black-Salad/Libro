@@ -18,8 +18,10 @@ const Room = ({ match }) => {
   const loginUserId = cookies.get("loginUserId");
   const shelfUser = match.params.userIDX;
 
+  const [changed, setChanged] = useState(false);
+
   // 모달 팝업 스테이트
-  const [modalState, setModalState] = useState({ open: false });
+  const [modalState, setModalState] = useState(false);
   // 현재 선택한 책 정보 저장하는 스테이트
   const [currentBook, setCurrentBook] = useState({
     idx: 0,
@@ -35,7 +37,7 @@ const Room = ({ match }) => {
 
   // 모달 팝업 오픈 이벤트
   const onOpenModal = (book) => {
-    setModalState({ open: true });
+    setModalState(true);
     setCurrentBook({
       idx: book.book_id.book_id,
       title: book.book_id.book_title,
@@ -88,20 +90,23 @@ const Room = ({ match }) => {
           onOpenModal={onOpenModal}
           modalState={modalState}
           profile={true}
+          changed={changed}
         />
       </section>
 
       <Bookprofile
-        open={modalState.open}
+        open={modalState}
         setModalState={setModalState}
         currentBook={currentBook}
+        changed={changed}
+        setChanged={setChanged}
       />
 
       <hr />
 
       {/* 독서록 */}
       <section>
-        <p className="font-size-m">독서록</p>
+        <p className="font-size-m text-secondary">독서록</p>
         <Note userIDX={match.params.userIDX} />
       </section>
     </Layout>

@@ -15,6 +15,7 @@ const RoomProfile = (props) => {
   const [user, setUser] = useState({});
   const [follower, setFollower] = useState();
   const [following, setFollowing] = useState();
+  const [followBtnClicked, setFollowBtnClicked] = useState(false);
 
   useEffect(() => {
     axios.get(apiUrl + `${props.userIDX}/`).then((response) => {
@@ -22,15 +23,15 @@ const RoomProfile = (props) => {
     });
     axios.get(apiUrl + `follow/?user_id=${props.userIDX}`).then((response) => {
       console.log(response.data);
-      setFollowing(response.data.length);
+      setFollowing(response.data.count);
     });
     axios
       .get(apiUrl + `follow/?target_user_id=${props.userIDX}`)
       .then((response) => {
         console.log(response.data);
-        setFollower(response.data.length);
+        setFollower(response.data.count);
       });
-  }, [props]);
+  }, [props, followBtnClicked]);
 
   const useStyles = makeStyles((theme) => ({
     card: {
@@ -76,13 +77,17 @@ const RoomProfile = (props) => {
                 {user.user_name}
               </Typography>
               <Grid item sm={3} xs={12}>
-                <FollowButton userIDX={props.userIDX} />
+                <FollowButton
+                  userIDX={props.userIDX}
+                  followBtnClicked={followBtnClicked}
+                  setFollowBtnClicked={setFollowBtnClicked}
+                />
               </Grid>
             </Grid>
             <Link to={`/follower/${props.userIDX}`}>
               팔로워 <b>{follower}</b>
-            </Link>{" "}
-            <Link to={`/follow/${props.userIDX}`}>
+            </Link>
+            <Link to={`/follow/${props.userIDX}`} style={{ marginLeft: 15 }}>
               팔로잉 <b>{following}</b>
             </Link>
             <hr />

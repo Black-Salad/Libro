@@ -65,7 +65,8 @@ const NoteForm = (props) => {
     }
 
     axios
-      .get(apiUrl2 + `shelf/join/?user_id=${loginUserId}&shelf_state=2`)
+      .get(apiUrl2 + `shelf/join/note/?user_id=${loginUserId}`)
+      // .get(apiUrl2 + `shelf/join/?user_id=${loginUserId}&shelf_state=2`)
       .then((response) => {
         setShelf(response.data);
         console.log(response.data);
@@ -134,8 +135,8 @@ const NoteForm = (props) => {
               note_id: response.data.note_id,
             })
             .then((response) => {
-              alert("등록완료");
-              history.push("/viewnotes");
+              // alert("등록완료");
+              history.push(`/viewnotedetail/${response.data.note_id}`);
             });
         })
         .catch((res) => {
@@ -187,7 +188,11 @@ const NoteForm = (props) => {
                         onChange={(e) => selectOnChange(e)}
                       >
                         <option value="0">독서록을 쓸 책 선택</option>
-
+                        {shelf.length === 0 ? (
+                          <option value="0" disabled>
+                            책꽂이에 책이 없습니다.
+                          </option>
+                        ) : null}
                         {shelf.map((item, index) => {
                           return (
                             <React.Fragment key={index}>
@@ -217,8 +222,8 @@ const NoteForm = (props) => {
                   onChange={(e) => noteOnChange(e)}
                   value={note.note_private}
                 >
-                  <option value="true">O</option>
-                  <option value="false">X</option>
+                  <option value="true">공개</option>
+                  <option value="false">비공개</option>
                 </select>
               </div>
             </div>
@@ -249,7 +254,7 @@ const NoteForm = (props) => {
           </form>
 
           {props.status == "write" ? (
-            <>
+            <div style={{ textAlign: "center" }}>
               <Button
                 variant="contained"
                 color="primary"
@@ -272,9 +277,9 @@ const NoteForm = (props) => {
               >
                 취소
               </Button>
-            </>
+            </div>
           ) : (
-            <>
+            <div style={{ textAlign: "center" }}>
               <Button
                 variant="contained"
                 color="primary"
@@ -297,7 +302,7 @@ const NoteForm = (props) => {
               >
                 취소
               </Button>
-            </>
+            </div>
           )}
         </div>
       </div>

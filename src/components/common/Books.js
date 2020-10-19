@@ -48,6 +48,7 @@ const Books = ({
   modalState,
   profile,
   userName,
+  changed,
 }) => {
   const classes = useStyles();
   const [bookList, setBookList] = useState([]);
@@ -77,15 +78,15 @@ const Books = ({
     axios
       .get(apiUrl)
       .then((res) => {
-        if (res.data.length > 6) {
+        setBookList(res.data.results);
+        if (res.data.next !== null) {
           setShowMore(true);
         }
-        setBookList(res.data.slice(0, 6));
       })
       .catch((res) => {
         console.error(res);
       });
-  }, [modalState, shelfUser]);
+  }, [changed, shelfUser]);
 
   return (
     <div>
@@ -99,9 +100,9 @@ const Books = ({
               <ChevronRight />
             </Link>
           </span>
-        ) : showMore ? (
+        ) : showMore || bKind == "didRead" ? (
           <span style={{ marginLeft: "auto" }}>
-            <Link to={`/`}>
+            <Link to={`/bookshelfmore/${shelfUser}/?kind=${bKind}`}>
               {/* ******** 수정하기 ******** */}
               more
               <ChevronRight />

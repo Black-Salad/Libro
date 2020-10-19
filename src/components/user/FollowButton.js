@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PersonAddDisabledIcon from "@material-ui/icons/PersonAddDisabled";
 
-const FollowButton = (props) => {
+const FollowButton = ({ userIDX, followBtnClicked, setFollowBtnClicked }) => {
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
 
@@ -16,11 +16,11 @@ const FollowButton = (props) => {
   const [followCnt, setFollowCnt] = useState();
   const [follow, setFollow] = useState({
     user_id: loginUserId,
-    target_user_id: props.userIDX,
+    target_user_id: userIDX,
   });
   const [alarm, setAlarm] = useState({
     user_id: loginUserId,
-    target_user_id: props.userIDX,
+    target_user_id: userIDX,
     alarm_type: 1,
     alarm_status: true,
   });
@@ -28,10 +28,10 @@ const FollowButton = (props) => {
   // useEffect
   useEffect(() => {
     axios
-      .get(apiUrl1 + `?user_id=${loginUserId}&target_user_id=${props.userIDX}`)
+      .get(apiUrl1 + `?user_id=${loginUserId}&target_user_id=${userIDX}`)
       .then((response) => {
-        setFollowCnt(response.data.length);
-        if (response.data.length !== 0) setFollow(response.data[0]);
+        setFollowCnt(response.data.count);
+        if (response.data.count !== 0) setFollow(response.data.results[0]);
       });
   }, []);
 
@@ -40,6 +40,7 @@ const FollowButton = (props) => {
     axios.post(apiUrl1, follow).then((response) => {
       setFollowCnt(1);
       setFollow(response.data);
+      setFollowBtnClicked(!followBtnClicked);
 
       // timeline
       axios.post(`${LIBRO_API_URL}/api/timeline/`, {
@@ -58,13 +59,14 @@ const FollowButton = (props) => {
   const unFollowBtn = () => {
     axios.delete(apiUrl1 + `${follow.follow_id}/`).then((response) => {
       setFollowCnt(0);
+      setFollowBtnClicked(!followBtnClicked);
     });
   };
 
   return (
     <>
       {(function () {
-        if (props.userIDX == loginUserId) {
+        if (userIDX == loginUserId) {
           return null;
         } else if (followCnt === 0) {
           return (
