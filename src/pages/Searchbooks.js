@@ -7,6 +7,8 @@ import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import Pagination from "@material-ui/lab/Pagination";
 import Layout from "../components/Layout";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+
 import {
   KAKAO_API_URL,
   KAKAO_API_KEY,
@@ -14,6 +16,7 @@ import {
 } from "../constants/config";
 import BreadCrumbs from "../components/common/BreadCrumbs";
 import Bookprofile from "../components/common/Bookprofile";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -61,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     webkitBoxOrient: "vertical",
   },
 }));
-const scrollToTop = (ref) => window.scrollTo(0, ref.current.offsetTop);
+// const scrollToTop = (ref) => window.scrollTo(0, ref.current.offsetTop);
 const Searchbooks = () => {
   const classes = useStyles();
   // 모달 스테이트
@@ -70,6 +73,7 @@ const Searchbooks = () => {
     setModalState(true);
     setCurrentBook(book);
   };
+  const [changed, setChanged] = useState(false);
   // 현재 선택한 책 정보 저장하는 스테이트
   const [currentBook, setCurrentBook] = useState({
     idx: 0,
@@ -83,25 +87,25 @@ const Searchbooks = () => {
   // 검색 키워드 스테이트 정의 및 초기값 세팅
   const [keyword, setKeyword] = useState("");
   // 검색 결과 저장하는 스테이트
-  const [result, setResult] = useState({
-    loading: false, // ######## 검토 필요
-    itemCount: null,
-    itemList: [],
-  });
-
+  const [result, setResult] = useState([]);
   const onChangeKeyword = (e) => {
     setKeyword(e.target.value);
   };
 
   // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [isEnd, setIsEnd] = useState(true);
   const myRef = useRef(null);
 
   // 검색 AJAX 메서드
   const onSearchBook = (e, query, page) => {
     e.preventDefault();
     setCurrentPage(page);
+    console.log("page", currentPage);
+
+    if (page == 1) {
+      setResult([]);
+    }
 
     if (query === "") {
       alert("검색어를 입력하세요");
@@ -121,27 +125,31 @@ const Searchbooks = () => {
         timeout: 3000,
       })
       .then(({ data }) => {
-        setResult({
-          loading: true,
-          itemCount: data.meta.pageable_count,
-          itemList: data.documents,
-        });
-        setTotalPage(Math.ceil(data.meta.pageable_count / 8)); // size = 8
-        scrollToTop(myRef);
+        if (page == 1) {
+          setResult(data.documents);
+        } else {
+          setResult([...result, ...data.documents]);
+        }
+        setIsEnd(data.meta.is_end);
+        // setTotalPage(Math.ceil(data.meta.pageable_count / 8)); // size = 8
+        // scrollToTop(myRef);
       })
       .catch((err) => {
         console.error(err);
-        setResult({
-          loading: false,
-          itemCount: 0,
-        });
+        setResult([]);
+        setIsEnd(true);
         if (err.response.status == "404") {
           alert("검색하신 책이 존재하지 않습니다.");
         }
       });
   };
 
-  const displayList = result.itemList.map((item, index) => (
+  // const onClickMore =(e)=> {
+  //   // setPage(page+1);
+  //   onSearchBook(e, keyword, page+1);
+
+  // };
+  const displayList = result.map((item, index) => (
     <Paper
       className={classes.paper}
       key={index}
@@ -202,19 +210,21 @@ const Searchbooks = () => {
           </IconButton>
         </Paper>
 
-        {result.itemCount !== 0 ? (
-          displayList
-        ) : (
+        {result.length == 0 && currentPage != 0 ? (
           <Paper className={classes.paper}>
             검색하신 책이 존재하지 않습니다.
           </Paper>
+        ) : (
+          displayList
         )}
         <Bookprofile
           open={modalState}
           setModalState={setModalState}
           currentBook={currentBook}
+          setChanged={setChanged}
+          changed={changed}
         />
-        {result.loading && result.itemCount !== 0 ? (
+        {/* {result.loading && result.itemCount !== 0 ? (
           <div className={classes.paging}>
             <Pagination
               count={totalPage}
@@ -225,6 +235,16 @@ const Searchbooks = () => {
               style={{ textAlign: "center" }}
             />
           </div>
+        ) : null} */}
+        {!isEnd ? (
+          <Button
+            fullWidth
+            className="text-secondary"
+            startIcon={<MoreHorizIcon />}
+            onClick={(e) => onSearchBook(e, keyword, currentPage + 1)}
+          >
+            더보기
+          </Button>
         ) : null}
       </div>
     </Layout>

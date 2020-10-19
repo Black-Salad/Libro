@@ -8,7 +8,8 @@ import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 import { Cookies } from "react-cookie";
 import Bookprofile from "../components/common/Bookprofile";
-import UserButton from "../components/common/UserButton";
+// import UserButton from "../components/common/UserButton";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import TimelinePiece1 from "../components/common/TimelinePiece1";
 import TimelinePiece2 from "../components/common/TimelinePiece2";
 import TimelinePiece3 from "../components/common/TimelinePiece3";
@@ -17,6 +18,7 @@ import TimelinePiece5 from "../components/common/TimelinePiece5";
 import TimelinePiece6 from "../components/common/TimelinePiece6";
 import TimelinePiece7 from "../components/common/TimelinePiece7";
 import { LIBRO_API_URL } from "../constants/config";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,7 +55,9 @@ const Timeline = () => {
   // 타임라인 스테이트
   const [timelineList, setTimelineList] = useState([]);
   // 모달 스테이트
-  const [modalState, setModalState] = useState({ open: false });
+  const [modalState, setModalState] = useState(false);
+  const [nextUrl, setNextUrl] = useState(null);
+  const [changed, setChanged] = useState(false);
   // 현재 선택한 책 정보 저장하는 스테이트 (책 상세 모달용)
   const [currentBook, setCurrentBook] = useState({
     idx: 0,
@@ -68,7 +72,7 @@ const Timeline = () => {
   });
   // 모달 팝업 오픈 이벤트
   const onOpenModal = (book) => {
-    setModalState({ open: true });
+    setModalState(true);
     setCurrentBook({
       idx: book.book_id,
       title: book.book_title,
@@ -82,19 +86,33 @@ const Timeline = () => {
     console.log(currentBook);
   };
 
-  useEffect(() => {
-    const apiUrl = `${LIBRO_API_URL}/api/timeline/join/?user=${LoginUser}`;
+  const apiUrl = `${LIBRO_API_URL}/api/timeline/join/?user=${LoginUser}`;
 
+  useEffect(() => {
     axios
       .get(apiUrl)
       .then((response) => {
         console.log(response.data);
-        setTimelineList(response.data);
+        setTimelineList(response.data.results);
+        setNextUrl(response.data.next);
       })
       .catch((response) => {
         console.error(response);
       });
   }, [LoginUser]);
+
+  const onClickMore = () => {
+    axios
+      .get(nextUrl)
+      .then((response) => {
+        console.log("more", response.data);
+        setTimelineList([...timelineList, ...response.data.results]);
+        setNextUrl(response.data.next);
+      })
+      .catch((response) => {
+        console.error(response);
+      });
+  };
 
   return (
     <Layout>
@@ -152,10 +170,22 @@ const Timeline = () => {
           ) : null}
         </Grid>
       </Grid>
+      {nextUrl !== null ? (
+        <Button
+          fullWidth
+          className="text-secondary"
+          startIcon={<MoreHorizIcon />}
+          onClick={() => onClickMore()}
+        >
+          더보기
+        </Button>
+      ) : null}
       <Bookprofile
-        open={modalState.open}
+        open={modalState}
         setModalState={setModalState}
         currentBook={currentBook}
+        changed={changed}
+        setChanged={setChanged}
       />
     </Layout>
   );
