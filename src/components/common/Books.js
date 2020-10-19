@@ -102,7 +102,7 @@ const Books = ({
           </span>
         ) : showMore || bKind == "didRead" ? (
           <span style={{ marginLeft: "auto" }}>
-            <Link to={`/bookshelfmore/${shelfUser}/?kind=${bKind}`}>
+            <Link to={`/bookshelfmore/${shelfUser}/${bKind}`}>
               {/* ******** 수정하기 ******** */}
               more
               <ChevronRight />

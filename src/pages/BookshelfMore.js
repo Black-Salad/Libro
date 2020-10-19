@@ -19,8 +19,8 @@ const BookshelfMore = ({ location, match }) => {
   const loginUserId = cookies.get("loginUserId");
   const shelfUser =
     match.params.userIDX == undefined ? loginUserId : match.params.userIDX;
-  const query = queryString.parse(location.search);
-  const { kind } = query;
+  // const query = queryString.parse(location.search);
+  const kind = match.params.kind;
 
   let kindDisplayStr = "";
   let apiUrl = "";
