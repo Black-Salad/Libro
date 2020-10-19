@@ -9,8 +9,16 @@ import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import UserButton from "../common/UserButton";
+import { Paper } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
+  paper: {
+    padding: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    color: "#585858",
+    fontSize: "90%",
+    textAlign: "center",
+  },
   gridRoot: {
     flexGrow: 1,
     width: "100%",
@@ -83,29 +91,7 @@ const BestNote = (props) => {
   //useEffect
   useEffect(() => {
     axios.get(apiUrl + `like/count/`).then((response) => {
-      let bestNotes = response.data;
-      console.log("bestNotes", bestNotes);
-      for (var i = 0; i < bestNotes.length; i++) {
-        axios.get(apiUrl + `${bestNotes[i].note_id}/`).then((res) => {
-          if (res.data.note_state === true) {
-            setNotes((notes) => [
-              ...notes,
-              {
-                note_id: res.data.note_id,
-                user_id: res.data.user_id,
-                book_id: res.data.book_id,
-                book_title: res.data.book_title,
-                book_img: res.data.book_img,
-                note_title: res.data.note_title,
-                note_date: res.data.note_date,
-                note_viewcount: res.data.note_viewcount,
-                note_private: res.data.note_private,
-                note_state: res.data.note_state,
-              },
-            ]);
-          }
-        });
-      }
+      setNotes(response.data);
     });
   }, []);
 
@@ -126,15 +112,14 @@ const BestNote = (props) => {
 
   return (
     <>
+      {notes.length === 0 ? (
+        <Paper className={classes.paper}>
+          <div style={{ color: "grey", margin: "10px auto" }}>
+            등록된 독서록이 없습니다.
+          </div>
+        </Paper>
+      ) : null}
       <div className="row gutters-sm">
-        {notes.length === 0 ? (
-          <p
-            className="text-secondary font-size-sm mt-5"
-            style={{ height: 80, width: "100%", textAlign: "center" }}
-          >
-            등록된 책이 없습니다 😥
-          </p>
-        ) : null}
         {notes.map((item, index) => {
           return (
             <React.Fragment key={index}>

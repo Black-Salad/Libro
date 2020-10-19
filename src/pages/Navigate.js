@@ -6,6 +6,8 @@ import FollowUser from "../components/user/FollowUser";
 import BestNote from "../components/note/BestNote";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import BestBooks from "../components/common/BestBooks";
+import FollowRecommend from "../components/user/FollowRecommend";
 const Navigate = () => {
   const divStyle = {
     width: "100%",
@@ -40,15 +42,22 @@ const Navigate = () => {
           <img src="/img/ad4.jpg" alt="" style={imgStyle} />
         </div>
       </Carousel>
-      <h4 className="mb-4 mt-5 text-secondary" style={bestStyle}>
-        베스트 독서록
-      </h4>
+      <hr />
+      <h5 className="mb-4 mt-4 text-secondary" style={bestStyle}>
+        최근 4주 인기 책 📚
+      </h5>
+      <BestBooks />
+      <hr />
+      <h5 className="mb-4 mt-4 text-secondary" style={bestStyle}>
+        베스트 독서록 ✍
+      </h5>
       <BestNote />
       <hr />
-      <h4 className="mb-4 mt-4 text-secondary" style={bestStyle}>
-        내가 팔로우한 친구들
-      </h4>
-      <FollowUser userIDX={cookies.get("loginUserId")} />
+      <h5 className="mb-4 mt-4 text-secondary" style={bestStyle}>
+        리브로어들을 팔로우해보세요 👬
+      </h5>
+      <FollowRecommend />
+      {/* <FollowUser userIDX={cookies.get("loginUserId")} /> */}
     </Layout>
   );
 };
