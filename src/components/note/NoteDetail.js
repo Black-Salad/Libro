@@ -5,6 +5,7 @@ import axios from "axios";
 import Moment from "react-moment";
 import { LIBRO_API_URL } from "../../constants/config";
 import { makeStyles } from "@material-ui/core/styles";
+import Bookprofile from "../common/Bookprofile";
 
 import NoteComment from "./NoteComment";
 import NoteLike from "./NoteLike";
@@ -15,6 +16,7 @@ import RefreshIcon from "@material-ui/icons/Refresh";
 import DeleteIcon from "@material-ui/icons/Delete";
 // import UserButton from "../common/UserButton";
 
+// 모달 스테이트
 const NoteDetail = (props) => {
   let history = useHistory();
   const cookies = new Cookies();
@@ -53,26 +55,58 @@ const NoteDetail = (props) => {
       objectFit: "cover",
     },
   }));
-
   const classes = useStyles();
+  const [modalState, setModalState] = useState(false);
+  const [changed, setChanged] = useState(false);
+  // 현재 선택한 책 정보 저장하는 스테이트 (책 상세 모달용)
+  const [currentBook, setCurrentBook] = useState({
+    idx: 0,
+    kind: "",
+    title: "",
+    authors: [""],
+    isbn: "",
+    thumbnail: "",
+    publisher: "",
+    contents: "",
+    url: "",
+  });
+  // 모달 팝업 오픈 이벤트
+  const onOpenModal = (book) => {
+    setModalState(true);
+    setCurrentBook({
+      idx: book.book_id,
+      title: book.book_title,
+      authors: book.book_author.split(","),
+      isbn: book.book_isbn,
+      thumbnail: book.book_img,
+      publisher: book.book_publisher,
+      contents: book.book_desc,
+      url: book.book_url,
+    });
+    console.log(currentBook);
+  };
 
   //useEffect
   useEffect(() => {
-    axios.get(apiUrl).then((response) => {
-      console.log("noteDetail Data", response);
-      setNote(response.data);
-      setAlarm({ ...alarm, target_user_id: response.data.user_id });
+    axios
+      .get(`${LIBRO_API_URL}/api/note/detail/${props.noteIDX}`)
+      .then((response) => {
+        console.log("noteDetail Data", response);
+        setNote(response.data);
+        setAlarm({ ...alarm, target_user_id: response.data.user_id });
 
-      //조회수 추후 cookie로 조건문
-      axios.patch(apiUrl, { note_viewcount: response.data.note_viewcount + 1 });
-
-      axios
-        .get(`${LIBRO_API_URL}/api/user/${response.data.user_id}/`)
-        .then((response) => {
-          console.log("response", response);
-          setUser(response.data);
+        //조회수 추후 cookie로 조건문
+        axios.patch(apiUrl, {
+          note_viewcount: response.data.note_viewcount + 1,
         });
-    });
+
+        axios
+          .get(`${LIBRO_API_URL}/api/user/${response.data.user_id}/`)
+          .then((response) => {
+            console.log("response", response);
+            setUser(response.data);
+          });
+      });
 
     axios.get(apiUrl2).then((response) => {
       console.log("comment", response);
@@ -139,6 +173,7 @@ const NoteDetail = (props) => {
               src={note.book_img}
               style={{ width: "50px", boxShadow: "grey 1px 1px 1px 1px" }}
               alt=""
+              onClick={() => onOpenModal(note.book_id)}
             />
             <div className="media-body text-muted ml-3">
               <h6 className="mb-0 text-dark">
@@ -255,6 +290,13 @@ const NoteDetail = (props) => {
             </div>
           </form>
         </div>
+        <Bookprofile
+          open={modalState}
+          setModalState={setModalState}
+          currentBook={currentBook}
+          changed={changed}
+          setChanged={setChanged}
+        />
       </div>
     </>
   );
