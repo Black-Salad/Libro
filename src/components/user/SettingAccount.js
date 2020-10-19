@@ -12,7 +12,7 @@ const Account = () => {
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
   const loginUserName = cookies.get("loginUserName");
-  const [userName, setUserName] = useState();
+  const [userName, setUserName] = useState(loginUserName);
   const [error, setError] = useState(false);
   const apiUrl1 = `${LIBRO_API_URL}/api/user/`;
   const apiUrl2 = `${LIBRO_API_URL}/api/note/`;
@@ -35,13 +35,15 @@ const Account = () => {
   };
 
   const changeUserName = () => {
-    axios
-      .patch(apiUrl1 + `${loginUserId}/`, { user_name: userName })
-      .then((response) => {
-        alert("변경완료");
-        cookies.set("loginUserName", userName);
-        history.go(0);
-      });
+    if (error === false) {
+      axios
+        .patch(apiUrl1 + `${loginUserId}/`, { user_name: userName })
+        .then((response) => {
+          alert("변경완료");
+          cookies.set("loginUserName", userName);
+          history.go(0);
+        });
+    }
   };
 
   const deleteUser = () => {
@@ -120,7 +122,8 @@ const Account = () => {
             계정 탈퇴
           </Button>
           <small className="d-block text-danger">
-            탈퇴 시 리브로 사용이 불가합니다.
+            탈퇴 시 리브로 사용이 불가합니다. 탈퇴 후 한 달 이내로 복구가
+            가능합니다.
           </small>
         </div>
       </form>

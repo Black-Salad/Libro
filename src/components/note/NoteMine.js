@@ -111,7 +111,7 @@ const NoteMine = () => {
     const apiUrl = `${LIBRO_API_URL}/api/note/${noteIDX}/`;
     if (window.confirm("해당 독서록을 삭제하시겠습니까?")) {
       axios
-        .patch(apiUrl, { note_state: false })
+        .delete(apiUrl)
         .then((response) => {
           setDeleted(!deleted);
         })

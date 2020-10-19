@@ -97,7 +97,7 @@ const Note = (props) => {
     const apiUrl2 = `${LIBRO_API_URL}/api/note/${noteIDX}/`;
     if (window.confirm("해당 독서록을 삭제하시겠습니까?")) {
       axios
-        .patch(apiUrl2, { note_state: false })
+        .delete(apiUrl2)
         .then((response) => {
           alert("삭제완료");
           history.go(0);

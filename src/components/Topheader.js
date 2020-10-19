@@ -138,6 +138,23 @@ const Topheader = () => {
               <Icon.Bell className="mr-2" /> 알람
             </div>
             <div style={{ maxHeight: "350px", overflowY: "auto" }}>
+              {(function () {
+                if (alarm.length === 0) {
+                  return (
+                    <div className="card-body p-0 pt-1">
+                      <div className="list-group list-group-sm list-group-flush">
+                        <div className="list-group-item">
+                          <div className="media">
+                            <div className="media-body ml-2">
+                              <p className="mb-0">알람이 없습니다.</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+              })()}
               {alarm.map((item, index) => {
                 return (
                   <React.Fragment key={index}>
@@ -250,7 +267,12 @@ const Topheader = () => {
 
           {/* 회원 드롭다운 */}
           <div className="dropdown-menu dropdown-menu-right pt-0 overflow-hidden">
-            <div className="media align-items-center bg-dark text-white px-4 py-3 mb-2">
+            <div
+              className="media align-items-center bg-dark text-white px-4 py-3 mb-2"
+              onClick={() =>
+                history.push(`/room/${cookies.get("loginUserId")}`)
+              }
+            >
               <img
                 src={`${cookies.get("loginUserImg")}`}
                 alt=""

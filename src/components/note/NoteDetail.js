@@ -95,17 +95,22 @@ const NoteDetail = (props) => {
         setNote(response.data);
         setAlarm({ ...alarm, target_user_id: response.data.user_id });
 
-        //조회수 추후 cookie로 조건문
-        axios.patch(apiUrl, {
-          note_viewcount: response.data.note_viewcount + 1,
-        });
-
+        // 본인글엔 조회수 X
+        if (loginUserId != response.data.user_id) {
+          axios.patch(apiUrl, {
+            note_viewcount: response.data.note_viewcount + 1,
+          });
+        }
         axios
           .get(`${LIBRO_API_URL}/api/user/${response.data.user_id}/`)
           .then((response) => {
             console.log("response", response);
             setUser(response.data);
           });
+      })
+      .catch(() => {
+        alert("잘못된 접근입니다.");
+        history.go(-1);
       });
 
     axios.get(apiUrl2).then((response) => {
@@ -118,7 +123,7 @@ const NoteDetail = (props) => {
   const onDelete = () => {
     if (window.confirm("해당 독서록을 삭제하시겠습니까?")) {
       axios
-        .patch(apiUrl, { note_state: false })
+        .delete(apiUrl)
         .then((response) => {
           console.log("note delete Data", response);
           // alert("삭제완료");
@@ -146,6 +151,7 @@ const NoteDetail = (props) => {
       console.log(response.data);
       setCommented(!commented);
       document.getElementById("textarea").value = "";
+      setComment({ ...comment, comment_contents: "" });
 
       axios.post(`${LIBRO_API_URL}/api/timeline/`, {
         user_id: loginUserId,

@@ -41,19 +41,30 @@ const SettingProfile = () => {
     const formData = new FormData();
     formData.append("user_img", e.target.files[0]);
 
-    axios({
-      method: "patch",
-      url: apiUrl1 + "update/",
-      data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
-    })
-      .then((response) => {
-        console.log(response.data);
-        setUser(response.data);
+    var fileName = e.target.value;
+    fileName = fileName.slice(fileName.indexOf(".") + 1).toLowerCase();
+    if (
+      fileName !== "jpg" &&
+      fileName !== "png" &&
+      fileName !== "gif" &&
+      fileName !== "jpeg"
+    ) {
+      alert("jpg,jpeg,png,gif 파일만 가능합니다.😓");
+    } else {
+      axios({
+        method: "patch",
+        url: apiUrl1 + "update/",
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
       })
-      .catch((response) => {
-        console.error(response);
-      });
+        .then((response) => {
+          console.log(response.data);
+          setUser(response.data);
+        })
+        .catch((response) => {
+          console.error(response);
+        });
+    }
   };
 
   const profileUpdate = () => {
