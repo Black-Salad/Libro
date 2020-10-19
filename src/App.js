@@ -38,7 +38,7 @@ function App() {
       <Route path="/searchbooks" component={Searchbooks} />
       <Route path="/navigate" component={Navigate} />
       <Route path="/setting" component={Setting} />
-      <Route path="/bookshelfmore" component={BookshelfMore} />
+      <Route path="/bookshelfmore/:userIDX" component={BookshelfMore} />
       <Route path="/timeline" component={Timeline} />
     </>
   );
