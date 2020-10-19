@@ -14,9 +14,16 @@ import Button from "@material-ui/core/Button";
 import VisibilityOffOutlinedIcon from "@material-ui/icons/VisibilityOffOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import UserButton from "../common/UserButton";
-import { Grid } from "@material-ui/core";
+import { Grid, Paper } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
+  paper: {
+    padding: theme.spacing(1),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(1),
+    textAlign: "center",
+    verticalAlign: "center",
+  },
   gridRoot: {
     flexGrow: 1,
     width: "100%",
@@ -66,18 +73,24 @@ const useStyles = makeStyles((theme) => ({
     color: "#A4A4A4",
     textAlign: "right",
   },
+  profile: {
+    width: 30,
+    height: 30,
+    borderRadius: "50%",
+    objectFit: "cover",
+  },
 }));
 const NoteMine = () => {
   const classes = useStyles();
   let history = useHistory();
   const cookies = new Cookies();
   const loginUserId = cookies.get("loginUserId");
+  const loginUserName = cookies.get("loginUserName");
+  const loginUserImg = cookies.get("loginUserImg");
 
   const [notes, setNotes] = useState([]);
-  const [more, setMore] = useState({
-    limit: 8,
-    show: true,
-  });
+  const [nextUrl, setNextUrl] = useState(null);
+  const [deleted, setDeleted] = useState(false);
 
   //값 가져와서 setNotes
   useEffect(() => {
@@ -85,13 +98,13 @@ const NoteMine = () => {
     axios
       .get(apiUrl)
       .then((response) => {
-        setNotes(response.data);
-        setMore({ ...more, show: response.data.length > 8 ? true : false });
+        setNotes(response.data.results);
+        setNextUrl(response.data.next);
       })
       .catch((response) => {
         console.error(response);
       });
-  }, []);
+  }, [deleted]);
 
   //삭제
   const onDelete = (noteIDX) => {
@@ -100,8 +113,7 @@ const NoteMine = () => {
       axios
         .patch(apiUrl, { note_state: false })
         .then((response) => {
-          alert("삭제완료");
-          history.go(0);
+          setDeleted(!deleted);
         })
         .catch((response) => {
           console.error(response);
@@ -113,6 +125,7 @@ const NoteMine = () => {
   const onKeyPressSearch = (e) => {
     if (e.key === "Enter") {
       // e.chardCode === 13
+      console.log(loginUserId);
       const search = e.target.value;
       const apiUrl = `${LIBRO_API_URL}/api/note/search/?search=${encodeURIComponent(
         search
@@ -120,8 +133,8 @@ const NoteMine = () => {
       axios
         .get(apiUrl)
         .then((response) => {
-          setNotes(response.data);
-          setMore({ ...more, show: response.data.length > 8 ? true : false });
+          setNotes(response.data.results);
+          setNextUrl(response.data.next);
         })
         .catch((response) => {
           console.error(response);
@@ -129,14 +142,16 @@ const NoteMine = () => {
     }
   };
 
-  // 더보기 버튼
-  const moreBtn = () => {
-    console.log(notes.length);
-    console.log(more.limit);
-    setMore({
-      show: notes.length > more.limit + 8 ? true : false,
-      limit: more.limit + 8,
-    });
+  const onClickMore = () => {
+    axios
+      .get(nextUrl)
+      .then((response) => {
+        setNotes([...notes, ...response.data.results]);
+        setNextUrl(response.data.next);
+      })
+      .catch((response) => {
+        console.error(response);
+      });
   };
 
   return (
@@ -186,102 +201,105 @@ const NoteMine = () => {
         </div>
       </div>
 
-      <div className="row gutters-sm">
-        {notes.slice(0, more.limit).map((item, index) => {
-          console.log(item);
-          return (
-            <React.Fragment key={index}>
-              <div className={`col-6 col-sm-4 col-md-3 col-xl-2 mb-3`}>
-                <div className={`${classes.contentBox} card h-100`}>
-                  <img
-                    src={item.book_img}
-                    alt="..."
-                    className={classes.bImage}
-                    onClick={() => {
-                      history.push(`/viewnotedetail/${item.note_id}`);
-                    }}
-                  />
-                  <div className={classes.titleArea}>
-                    <b className={`${classes.rTitleArea} card-title`}>
-                      <Link to={`/viewnotedetail/${item.note_id}`}>
-                        {item.note_title}
-                      </Link>
-                    </b>
-                    <div
-                      className={`${classes.subTitleArea} card-subtitle font-size-xs mb-2`}
-                    >
-                      {item.book_title}
-                    </div>
-                  </div>
-                  <div className={`${classes.date}`}>
-                    <div className="ml-1 mr-auto" style={{ marginBottom: 3 }}>
-                      <Moment format={"YYYY-MM-DD"}>{item.note_date}</Moment>
-                      <br />
-                    </div>
-                    <UserButton userId={item.user_id.user_id} />
-                  </div>
-                  <div>
-                    <Grid container className={classes.gridRoot} spacing={1}>
-                      {/* <div className="justify-content-between"> */}
-                      {/* <div className="has-icon btn-xs col-4"> */}
-                      <Grid
-                        item
-                        className={`${classes.viewBtn} col-4 col-xs-4 col-sm-4 col-md-4`}
+      {notes.length === 0 ? (
+        <Paper className={classes.paper}>
+          <div style={{ color: "grey", margin: "10px auto" }}>
+            독서록이 없습니다. 독서록을 작성해보세요.✍
+          </div>
+        </Paper>
+      ) : (
+        <div className="row gutters-sm">
+          {notes.map((item, index) => {
+            return (
+              <React.Fragment key={index}>
+                <div className={`col-6 col-sm-4 col-md-3 col-xl-2 mb-3`}>
+                  <div className={`${classes.contentBox} card h-100`}>
+                    <img
+                      src={item.book_img}
+                      alt="..."
+                      className={classes.bImage}
+                      onClick={() => {
+                        history.push(`/viewnotedetail/${item.note_id}`);
+                      }}
+                    />
+                    <div className={classes.titleArea}>
+                      <b className={`${classes.rTitleArea} card-title`}>
+                        <Link to={`/viewnotedetail/${item.note_id}`}>
+                          {item.note_title}
+                        </Link>
+                      </b>
+                      <div
+                        className={`${classes.subTitleArea} card-subtitle font-size-xs mb-2`}
                       >
-                        {item.note_private === true ? (
-                          <>
-                            <RemoveRedEyeOutlinedIcon />
-                            <span style={{ fontSize: 7 }}>
-                              {item.note_viewcount}
-                            </span>
-                          </>
-                        ) : (
-                          <>
-                            <VisibilityOffOutlinedIcon />
-                          </>
-                        )}
-                        {/* </div> */}
-                      </Grid>
-                      {/* <div className="col-4"> */}
-                      <Grid
-                        item
-                        className={`${classes.viewBtn} col-4 col-xs-4 col-sm-4 col-md-4`}
-                      >
-                        <NoteLike
-                          noteIDX={item.note_id}
-                          userIDX={item.user_id}
+                        {item.book_title}
+                      </div>
+                    </div>
+                    <div className={`${classes.date}`}>
+                      <div className="ml-1 mr-auto" style={{ marginBottom: 3 }}>
+                        <Moment format={"YYYY-MM-DD"}>{item.note_date}</Moment>
+                        <br />
+                      </div>
+                      {/* <UserButton userId={item.user_id.user_id} /> */}
+                      <Link to={`/room/${loginUserId}`} className="mr-2">
+                        <img
+                          alt=""
+                          src={loginUserImg}
+                          className={`${classes.profile} rounded-circle mr-2`}
                         />
-                      </Grid>
-                      {/* </div> */}
-                      <Grid
-                        item
-                        className={`${classes.viewBtn} col-4 col-xs-4 col-sm-4 col-md-4`}
-                        onClick={() => onDelete(item.note_id)}
-                        title="삭제"
-                      >
-                        {/* <div
-                          className="btn btn-link has-icon btn-xs bigger-130 text-danger col-4"
+                        {loginUserName}
+                      </Link>
+                    </div>
+                    <div>
+                      <Grid container className={classes.gridRoot} spacing={1}>
+                        <Grid
+                          item
+                          className={`${classes.viewBtn} col-4 col-xs-4 col-sm-4 col-md-4`}
+                        >
+                          {item.note_private === true ? (
+                            <>
+                              <RemoveRedEyeOutlinedIcon />
+                              <span style={{ fontSize: 7 }}>
+                                {item.note_viewcount}
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <VisibilityOffOutlinedIcon />
+                            </>
+                          )}
+                        </Grid>
+                        <Grid
+                          item
+                          className={`${classes.viewBtn} col-4 col-xs-4 col-sm-4 col-md-4`}
+                        >
+                          <NoteLike
+                            noteIDX={item.note_id}
+                            userIDX={item.user_id}
+                          />
+                        </Grid>
+                        <Grid
+                          item
+                          className={`${classes.viewBtn} col-4 col-xs-4 col-sm-4 col-md-4`}
                           onClick={() => onDelete(item.note_id)}
                           title="삭제"
-                        > */}
-                        <DeleteOutlinedIcon color="secondary" />
-                        {/* </div> */}
+                        >
+                          <DeleteOutlinedIcon color="secondary" />
+                        </Grid>
                       </Grid>
-                      {/* </div> */}
-                    </Grid>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </React.Fragment>
-          );
-        })}
-      </div>
-      {more.show ? (
+              </React.Fragment>
+            );
+          })}
+        </div>
+      )}
+      {nextUrl !== null ? (
         <Button
           fullWidth
           className="text-secondary"
           startIcon={<MoreHorizIcon />}
-          onClick={() => moreBtn()}
+          onClick={() => onClickMore()}
         >
           더보기
         </Button>

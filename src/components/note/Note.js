@@ -72,18 +72,20 @@ const Note = (props) => {
   const apiUrl1 = `${LIBRO_API_URL}/api/note/?user_id=${props.userIDX}&note_private=true`;
 
   const [notes, setNotes] = useState([]);
-  const [more, setMore] = useState({
-    limit: 4,
-    show: true,
-  });
+  const [nextUrl, setNextUrl] = useState(null);
+  // const [more, setMore] = useState({
+  //   limit: 4,
+  //   show: true,
+  // });
 
   //useEffect
   useEffect(() => {
     axios
       .get(apiUrl1)
       .then((response) => {
-        setNotes(response.data);
-        setMore({ ...more, show: response.data.length > 4 ? true : false });
+        setNotes(response.data.results);
+        setNextUrl(response.data.next);
+        // setMore({ ...more, show: response.data.length > 4 ? true : false });
       })
       .catch((response) => {
         console.error(response);
@@ -106,14 +108,16 @@ const Note = (props) => {
     }
   };
 
-  // 더보기 버튼
-  const moreBtn = () => {
-    console.log(notes.length);
-    console.log(more.limit);
-    setMore({
-      show: notes.length > more.limit + 4 ? true : false,
-      limit: more.limit + 4,
-    });
+  const onClickMore = () => {
+    axios
+      .get(nextUrl)
+      .then((response) => {
+        setNotes([...notes, ...response.data.results]);
+        setNextUrl(response.data.next);
+      })
+      .catch((response) => {
+        console.error(response);
+      });
   };
 
   return (
@@ -127,7 +131,7 @@ const Note = (props) => {
             등록된 독서록이 없습니다 😥
           </p>
         ) : null}
-        {notes.slice(0, more.limit).map((item, index) => {
+        {notes.map((item, index) => {
           console.log(item);
           return (
             <React.Fragment key={index}>
@@ -208,12 +212,12 @@ const Note = (props) => {
           );
         })}
       </div>
-      {more.show ? (
+      {nextUrl !== null ? (
         <Button
           fullWidth
           className="text-secondary"
           startIcon={<MoreHorizIcon />}
-          onClick={() => moreBtn()}
+          onClick={() => onClickMore()}
         >
           더보기
         </Button>

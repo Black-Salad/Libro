@@ -20,6 +20,13 @@ import UserButton from "../common/UserButton";
 import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
+  paper: {
+    padding: theme.spacing(1),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(1),
+    textAlign: "center",
+    verticalAlign: "center",
+  },
   gridRoot: {
     flexGrow: 1,
     width: "100%",
@@ -96,34 +103,33 @@ const NoteSearch = (props) => {
     limit: 12,
     show: false,
   });
+  const [nextUrl, setNextUrl] = useState("");
+  const [showMore, setShowMore] = useState(false);
   const refSearch = useRef(null);
 
   const apiUrl = `${LIBRO_API_URL}/api/book/?book_isbn=${props.bookISBN}`;
-  const apiUrl1 = `${LIBRO_API_URL}/api/note/`;
+  const apiUrl1 = `${LIBRO_API_URL}/api/note/?note_private=true`;
   const apiUrl2 = `${LIBRO_API_URL}/api/note/search/?note_private=true&search=`;
 
   //값 가져와서 setNotes
   useEffect(() => {
     axios.get(apiUrl).then((response) => {
-      console.log(response.data);
+      // isbn을 넘겨받았다면 response.data.length=1, all이라면 0
+      // console.log(response.data);
       if (response.data.length !== 0) {
         axios
-          .get(apiUrl1 + `?book_id=${response.data[0].book_id}`)
+          .get(apiUrl1 + `&book_id=${response.data[0].book_id}`)
           .then((response) => {
-            setNotes(response.data);
-            setMore({
-              ...more,
-              show: response.data.length > 12 ? true : false,
-            });
+            console.log(response.data);
+            setNotes(response.data.results);
+            setNextUrl(response.data.next);
           });
       } else {
         setNotes(response.data);
         axios.get(apiUrl1).then((response) => {
-          setNotes(response.data);
-          setMore({
-            ...more,
-            show: response.data.length > 12 ? true : false,
-          });
+          console.log(response.data);
+          setNotes(response.data.results);
+          setNextUrl(response.data.next);
         });
       }
     });
@@ -137,8 +143,8 @@ const NoteSearch = (props) => {
       axios
         .get(apiUrl2 + search)
         .then((response) => {
-          setNotes(response.data);
-          setMore({ ...more, show: response.data.length > 12 ? true : false });
+          setNotes(response.data.results);
+          setNextUrl(response.data.next);
         })
         .catch((response) => {
           console.error(response);
@@ -152,22 +158,25 @@ const NoteSearch = (props) => {
     axios
       .get(apiUrl2 + search)
       .then((response) => {
-        setNotes(response.data);
-        setMore({ ...more, show: response.data.length > 12 ? true : false });
+        setNotes(response.data.results);
+        setNextUrl(response.data.next);
       })
       .catch((response) => {
         console.error(response);
       });
   };
 
-  // 더보기 버튼
-  const moreBtn = () => {
-    console.log(notes.length);
-    console.log(more.limit);
-    setMore({
-      show: notes.length > more.limit + 6 ? true : false,
-      limit: more.limit + 6,
-    });
+  const onClickMore = () => {
+    axios
+      .get(nextUrl)
+      .then((response) => {
+        console.log("more", response.data);
+        setNotes([...notes, ...response.data.results]);
+        setNextUrl(response.data.next);
+      })
+      .catch((response) => {
+        console.error(response);
+      });
   };
 
   //모달창
@@ -206,17 +215,17 @@ const NoteSearch = (props) => {
           <SearchIcon />
         </IconButton>
       </Paper>
+      {notes.length == 0 ? (
+        <Paper className={classes.paper}>
+          <div style={{ color: "grey", margin: "10px auto" }}>
+            독서록이 없습니다 😥
+          </div>
+        </Paper>
+      ) : null}
 
       <div className="row gutters-sm">
-        {notes.length == 0 ? (
-          <div className="col-6 col-sm-6 col-md-3 col-xl-3 mb-3">
-            <p className="text-secondary font-size-sm">
-              해당 독서록이 없습니다 😥
-            </p>
-          </div>
-        ) : null}
-        {notes.slice(0, more.limit).map((item, index) => {
-          console.log(item);
+        {notes.map((item, index) => {
+          // console.log(item);
           return (
             <React.Fragment key={index}>
               <div className={`col-6 col-sm-4 col-md-3 col-xl-2 mb-3`}>
@@ -294,12 +303,12 @@ const NoteSearch = (props) => {
         <NoteDetail noteIDX={modal.note_id} />
       </Modal>
 
-      {more.show ? (
+      {nextUrl !== null ? (
         <Button
           fullWidth
           className="text-secondary"
           startIcon={<MoreHorizIcon />}
-          onClick={() => moreBtn()}
+          onClick={() => onClickMore()}
         >
           더보기
         </Button>
