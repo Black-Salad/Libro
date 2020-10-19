@@ -3,9 +3,9 @@ import axios from "axios";
 import { Fab, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import StarIcon from "@material-ui/icons/Star";
-import AddIcon from "@material-ui/icons/Add";
-import RemoveIcon from "@material-ui/icons/Remove";
-import CheckIcon from "@material-ui/icons/Check";
+import LibraryAddIcon from "@material-ui/icons/LibraryAdd";
+import DoneOutlineIcon from "@material-ui/icons/DoneOutline";
+import DeleteIcon from "@material-ui/icons/Delete";
 import CreateIcon from "@material-ui/icons/Create";
 import FindInPageIcon from "@material-ui/icons/FindInPage";
 import Popover from "@material-ui/core/Popover";
@@ -55,7 +55,7 @@ const BookButtons = (props) => {
   const cookies = new Cookies();
   const loginUser = cookies.get("loginUserId");
   const history = useHistory();
-  const { currentBook, setModalState } = props;
+  const { currentBook, setModalState, setChanged, changed } = props;
   const [starBtn, setStarBtn] = useState({ exist: false });
   const [shelfStatus, setShelfStatus] = useState({
     exist: false,
@@ -139,6 +139,7 @@ const BookButtons = (props) => {
             )
             .then((response) => {
               setStarBtn({ exist: false });
+              setChanged(!changed);
             })
             .catch((response) => {
               console.error(response);
@@ -162,6 +163,8 @@ const BookButtons = (props) => {
                   .then((response) => {
                     setStarBtn({ exist: true });
                     console.log(response);
+
+                    setChanged(!changed);
                     axios
                       .post(`${LIBRO_API_URL}/api/timeline/`, {
                         user_id: loginUser,
@@ -185,7 +188,10 @@ const BookButtons = (props) => {
                     book_title: currentBook.title,
                     book_author: currentBook.authors.join(", "),
                     book_publisher: currentBook.publisher,
-                    book_img: currentBook.thumbnail,
+                    book_img:
+                      currentBook.thumbnail === ""
+                        ? LIBRO_API_URL + "/img/unnamed.png"
+                        : currentBook.thumbnail,
                     book_desc: currentBook.contents,
                     book_url: currentBook.url,
                     book_isbn: currentBook.isbn,
@@ -202,6 +208,8 @@ const BookButtons = (props) => {
                       .then((response) => {
                         setStarBtn({ exist: true });
                         console.log(response);
+
+                        setChanged(!changed);
                         axios
                           .post(`${LIBRO_API_URL}/api/timeline/`, {
                             user_id: loginUser,
@@ -260,6 +268,7 @@ const BookButtons = (props) => {
                 start_date: response.data.start_date,
                 end_date: response.data.end_date,
               });
+              setChanged(!changed);
               axios
                 .post(`${LIBRO_API_URL}/api/timeline/`, {
                   user_id: loginUser,
@@ -284,7 +293,10 @@ const BookButtons = (props) => {
               book_title: currentBook.title,
               book_author: currentBook.authors.join(", "),
               book_publisher: currentBook.publisher,
-              book_img: currentBook.thumbnail,
+              book_img:
+                currentBook.thumbnail === ""
+                  ? LIBRO_API_URL + "/img/unnamed.png"
+                  : currentBook.thumbnail,
               book_desc: currentBook.contents,
               book_url: currentBook.url,
               book_isbn: currentBook.isbn,
@@ -309,6 +321,7 @@ const BookButtons = (props) => {
                     start_date: response.data.start_date,
                     end_date: response.data.end_date,
                   });
+                  setChanged(!changed);
                   axios
                     .post(`${LIBRO_API_URL}/api/timeline/`, {
                       user_id: loginUser,
@@ -352,6 +365,7 @@ const BookButtons = (props) => {
             start_date: response.data.start_date,
             end_date: response.data.end_date,
           });
+          setChanged(!changed);
           axios
             .post(`${LIBRO_API_URL}/api/timeline/`, {
               user_id: loginUser,
@@ -391,6 +405,7 @@ const BookButtons = (props) => {
               start_date: null,
               end_date: null,
             });
+            setChanged(!changed);
           })
           .catch((response) => {
             console.error(response);
@@ -415,7 +430,10 @@ const BookButtons = (props) => {
               book_title: currentBook.title,
               book_author: currentBook.authors.join(", "),
               book_publisher: currentBook.publisher,
-              book_img: currentBook.thumbnail,
+              book_img:
+                currentBook.thumbnail === ""
+                  ? LIBRO_API_URL + "/img/unnamed.png"
+                  : currentBook.thumbnail,
               book_desc: currentBook.contents,
               book_url: currentBook.url,
               book_isbn: currentBook.isbn,
@@ -486,7 +504,7 @@ const BookButtons = (props) => {
                 title="완독했어요"
                 onClick={(e) => handleClick(e)}
               >
-                <CheckIcon />
+                <DoneOutlineIcon />
               </Fab>
             ) : null}
             {shelfStatus.exist ? (
@@ -497,7 +515,7 @@ const BookButtons = (props) => {
                 title="책꽂이에서 삭제"
                 onClick={() => onClickRemove()}
               >
-                <RemoveIcon />
+                <DeleteIcon />
               </Fab>
             ) : (
               <>
@@ -509,7 +527,7 @@ const BookButtons = (props) => {
                   title="이 책 읽기"
                   onClick={(e) => handleClick(e)}
                 >
-                  <AddIcon />
+                  <LibraryAddIcon />
                 </Fab>
               </>
             )}
