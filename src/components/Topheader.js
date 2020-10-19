@@ -197,8 +197,8 @@ const Topheader = () => {
                                     return (
                                       <>
                                         <b>{item.user_id.user_name}</b>님이{" "}
-                                        <b>'{item.note_id.note_title}'</b>에
-                                        좋아요를 눌렀습니다.
+                                        <b>'{item.note_id.note_title}'</b>{" "}
+                                        독서록을 좋아합니다.
                                       </>
                                     );
                                   } else {
