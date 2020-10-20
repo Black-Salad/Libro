@@ -103,7 +103,7 @@ const NoteSearch = (props) => {
     limit: 12,
     show: false,
   });
-  const [nextUrl, setNextUrl] = useState("");
+  const [nextUrl, setNextUrl] = useState(null);
   const [showMore, setShowMore] = useState(false);
   const refSearch = useRef(null);
 
@@ -114,23 +114,25 @@ const NoteSearch = (props) => {
   //값 가져와서 setNotes
   useEffect(() => {
     axios.get(apiUrl).then((response) => {
-      // isbn을 넘겨받았다면 response.data.length=1, all이라면 0
-      // console.log(response.data);
+      // 해당 책의 book_id 가져오기 위해
+      console.log("res", response);
+      // isbn을 넘겨받았다면 response.data.length=1, all이라면 0 / book_db에 저장된 적이 없다면 0임.
       if (response.data.length !== 0) {
         axios
           .get(apiUrl1 + `&book_id=${response.data[0].book_id}`)
           .then((response) => {
-            console.log(response.data);
             setNotes(response.data.results);
             setNextUrl(response.data.next);
           });
       } else {
-        setNotes(response.data);
-        axios.get(apiUrl1).then((response) => {
-          console.log(response.data);
-          setNotes(response.data.results);
-          setNextUrl(response.data.next);
-        });
+        if (props.bookISBN == "all") {
+          axios.get(apiUrl1).then((response) => {
+            setNotes(response.data.results);
+            setNextUrl(response.data.next);
+          });
+        } else {
+          setNotes([]);
+        }
       }
     });
   }, []);
