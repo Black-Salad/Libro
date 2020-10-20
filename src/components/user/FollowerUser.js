@@ -29,7 +29,7 @@ const FollowUser = (props) => {
   // useEffect
   useEffect(() => {
     axios.get(apiUrl1 + `?target_user_id=${props.userIDX}`).then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       setFollow(response.data.results);
       setNextUrl(response.data.next);
     });
@@ -49,7 +49,7 @@ const FollowUser = (props) => {
     axios
       .get(nextUrl)
       .then((response) => {
-        console.log("more", response.data);
+        // console.log("more", response.data);
         setFollow([...follow, ...response.data.results]);
         setNextUrl(response.data.next);
       })
@@ -106,17 +106,17 @@ const FollowUser = (props) => {
             </React.Fragment>
           );
         })}
-        {nextUrl !== null ? (
-          <Button
-            fullWidth
-            className="text-secondary"
-            startIcon={<MoreHorizIcon />}
-            onClick={() => onClickMore()}
-          >
-            더보기
-          </Button>
-        ) : null}
       </div>
+      {nextUrl !== null ? (
+        <Button
+          fullWidth
+          className="text-secondary"
+          startIcon={<MoreHorizIcon />}
+          onClick={() => onClickMore()}
+        >
+          더보기
+        </Button>
+      ) : null}
       {follow.length == 0 ? (
         <Paper className={classes.paper}>
           <div style={{ color: "grey", margin: "10px auto" }}>
