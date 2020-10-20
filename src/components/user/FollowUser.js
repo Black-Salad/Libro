@@ -106,17 +106,17 @@ const FollowUser = (props) => {
             </React.Fragment>
           );
         })}
-        {nextUrl !== null ? (
-          <Button
-            fullWidth
-            className="text-secondary"
-            startIcon={<MoreHorizIcon />}
-            onClick={() => onClickMore()}
-          >
-            더보기
-          </Button>
-        ) : null}
       </div>
+      {nextUrl !== null ? (
+        <Button
+          fullWidth
+          className="text-secondary"
+          startIcon={<MoreHorizIcon />}
+          onClick={() => onClickMore()}
+        >
+          더보기
+        </Button>
+      ) : null}
       {follow.length == 0 ? (
         <Paper className={classes.paper}>
           <div style={{ color: "grey", margin: "10px auto" }}>

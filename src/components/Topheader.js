@@ -117,10 +117,12 @@ const Topheader = () => {
       >
         <Icon.Menu />
       </Link>
-      <div className="logo" style={{ marginLeft: "15px" }}>
-        <Icon.Feather />
-        <span style={{ marginLeft: "7px" }}>Libro</span>
-      </div>
+      <Link to="/" style={{ textDecoration: "none" }}>
+        <div className="logo" style={{ marginLeft: "15px" }}>
+          <Icon.Feather />
+          <span style={{ marginLeft: "7px" }}>Libro</span>
+        </div>
+      </Link>
 
       {/* 알람 */}
       <ul className="nav nav-circle ml-auto">
