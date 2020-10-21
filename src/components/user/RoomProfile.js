@@ -22,13 +22,13 @@ const RoomProfile = (props) => {
       setUser(response.data);
     });
     axios.get(apiUrl + `follow/?user_id=${props.userIDX}`).then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       setFollowing(response.data.count);
     });
     axios
       .get(apiUrl + `follow/?target_user_id=${props.userIDX}`)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setFollower(response.data.count);
       });
   }, [props, followBtnClicked]);

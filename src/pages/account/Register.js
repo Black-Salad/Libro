@@ -67,7 +67,7 @@ const Register = () => {
   // 값이 바뀔 때마다 onchange
   const userOnChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
-    console.log(user.user_name);
+    // console.log(user.user_name);
     // confirm(e);
   };
 
@@ -80,8 +80,8 @@ const Register = () => {
     switch (e.target.name) {
       case "user_name":
         axios.get(apiUrl3).then((response) => {
-          console.log(user.user_name);
-          console.log(response.data);
+          // console.log(user.user_name);
+          // console.log(response.data);
           if (response.data.length !== 0) {
             setError({ ...error, user_name: true });
           } else {
@@ -113,8 +113,8 @@ const Register = () => {
     switch (e.target.name) {
       case "user_name":
         axios.get(apiUrl3).then((response) => {
-          console.log(user.user_name);
-          console.log(response.data);
+          // console.log(user.user_name);
+          // console.log(response.data);
           if (response.data.length !== 0) {
             setError({ ...error, user_name: true });
           } else {
@@ -148,7 +148,7 @@ const Register = () => {
 
   // 회원가입 user테이블에 저장
   const register = () => {
-    console.log(user);
+    // console.log(user);
     if (
       user.user_name.length === 0 ||
       user.user_email.length === 0 ||
@@ -172,7 +172,7 @@ const Register = () => {
     const hashedPassword = passwordHash.generate(user.user_pw);
 
     axios.get(apiUrl2).then((response) => {
-      console.log(response);
+      // console.log(response);
       if (response.data.length === 0) {
         axios
           .post(apiUrl1, {

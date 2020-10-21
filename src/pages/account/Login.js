@@ -65,7 +65,7 @@ const LoginTest = () => {
   // 값이 바뀔 때마다 onchange
   const userOnChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
-    console.log(user);
+    // console.log(user);
   };
 
   // 체크박스

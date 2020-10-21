@@ -97,7 +97,7 @@ const LookForPassword = () => {
               user_pw: hashedPassword,
             })
             .then((response) => {
-              console.log(response.data);
+              // console.log(response.data);
               axios
                 .post(
                   apiUrl +
@@ -106,7 +106,7 @@ const LookForPassword = () => {
                     )}&user_pw=${encodeURIComponent(newPassWord)}`
                 )
                 .then((response) => {
-                  console.log(response.data);
+                  // console.log(response.data);
                   alert(
                     "임시 비밀번호가 발급되었습니다. 이메일을 확인해주세요 😊"
                   );

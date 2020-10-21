@@ -6,7 +6,7 @@ import { TextareaAutosize } from "@material-ui/core";
 import { LIBRO_API_URL } from "../../constants/config";
 
 import Button from "@material-ui/core/Button";
-import SaveAltIcon from "@material-ui/icons/SaveAlt";
+import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
 import RefreshIcon from "@material-ui/icons/Refresh";
 
@@ -44,7 +44,7 @@ const NoteForm = (props) => {
       if (bookIdx != ("" || undefined)) {
         // 책 팝업에서 해당 책에 대한 독서록 쓰기
         axios.get(apiUrl2 + `${bookIdx}/`).then((response) => {
-          console.log(response);
+          // console.log(response);
           setNote({
             user_id: loginUserId,
             book_id: response.data.book_id,
@@ -69,7 +69,7 @@ const NoteForm = (props) => {
       // .get(apiUrl2 + `shelf/join/?user_id=${loginUserId}&shelf_state=2`)
       .then((response) => {
         setShelf(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       });
 
     // axios.get(apiUrl).then((response) => {
@@ -85,13 +85,13 @@ const NoteForm = (props) => {
   //내용이 바뀔때마다 setNote
   const noteOnChange = (e) => {
     setNote({ ...note, [e.target.name]: e.target.value });
-    console.log(note);
+    // console.log(note);
   };
 
   const selectOnChange = (e) => {
     axios.get(apiUrl2 + `${e.target.value}/`).then((response) => {
-      console.log(response.data);
-      console.log(note);
+      // console.log(response.data);
+      // console.log(note);
       setNote({
         ...note,
         book_id: response.data.book_id,
@@ -127,17 +127,21 @@ const NoteForm = (props) => {
       axios
         .post(apiUrl, note)
         .then((response) => {
-          console.log(response.data);
-          axios
-            .post(`${LIBRO_API_URL}/api/timeline/`, {
-              user_id: loginUserId,
-              tl_kind: "4",
-              note_id: response.data.note_id,
-            })
-            .then((response) => {
-              // alert("등록완료");
-              history.push(`/viewnotedetail/${response.data.note_id}`);
-            });
+          if (response.data.note_private === true) {
+            axios
+              .post(`${LIBRO_API_URL}/api/timeline/`, {
+                user_id: loginUserId,
+                tl_kind: "4",
+                note_id: response.data.note_id,
+              })
+              .then((response) => {
+                // alert("등록완료");
+                history.push(`/viewnotedetail/${response.data.note_id}`);
+              });
+          } else {
+            // alert("등록완료");
+            history.push(`/viewnotedetail/${response.data.note_id}`);
+          }
         })
         .catch((res) => {
           console.error(res);
@@ -161,7 +165,7 @@ const NoteForm = (props) => {
 
     axios.put(apiUrl + `${props.noteIDX}/`, note).then((response) => {
       alert("수정완료");
-      console.log(response.data);
+      // console.log(response.data);
       history.push(`/viewnotedetail/${props.noteIDX}`);
     });
   };
@@ -258,7 +262,7 @@ const NoteForm = (props) => {
               <Button
                 variant="contained"
                 color="primary"
-                startIcon={<SaveAltIcon />}
+                startIcon={<CheckIcon />}
                 className="mb-1 mr-2"
                 size="small"
                 onClick={() => noteSave()}

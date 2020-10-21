@@ -50,7 +50,7 @@ const FollowButton = ({ userIDX, followBtnClicked, setFollowBtnClicked }) => {
       });
       // 알람
       axios.post(apiUrl4, alarm).then((response) => {
-        console.log("Alarm", response.data);
+        // console.log("Alarm", response.data);
       });
     });
   };

@@ -23,7 +23,7 @@ const Account = () => {
 
   const onkeyup = () => {
     axios.get(apiUrl1 + `?user_name=${userName}`).then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data.length !== 0) {
         if (loginUserName === response.data[0].user_name) setError(false);
         else setError(true);
@@ -52,7 +52,7 @@ const Account = () => {
         .patch(apiUrl1 + `${loginUserId}/`, { user_state: false })
         .then(() => {
           axios.get(apiUrl2 + `?user_id=${loginUserId}`).then((response) => {
-            update(response.data);
+            update(response.data.results);
           });
         });
     }

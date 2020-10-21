@@ -23,17 +23,17 @@ const SettingProfile = () => {
       .get(apiUrl1)
       .then((response) => {
         setUser(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch((response) => {
-        console.error(response);
+        // console.error(response);
         console.log("에러", cookies.get("loginUserId"));
       });
   }, []);
 
   const userOnChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
-    console.log(user);
+    // console.log(user);
   };
 
   const imgOnChange = (e) => {
@@ -58,7 +58,7 @@ const SettingProfile = () => {
         headers: { "Content-Type": "multipart/form-data" },
       })
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           setUser(response.data);
         })
         .catch((response) => {
