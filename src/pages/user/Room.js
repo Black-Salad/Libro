@@ -58,7 +58,7 @@ const Room = ({ match }) => {
     axios
       .get(apiUrl4)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         setUserName(response.data.user_name);
         if (response.data.user_state === false) {
           alert("탈퇴한 계정입니다.");

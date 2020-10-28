@@ -70,7 +70,7 @@ const BestBooks = () => {
       contents: book.book_desc,
       url: book.book_url,
     });
-    console.log(currentBook);
+    // console.log(currentBook);
   };
 
   const [bookList, setBookList] = useState([]);

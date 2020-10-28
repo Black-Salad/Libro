@@ -125,7 +125,7 @@ const NoteMine = () => {
   const onKeyPressSearch = (e) => {
     if (e.key === "Enter") {
       // e.chardCode === 13
-      console.log(loginUserId);
+      // console.log(loginUserId);
       const search = e.target.value;
       const apiUrl = `${LIBRO_API_URL}/api/note/search/?search=${encodeURIComponent(
         search

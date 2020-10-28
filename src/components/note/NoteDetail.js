@@ -83,7 +83,7 @@ const NoteDetail = (props) => {
       contents: book.book_desc,
       url: book.book_url,
     });
-    console.log(currentBook);
+    // console.log(currentBook);
   };
 
   //useEffect
@@ -91,7 +91,7 @@ const NoteDetail = (props) => {
     axios
       .get(`${LIBRO_API_URL}/api/note/detail/${props.noteIDX}`)
       .then((response) => {
-        console.log("noteDetail Data", response);
+        // console.log("noteDetail Data", response);
         setNote(response.data);
         setAlarm({ ...alarm, target_user_id: response.data.user_id });
 
@@ -104,7 +104,7 @@ const NoteDetail = (props) => {
         axios
           .get(`${LIBRO_API_URL}/api/user/${response.data.user_id}/`)
           .then((response) => {
-            console.log("response", response);
+            // console.log("response", response);
             setUser(response.data);
           });
       })
@@ -114,7 +114,7 @@ const NoteDetail = (props) => {
       });
 
     axios.get(apiUrl2).then((response) => {
-      console.log("comment", response);
+      // console.log("comment", response);
       setComments(response.data);
     });
   }, [props, commented]);
@@ -125,7 +125,7 @@ const NoteDetail = (props) => {
       axios
         .delete(apiUrl)
         .then((response) => {
-          console.log("note delete Data", response);
+          // console.log("note delete Data", response);
           // alert("삭제완료");
           history.push("/viewnotes");
         })
@@ -138,7 +138,7 @@ const NoteDetail = (props) => {
   //댓글 내용 바뀔떄마다 setComment
   const commentOnChange = (e) => {
     setComment({ ...comment, [e.target.name]: e.target.value });
-    console.log(comment);
+    // console.log(comment);
   };
 
   //댓글 등록
@@ -148,7 +148,7 @@ const NoteDetail = (props) => {
       return false;
     }
     axios.post(apiUrl3, comment).then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       setCommented(!commented);
       document.getElementById("textarea").value = "";
       setComment({ ...comment, comment_contents: "" });
@@ -162,7 +162,7 @@ const NoteDetail = (props) => {
       // 본인이 한 게시물엔 알람 안가게
       if (loginUserId != alarm.target_user_id) {
         axios.post(apiUrl4, alarm).then((response) => {
-          console.log("Alarm", response.data);
+          // console.log("Alarm", response.data);
         });
       }
       // history.go(0);

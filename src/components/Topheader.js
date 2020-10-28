@@ -33,14 +33,14 @@ const Topheader = () => {
       .get(apiUrl + `join/?target_user_id=${loginUserId}`)
       .then((response) => {
         setAlarm(response.data);
-        console.log(response);
+        // console.log(response);
       });
 
     axios
       .get(apiUrl + `join/?target_user_id=${loginUserId}&alarm_state=true`)
       .then((response) => {
         setAlarmCnt(response.data.length);
-        console.log("cnt", response.data.length);
+        // console.log("cnt", response.data.length);
       });
   }, []);
 

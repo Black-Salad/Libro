@@ -17,6 +17,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "90%",
     textAlign: "center",
   },
+  subTitleArea: {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
 }));
 
 const FollowRecommend = () => {
@@ -62,7 +67,7 @@ const FollowRecommend = () => {
                       className="img-fluid img-thumbnail rounded-circle border-0 mb-3"
                     />
                     <h5 className="card-title">{item.user_name}</h5>
-                    <p className="text-secondary mb-1">{item.user_email}</p>
+                    <p className={`text-secondary mb-1 ${classes.subTitleArea}`}>{item.user_email}</p>
                     <p className="text-muted font-size-sm">
                       {item.user_introduction}
                     </p>

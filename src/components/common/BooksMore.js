@@ -62,7 +62,7 @@ const BooksMore = ({ bKind, shelfUser, onOpenModal, modalState, changed }) => {
     axios
       .get(apiUrl)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setBookList(res.data.results);
         setNextUrl(res.data.next);
       })
@@ -75,7 +75,7 @@ const BooksMore = ({ bKind, shelfUser, onOpenModal, modalState, changed }) => {
     axios
       .get(nextUrl)
       .then((response) => {
-        console.log("more", response.data);
+        // console.log("more", response.data);
         setBookList([...bookList, ...response.data.results]);
         setNextUrl(response.data.next);
       })

@@ -70,7 +70,7 @@ const BooksMoreDidRead = ({ shelfUser, onOpenModal, modalState, changed }) => {
           )}&end_date__lte=${format(endDate, "yyyy-MM-dd")}`
       )
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setBookList(res.data);
       })
       .catch((res) => {

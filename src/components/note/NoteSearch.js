@@ -115,7 +115,7 @@ const NoteSearch = (props) => {
   useEffect(() => {
     axios.get(apiUrl).then((response) => {
       // 해당 책의 book_id 가져오기 위해
-      console.log("res", response);
+      // console.log("res", response);
       // isbn을 넘겨받았다면 response.data.length=1, all이라면 0 / book_db에 저장된 적이 없다면 0임.
       if (response.data.length !== 0) {
         axios
@@ -172,7 +172,7 @@ const NoteSearch = (props) => {
     axios
       .get(nextUrl)
       .then((response) => {
-        console.log("more", response.data);
+        // console.log("more", response.data);
         setNotes([...notes, ...response.data.results]);
         setNextUrl(response.data.next);
       })

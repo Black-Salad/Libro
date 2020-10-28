@@ -158,7 +158,7 @@ const Register = () => {
       return false;
     }
 
-    if (error.user_name && error.user_email && error.user_pw) {
+    if (error.user_name || error.user_email || error.user_pw) {
       alert("정확히 입력해주세요.");
       return false;
     }

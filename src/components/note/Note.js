@@ -132,7 +132,7 @@ const Note = (props) => {
           </p>
         ) : null}
         {notes.map((item, index) => {
-          console.log(item);
+          // console.log(item);
           return (
             <React.Fragment key={index}>
               <div className={`col-6 col-sm-4 col-md-3 col-xl-2 mb-3`}>

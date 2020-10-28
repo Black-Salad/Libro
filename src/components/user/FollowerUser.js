@@ -17,6 +17,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "90%",
     textAlign: "center",
   },
+  subTitleArea: {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
 }));
 
 const FollowUser = (props) => {
@@ -87,7 +92,9 @@ const FollowUser = (props) => {
                       className="img-fluid img-thumbnail rounded-circle border-0 mb-3"
                     />
                     <h5 className="card-title">{item.user_id.user_name}</h5>
-                    <p className="text-secondary mb-1">
+                    <p
+                      className={`text-secondary mb-1 ${classes.subTitleArea}`}
+                    >
                       {item.user_id.user_email}
                     </p>
                     <p className="text-muted font-size-sm">
